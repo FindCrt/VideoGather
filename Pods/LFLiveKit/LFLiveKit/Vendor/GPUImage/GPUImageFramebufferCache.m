@@ -77,7 +77,7 @@
         return [NSString stringWithFormat:@"%.1fx%.1f-%d:%d:%d:%d:%d:%d:%d", size.width, size.height, textureOptions.minFilter, textureOptions.magFilter, textureOptions.wrapS, textureOptions.wrapT, textureOptions.internalFormat, textureOptions.format, textureOptions.type];
     }
 }
-
+static frameBufferCount = 0;
 - (GPUImageFramebuffer *)fetchFramebufferForSize:(CGSize)framebufferSize textureOptions:(GPUTextureOptions)textureOptions onlyTexture:(BOOL)onlyTexture;
 {
     __block GPUImageFramebuffer *framebufferFromCache = nil;
@@ -91,6 +91,8 @@
         {
             // Nothing in the cache, create a new framebuffer to use
             framebufferFromCache = [[GPUImageFramebuffer alloc] initWithSize:framebufferSize textureOptions:textureOptions onlyTexture:onlyTexture];
+            frameBufferCount ++;
+            NSLog(@"create frame buffer: %d",frameBufferCount);
         }
         else
         {

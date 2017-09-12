@@ -59,6 +59,7 @@
 		1861D6651F5AA1950074D8B9 /* TFCoreImageDisplayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1861D6641F5AA1950074D8B9 /* TFCoreImageDisplayView.m */; };
 		1861D6671F5AA1A50074D8B9 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1861D6661F5AA1A50074D8B9 /* GLKit.framework */; };
 		1861D66A1F5AAAD00074D8B9 /* CIImage+Filter.m in Sources */ = {isa = PBXBuildFile; fileRef = 1861D6691F5AAAD00074D8B9 /* CIImage+Filter.m */; };
+		1878ACBE1F67D25000007820 /* LFLiveKitAnalyze.md in Resources */ = {isa = PBXBuildFile; fileRef = 1878ACBD1F67D25000007820 /* LFLiveKitAnalyze.md */; };
 		1E2EA7AE2E48DB8AEAE8CA17 /* libPods-VideoGather.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 68CEE9AD81A6357AD09CAB5D /* libPods-VideoGather.a */; };
 /* End PBXBuildFile section */
 
@@ -247,6 +248,7 @@
 		1861D6661F5AA1A50074D8B9 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
 		1861D6681F5AAAD00074D8B9 /* CIImage+Filter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CIImage+Filter.h"; sourceTree = "<group>"; };
 		1861D6691F5AAAD00074D8B9 /* CIImage+Filter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CIImage+Filter.m"; sourceTree = "<group>"; };
+		1878ACBD1F67D25000007820 /* LFLiveKitAnalyze.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = LFLiveKitAnalyze.md; sourceTree = "<group>"; };
 		68CEE9AD81A6357AD09CAB5D /* libPods-VideoGather.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-VideoGather.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		73C62082D56A8E28A55CE9CB /* Pods-VideoGather.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VideoGather.debug.xcconfig"; path = "Pods/Target Support Files/Pods-VideoGather/Pods-VideoGather.debug.xcconfig"; sourceTree = "<group>"; };
 		E4F6AE68AF4C3112AD7C41FB /* Pods-VideoGather.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VideoGather.release.xcconfig"; path = "Pods/Target Support Files/Pods-VideoGather/Pods-VideoGather.release.xcconfig"; sourceTree = "<group>"; };
@@ -651,6 +653,7 @@
 			children = (
 				184091E81F5FF41700D49BCE /* 视频处理记录.md */,
 				185AC6551F590A3800A154C0 /* Keywords */,
+				1878ACBD1F67D25000007820 /* LFLiveKitAnalyze.md */,
 			);
 			path = docs;
 			sourceTree = "<group>";
@@ -753,6 +756,7 @@
 				1858287D1F5E83550088C5C3 /* libavutil.pc in Resources */,
 				1858287F1F5E83550088C5C3 /* libswscale.pc in Resources */,
 				1858287C1F5E83550088C5C3 /* libavformat.pc in Resources */,
+				1878ACBE1F67D25000007820 /* LFLiveKitAnalyze.md in Resources */,
 				185AC6561F590A3800A154C0 /* Keywords in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
