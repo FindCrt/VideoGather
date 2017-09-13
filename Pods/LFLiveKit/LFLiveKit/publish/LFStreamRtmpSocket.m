@@ -396,11 +396,11 @@ Failed:
 
     [self sendPacket:RTMP_PACKET_TYPE_VIDEO data:body size:iIndex nTimestamp:0];
     
-    uint8_t *bytes = body;
+    long *bytes = body;
     int i = 0;
     while (i<iIndex) {
         printf("%.2x ",*bytes++);
-        i++;
+        i+=4;
     }
     printf("\n******************\n");
     free(body);
@@ -428,11 +428,11 @@ Failed:
     body[i++] = (frame.data.length) & 0xff;
     memcpy(&body[i], frame.data.bytes, frame.data.length);
     
-    uint8_t *bytes = body;
+    long *bytes = body;
     int j = 0;
     while (j<rtmpLength) {
         printf("%.2x ",*bytes++);
-        j++;
+        j+=4;
     }
     printf("\n******************\n");
 

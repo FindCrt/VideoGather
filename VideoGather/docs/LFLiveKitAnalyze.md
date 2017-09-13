@@ -16,3 +16,4 @@
 * videoToolBox编码关键方法：VTCompressionSessionCreate， VTCompressionSessionEncodeFrame和指定的编码后的回调VideoCompressonOutputCallback。
 * 编码后从CMSampleBufferRef中得到的数据注意：1. 以MP4风格存放，即[长度值][数据][长度值][数据]，长度值是4个字节，长度值是数据的长度。 2.长度值是大端模式的
 * 从写入文件中的代码看：1. 头信息确实是 00 00 00 01或00 00 01；2. 类型数据时直接在数据里的，不需要额外添加。
+* 流的数据格式是根据flv的方式组装的，所以跟写入h264文件不同。
