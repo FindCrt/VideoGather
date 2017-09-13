@@ -278,7 +278,7 @@
         }
     }
 }
-
+//videoCamera --> GPUImageCropFilter --> filter(LFGPUImageBeautyFilter) --> output(LFGPUImageEmptyFilter) --> gpuImageView
 - (void)reloadFilter{
     [self.filter removeAllTargets];
     [self.blendFilter removeAllTargets];

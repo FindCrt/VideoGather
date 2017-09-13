@@ -185,6 +185,7 @@ static void VideoCompressonOutputCallback(void *VTref, void *VTFrameRef, OSStatu
     if (statusCodeRet == noErr) {
         size_t bufferOffset = 0;
         static const int AVCCHeaderLength = 4;
+        int frameCount = 0;
         while (bufferOffset < totalLength - AVCCHeaderLength) {
             // Read the NAL unit length
             uint32_t NALUnitLength = 0;
@@ -219,9 +220,10 @@ static void VideoCompressonOutputCallback(void *VTref, void *VTFrameRef, OSStatu
 
 
             bufferOffset += AVCCHeaderLength + NALUnitLength;
+            frameCount ++;
+            
 
         }
-
     }
 }
 

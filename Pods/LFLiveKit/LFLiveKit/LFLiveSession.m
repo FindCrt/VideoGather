@@ -60,7 +60,7 @@
 @interface LFLiveSession ()
 
 /// 上传相对时间戳
-@property (nonatomic, assign) uint64_t relativeTimestamps;
+@property (nonatomic, assign) uint64_t relativeTimestamps;//第一帧的时间戳
 /// 音视频是否对齐
 @property (nonatomic, assign) BOOL AVAlignment;
 /// 当前是否采集到了音频

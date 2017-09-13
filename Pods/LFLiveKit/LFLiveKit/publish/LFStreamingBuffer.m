@@ -49,6 +49,7 @@ static const NSUInteger defaultSendBufferMaxCount = 600;///< 最大缓冲区为6
 }
 
 #pragma mark -- Custom
+//sortList只是一个前站，它负责把frame根据timestemp进行排序，首尾的加入到list.
 - (void)appendObject:(LFFrame *)frame {
     if (!frame) return;
     if (!_startTimer) {

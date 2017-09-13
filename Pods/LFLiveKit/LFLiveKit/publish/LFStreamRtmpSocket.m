@@ -173,6 +173,7 @@ SAVC(mp4a);
             if ([frame isKindOfClass:[LFVideoFrame class]]) {
                 if (!_self.sendVideoHead) {
                     _self.sendVideoHead = YES;
+                    //sps pps是视频的头信息，sequence parameter sets / pictures parameter sets
                     if(!((LFVideoFrame*)frame).sps || !((LFVideoFrame*)frame).pps){
                         _self.isSending = NO;
                         return;
@@ -383,6 +384,7 @@ Failed:
     body[iIndex++] = sps_len & 0xff;
     memcpy(&body[iIndex], sps, sps_len);
     iIndex += sps_len;
+    printf("iIndex:%d, sps_len:%d\n",iIndex,sps_len);
 
     /*pps*/
     body[iIndex++] = 0x01;
@@ -390,8 +392,17 @@ Failed:
     body[iIndex++] = (pps_len) & 0xff;
     memcpy(&body[iIndex], pps, pps_len);
     iIndex += pps_len;
+    printf("iIndex:%d, pps_len:%d\n",iIndex, pps_len);
 
     [self sendPacket:RTMP_PACKET_TYPE_VIDEO data:body size:iIndex nTimestamp:0];
+    
+    uint8_t *bytes = body;
+    int i = 0;
+    while (i<iIndex) {
+        printf("%.2x ",*bytes++);
+        i++;
+    }
+    printf("\n******************\n");
     free(body);
 }
 
@@ -416,6 +427,14 @@ Failed:
     body[i++] = (frame.data.length >>  8) & 0xff;
     body[i++] = (frame.data.length) & 0xff;
     memcpy(&body[i], frame.data.bytes, frame.data.length);
+    
+    uint8_t *bytes = body;
+    int j = 0;
+    while (j<rtmpLength) {
+        printf("%.2x ",*bytes++);
+        j++;
+    }
+    printf("\n******************\n");
 
     [self sendPacket:RTMP_PACKET_TYPE_VIDEO data:body size:(rtmpLength) nTimestamp:frame.timestamp];
     free(body);
