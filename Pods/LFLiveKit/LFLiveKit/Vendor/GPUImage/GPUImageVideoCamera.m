@@ -122,6 +122,7 @@ void setColorConversion709( GLfloat conversionMatrix[9] )
 	videoOutput = [[AVCaptureVideoDataOutput alloc] init];
 	[videoOutput setAlwaysDiscardsLateVideoFrames:NO];
     
+    //相机输出只有这3种格式，2种N12和32_BGRA
 //    if (captureAsYUV && [GPUImageContext deviceSupportsRedTextures])
     if (captureAsYUV && [GPUImageContext supportsFastTextureUpload])
     {
@@ -558,6 +559,7 @@ void setColorConversion709( GLfloat conversionMatrix[9] )
     {
         if ([currentTarget enabled])
         {
+            //targets和targetTextureIndices保持同步，同一个索引上的元素是相关的
             NSInteger indexOfObject = [targets indexOfObject:currentTarget];
             NSInteger textureIndexOfTarget = [[targetTextureIndices objectAtIndex:indexOfObject] integerValue];
             
@@ -618,6 +620,8 @@ void setColorConversion709( GLfloat conversionMatrix[9] )
     int bufferWidth = (int) CVPixelBufferGetWidth(cameraFrame);
     int bufferHeight = (int) CVPixelBufferGetHeight(cameraFrame);
     CFTypeRef colorAttachments = CVBufferGetAttachment(cameraFrame, kCVImageBufferYCbCrMatrixKey, NULL);
+    
+    //根据颜色空间标准不同，采用不同的变换矩阵
     if (colorAttachments != NULL)
     {
         if(CFStringCompare(colorAttachments, kCVImageBufferYCbCrMatrix_ITU_R_601_4, 0) == kCFCompareEqualTo)
@@ -652,6 +656,8 @@ void setColorConversion709( GLfloat conversionMatrix[9] )
 
     [GPUImageContext useImageProcessingContext];
 
+    //cameraFrame --> 提取分量texture:Y和UV  --> 调用转换OpenGL程序：Y和UV的texture输入，RGBA的texture输出
+    //如果是BGRA格式，则构建一个texture，把数据倒过去就可以了，使用
     if ([GPUImageContext supportsFastTextureUpload] && captureAsYUV)
     {
         CVOpenGLESTextureRef luminanceTextureRef = NULL;
@@ -673,7 +679,7 @@ void setColorConversion709( GLfloat conversionMatrix[9] )
             glActiveTexture(GL_TEXTURE4);
             if ([GPUImageContext deviceSupportsRedTextures])
             {
-//                err = CVOpenGLESTextureCacheCreateTextureFromImage(kCFAllocatorDefault, coreVideoTextureCache, cameraFrame, NULL, GL_TEXTURE_2D, GL_RED_EXT, bufferWidth, bufferHeight, GL_RED_EXT, GL_UNSIGNED_BYTE, 0, &luminanceTextureRef);
+//                err = CVOpenGLESTextureCacheCreateTextureFromImage(kCFAllocatorDefault,  [[GPUImageContext sharedImageProcessingContext] coreVideoTextureCache], cameraFrame, NULL, GL_TEXTURE_2D, GL_RED_EXT, bufferWidth, bufferHeight, GL_RED_EXT, GL_UNSIGNED_BYTE, 0, &luminanceTextureRef);
                 err = CVOpenGLESTextureCacheCreateTextureFromImage(kCFAllocatorDefault, [[GPUImageContext sharedImageProcessingContext] coreVideoTextureCache], cameraFrame, NULL, GL_TEXTURE_2D, GL_LUMINANCE, bufferWidth, bufferHeight, GL_LUMINANCE, GL_UNSIGNED_BYTE, 0, &luminanceTextureRef);
             }
             else
@@ -699,6 +705,7 @@ void setColorConversion709( GLfloat conversionMatrix[9] )
             }
             else
             {
+                //关键点在planeIndex这个参数，N12是由两个分层，Y独立一层，UV混合一层
                 err = CVOpenGLESTextureCacheCreateTextureFromImage(kCFAllocatorDefault, [[GPUImageContext sharedImageProcessingContext] coreVideoTextureCache], cameraFrame, NULL, GL_TEXTURE_2D, GL_LUMINANCE_ALPHA, bufferWidth/2, bufferHeight/2, GL_LUMINANCE_ALPHA, GL_UNSIGNED_BYTE, 1, &chrominanceTextureRef);
             }
             if (err)

@@ -17,3 +17,18 @@
 * 编码后从CMSampleBufferRef中得到的数据注意：1. 以MP4风格存放，即[长度值][数据][长度值][数据]，长度值是4个字节，长度值是数据的长度。 2.长度值是大端模式的
 * 从写入文件中的代码看：1. 头信息确实是 00 00 00 01或00 00 01；2. 类型数据时直接在数据里的，不需要额外添加。
 * 流的数据格式是根据flv的方式组装的，所以跟写入h264文件不同。
+
+* GPUImageVideoCamera流程：
+ * captureSession的配置：相机前后、输出分辨率、输出格式(YUV/BGRA)、YUV转RGB的OpenGL program
+ * 数据输出从`captureOutput`开始，视频到`processVideoSampleBuffer`
+ * 如果需要转格式，则从YUV转到RGBA,使用OpenGL程序渲染一次，输入Y和UV的texture，以RGBA的格式输出到的frameBuffer的texture,frameBuffer只是一段数据，本身不带格式标记的，只是OpenGL的fragmentShader里输出color是按RGBA来排列的。不用转，直接数据导入到新的RGBA纹理中。这时是空壳frameBuffer.
+ * `updateTargetsForVideoCameraUsingCacheTextureAtWidth`这里是传递frameBuffer到下一个处理点，和所有的滤镜一致。这里又回到了上一个抽象层次了。
+
+* [GPUImageContext deviceSupportsRedTextures]里说的GL_RED_EXT的问题，这个有什么用？什么好处？什么情况下可用？
+* [GPUImageContext sharedFramebufferCache] frameBuffer作为图象处理链中的输入输出，是重用的，有一个FBO池循环使用。
+* `generateFramebuffer`注意一下构建frameBuffer的不同，特别是使用coreVideo的方法构建的FBO有什么区别。
+
+
+
+
+

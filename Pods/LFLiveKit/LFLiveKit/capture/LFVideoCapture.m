@@ -278,7 +278,7 @@
         }
     }
 }
-//videoCamera --> GPUImageCropFilter --> filter(LFGPUImageBeautyFilter) --> output(LFGPUImageEmptyFilter) --> gpuImageView
+//videoCamera --> GPUImageCropFilter --> filter(LFGPUImageBeautyFilter) --> output(LFGPUImageEmptyFilter) --> gpuImageView --> frameProcessingCompletionBlock --> 回到session的captureOutput:pixelBuffer:进入编码阶段
 - (void)reloadFilter{
     [self.filter removeAllTargets];
     [self.blendFilter removeAllTargets];

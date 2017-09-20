@@ -35,7 +35,7 @@ void runSynchronouslyOnVideoProcessingQueue(void (^block)(void))
     if (dispatch_get_current_queue() == videoProcessingQueue)
 #pragma clang diagnostic pop
 #else
-	if (dispatch_get_specific([GPUImageContext contextKey]))
+	if (dispatch_get_specific([GPUImageContext contextKey])) //应该跟[GPUImageContext sharedImageProcessingContext]相比匹配是否相等，现在这么写是依赖于GPUImageContext唯一，只有一个GPUImageContext，否则有其他的对象，那么其他对象的dispatch_get_specific也会有值。
 #endif
 	{
 		block();
