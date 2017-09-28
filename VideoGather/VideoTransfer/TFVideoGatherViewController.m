@@ -76,7 +76,7 @@
     _LFSession.delegate = self;
     _LFSession.running = YES;
     _LFSession.preView = _LFPreView;
-    _LFSession.beautyFace = YES;
+    _LFSession.beautyFace = NO;
     _LFSession.captureDevicePosition = AVCaptureDevicePositionBack;
     
     

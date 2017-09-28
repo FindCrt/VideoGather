@@ -8,7 +8,6 @@
 
 #import "AppDelegate.h"
 #import "TFMenuViewController.h"
-#import "TFBaseNavigationViewController.h"
 
 @interface AppDelegate ()
 
@@ -21,7 +20,7 @@
     
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     TFMenuViewController *menuVC = [[TFMenuViewController alloc] init];
-    self.window.rootViewController = [[TFBaseNavigationViewController alloc] initWithRootViewController:menuVC];
+    self.window.rootViewController = [[UINavigationController alloc] initWithRootViewController:menuVC];
     
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];

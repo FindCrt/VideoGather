@@ -17,8 +17,11 @@
 #else
 #import "GPUImage.h"
 #endif
+#import <CoreVideo/CoreVideo.h>
 
-@interface LFVideoCapture ()
+#define TFUsingRawCaptureSample 1
+
+@interface LFVideoCapture ()<GPUImageVideoCameraDelegate>
 
 @property (nonatomic, strong) GPUImageVideoCamera *videoCamera;
 @property (nonatomic, strong) LFGPUImageBeautyFilter *beautyFilter;
@@ -79,6 +82,7 @@
         _videoCamera.horizontallyMirrorFrontFacingCamera = NO;
         _videoCamera.horizontallyMirrorRearFacingCamera = NO;
         _videoCamera.frameRate = (int32_t)_configuration.videoFrameRate;
+        _videoCamera.delegate = self;
     }
     return _videoCamera;
 }
@@ -273,6 +277,7 @@
     @autoreleasepool {
         GPUImageFramebuffer *imageFramebuffer = output.framebufferForOutput;
         CVPixelBufferRef pixelBuffer = [imageFramebuffer pixelBuffer];
+        
         if (pixelBuffer && _self.delegate && [_self.delegate respondsToSelector:@selector(captureOutput:pixelBuffer:)]) {
             [_self.delegate captureOutput:_self pixelBuffer:pixelBuffer];
         }
@@ -329,11 +334,14 @@
     [self.blendFilter forceProcessingAtSize:self.configuration.videoSize];
     [self.uiElementInput forceProcessingAtSize:self.configuration.videoSize];
     
+
     
     //< 输出数据
     __weak typeof(self) _self = self;
     [self.output setFrameProcessingCompletionBlock:^(GPUImageOutput *output, CMTime time) {
-        [_self processVideo:output];
+#if !TFUsingRawCaptureSample
+       [_self processVideo:output];
+#endif
     }];
     
 }
@@ -380,6 +388,13 @@
             }
         }
     }
+}
+
+
+-(void)willOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer{
+#if TFUsingRawCaptureSample
+    [self.delegate captureOutput:self pixelBuffer:CMSampleBufferGetImageBuffer(sampleBuffer)];
+#endif
 }
 
 @end

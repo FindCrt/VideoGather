@@ -53,7 +53,6 @@
 		185AC6601F59400B00A154C0 /* TFVideoControlView.m in Sources */ = {isa = PBXBuildFile; fileRef = 185AC65F1F59400B00A154C0 /* TFVideoControlView.m */; };
 		185AC6671F59439900A154C0 /* TFVideoNormalControlView.m in Sources */ = {isa = PBXBuildFile; fileRef = 185AC6661F59439900A154C0 /* TFVideoNormalControlView.m */; };
 		185AC66A1F594CD700A154C0 /* TFAVPlayerControlForwarder.m in Sources */ = {isa = PBXBuildFile; fileRef = 185AC6691F594CD700A154C0 /* TFAVPlayerControlForwarder.m */; };
-		185AC66E1F5958A700A154C0 /* TFBaseNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 185AC66D1F5958A700A154C0 /* TFBaseNavigationViewController.m */; };
 		185AC66F1F59593E00A154C0 /* cocosvideo.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 185AC66B1F59562400A154C0 /* cocosvideo.mp4 */; };
 		185AC6721F595AA900A154C0 /* UIDevice+ForceRotate.m in Sources */ = {isa = PBXBuildFile; fileRef = 185AC6711F595AA900A154C0 /* UIDevice+ForceRotate.m */; };
 		1861D6651F5AA1950074D8B9 /* TFCoreImageDisplayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1861D6641F5AA1950074D8B9 /* TFCoreImageDisplayView.m */; };
@@ -239,8 +238,6 @@
 		185AC6681F594CD700A154C0 /* TFAVPlayerControlForwarder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFAVPlayerControlForwarder.h; sourceTree = "<group>"; };
 		185AC6691F594CD700A154C0 /* TFAVPlayerControlForwarder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFAVPlayerControlForwarder.m; sourceTree = "<group>"; };
 		185AC66B1F59562400A154C0 /* cocosvideo.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = cocosvideo.mp4; sourceTree = "<group>"; };
-		185AC66C1F5958A700A154C0 /* TFBaseNavigationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFBaseNavigationViewController.h; sourceTree = "<group>"; };
-		185AC66D1F5958A700A154C0 /* TFBaseNavigationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFBaseNavigationViewController.m; sourceTree = "<group>"; };
 		185AC6701F595AA900A154C0 /* UIDevice+ForceRotate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIDevice+ForceRotate.h"; sourceTree = "<group>"; };
 		185AC6711F595AA900A154C0 /* UIDevice+ForceRotate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIDevice+ForceRotate.m"; sourceTree = "<group>"; };
 		1861D6631F5AA1950074D8B9 /* TFCoreImageDisplayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFCoreImageDisplayView.h; sourceTree = "<group>"; };
@@ -333,8 +330,6 @@
 				185AC6451F58FFFB00A154C0 /* TFMediaListViewController.m */,
 				185AC6481F59048300A154C0 /* TFMediaCell.h */,
 				185AC6491F59048300A154C0 /* TFMediaCell.m */,
-				185AC66C1F5958A700A154C0 /* TFBaseNavigationViewController.h */,
-				185AC66D1F5958A700A154C0 /* TFBaseNavigationViewController.m */,
 				185827EF1F5E83160088C5C3 /* FFmpeg */,
 				185AC6571F590C2900A154C0 /* Tools */,
 				183EF0C51F57C35F00E21DB4 /* Supporting Files */,
@@ -830,7 +825,6 @@
 				185AC66A1F594CD700A154C0 /* TFAVPlayerControlForwarder.m in Sources */,
 				185AC6461F58FFFB00A154C0 /* TFMediaListViewController.m in Sources */,
 				185AC64E1F59053C00A154C0 /* TFMediaDataAnalyzer.m in Sources */,
-				185AC66E1F5958A700A154C0 /* TFBaseNavigationViewController.m in Sources */,
 				185828851F5E86870088C5C3 /* TFVideoPlayerViewController2.m in Sources */,
 				184091E71F5F9D9700D49BCE /* TFVideoExchanger.m in Sources */,
 				183EF0DF1F57C3F400E21DB4 /* TFCameraViewController.m in Sources */,
