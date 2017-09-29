@@ -19,7 +19,7 @@
 #endif
 #import <CoreVideo/CoreVideo.h>
 
-#define TFUsingRawCaptureSample 1
+#define TFUsingRawCaptureSample 0
 
 @interface LFVideoCapture ()<GPUImageVideoCameraDelegate>
 
@@ -301,7 +301,7 @@
         self.filter = [[LFGPUImageEmptyFilter alloc] init];
         self.beautyFilter = nil;
     }
-    
+
     ///< 调节镜像
     [self reloadMirror];
     
@@ -328,6 +328,8 @@
         [self.output addTarget:self.gpuImageView];
         if(self.saveLocalVideo) [self.output addTarget:self.movieWriter];
     }
+    
+//    [self.videoCamera addTarget:self.output];
     
     [self.filter forceProcessingAtSize:self.configuration.videoSize];
     [self.output forceProcessingAtSize:self.configuration.videoSize];
@@ -392,6 +394,20 @@
 
 
 -(void)willOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer{
+    
+    CVPixelBufferRef pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer);
+    
+//    int count = CVPixelBufferGetPlaneCount(pixelBuffer);
+//    size_t width = CVPixelBufferGetWidth(pixelBuffer);
+//    size_t height = CVPixelBufferGetHeight(pixelBuffer);
+//    size_t bytesPerRow = CVPixelBufferGetBytesPerRow(pixelBuffer);
+//    size_t size = CVPixelBufferGetDataSize(pixelBuffer);
+//    OSType type = CVPixelBufferGetPixelFormatType(pixelBuffer);
+//    
+//    char *typeName = &type;
+//    
+//    NSLog(@"pixelBuffer222222: size %d, width %d, height %d, countP %d, bytesPerRow %d, type %s",size,width, height,count, bytesPerRow, typeName);
+    
 #if TFUsingRawCaptureSample
     [self.delegate captureOutput:self pixelBuffer:CMSampleBufferGetImageBuffer(sampleBuffer)];
 #endif

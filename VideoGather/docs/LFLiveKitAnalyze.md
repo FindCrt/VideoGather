@@ -27,6 +27,8 @@
 * [GPUImageContext deviceSupportsRedTextures]里说的GL_RED_EXT的问题，这个有什么用？什么好处？什么情况下可用？
 * [GPUImageContext sharedFramebufferCache] frameBuffer作为图象处理链中的输入输出，是重用的，有一个FBO池循环使用。
 * `generateFramebuffer`注意一下构建frameBuffer的不同，特别是使用coreVideo的方法构建的FBO有什么区别。
+* 为什么使用相机直接输出的数据推流会播放不了，非要经过滤镜搞一遍？缺了什么？
+* 测试条件： 1、 是否直接拿相机的输出数据  2、编码时候输入的数据宽高和配置的宽高是否不同  3、编码前的数据格式是YUV还是RGB
 
 
 

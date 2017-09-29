@@ -121,7 +121,7 @@ void setColorConversion709( GLfloat conversionMatrix[9] )
 	// Add the video frame output	
 	videoOutput = [[AVCaptureVideoDataOutput alloc] init];
 	[videoOutput setAlwaysDiscardsLateVideoFrames:NO];
-    
+    captureAsYUV = NO;
     //相机输出只有这3种格式，2种N12和32_BGRA
 //    if (captureAsYUV && [GPUImageContext deviceSupportsRedTextures])
     if (captureAsYUV && [GPUImageContext supportsFastTextureUpload])

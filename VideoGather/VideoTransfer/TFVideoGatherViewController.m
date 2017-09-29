@@ -70,7 +70,7 @@
 -(void)setupLFSession{
     
     LFLiveAudioConfiguration *audioConfig = [LFLiveAudioConfiguration defaultConfiguration];
-    LFLiveVideoConfiguration *videoConfg = [LFLiveVideoConfiguration defaultConfiguration];
+    LFLiveVideoConfiguration *videoConfg = [LFLiveVideoConfiguration defaultConfigurationForQuality:LFLiveVideoQuality_Medium1];
     
     _LFSession = [[LFLiveSession alloc] initWithAudioConfiguration:audioConfig videoConfiguration:videoConfg captureType:LFLiveCaptureMaskVideo];
     _LFSession.delegate = self;
