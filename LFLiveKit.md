@@ -156,3 +156,68 @@ if([self.configuration.avSessionPreset isEqualToString:AVCaptureSessionPreset640
 `self.delegate`就是`LFLiveSession`对象，视频数据就流到了session部分，进入编码阶段。
 
 #####滤镜和OpenGL
+
+滤镜的实现部分，先看一个简单的例子：`GPUImageCropFilter`。在上面也用到了，就是用来做裁剪的。
+
+它继承于`GPUImageFilter`,而`GPUImageFilter`继承于`GPUImageOutput <GPUImageInput>`,它既是一个output也是input。
+
+作为input，会接收处理的图像,看`GPUImageVideoCamera`的`updateTargetsForVideoCameraUsingCacheTextureAtWidth`方法可以知道，传递给input的方法有两个：
+
+ * `setInputFramebuffer:atIndex`: 这个是传递`GPUImageFramebuffer`对象
+ * `newFrameReadyAtTime:atIndex:` 这个才是开启下一环节的处理。
+
+`GPUImageFramebuffer`是LFLiveKit封装的数据，用来在图像处理组件之间传递，包含了图像的大小、纹理、纹理类型、采样格式等。在图像处理链里传递图像，肯定需要一个统一的类型，除了图像本身，肯定还需要关于图像的信息，这样每个组件可以按相同的标准对待图像。`GPUImageFramebuffer`就起的这个作用。
+
+`GPUImageFramebuffer`内部核心的东西是`GLuint framebuffer`,即OpenGL里的frameBufferObject(FBO).关于FBO我也不是很了解，只知道它像一个容器，可以挂载了render buffer、texture、depth buffer等，也就是原本渲染输出到屏幕的东西，可以输出到一个FBO，然后可以拿这个渲染的结果进行再一次的处理。
+
+![FBO的结构图](http://my.csdn.net/uploads/201206/26/1340675754_8379.png)
+
+在这个项目里，就是在FBO上挂载纹理，一次图像处理就是经历一次OpenGL渲染，处理前的图像用纹理的形式传入OpenGL，经历渲染流程输出到FBO, 图像数据就输出到FBO绑定的纹理上了。这样做了一次处理后数据结构还是一样，即绑定texture的FBO，可以再作为输入源提供给下一个组件。
+
+FBO的构建具体看`GPUImageFramebuffer `的方法`generateFramebuffer`。
+
+最后还一个值得学习的是`GPUImageFramebuffer`使用了一个缓存池，核心类`GPUImageFramebufferCache`。从流程里可以看得出`GPUImageFramebuffer`它是一个中间量，从组件A传递给组件B之后，B会使用这个framebuffer,B调用framebuffer的`lock`，使用完之后调用`unlock`。跟OC内存管理里的引用计数原理类似，`lock`引用计数+1，`unlock`-1，引用计数小于1就回归缓存池。需要一个新的frameBuffer的时候从优先从缓存池里拿，没有才构建。这一点又跟tableView的cell重用机制有点像。
+
+**缓冲区是一个常用的功能,这种方案值得学习一下**
+
+说完`GPUImageFramebuffer`,再回到`newFrameReadyAtTime:atIndex `方法。
+
+它里面就两个方法：`renderToTextureWithVertices`这个是执行渲染，`informTargetsAboutNewFrameAtTime`是通知它的target，把图像传递给下一环节处理。
+
+对`renderToTextureWithVertices`做一步步的解析：
+
+* `[GPUImageContext setActiveShaderProgram:filterProgram];`内部做了两件事：`[EAGLContext setCurrentContext:imageProcessingContext];`把contex切换到图像处理的context, context这种东西就是用来把一些东西关联在一起的，执行的OpenGL函数`glxxx`为什么起作用，回执的结果为什么知道输出到哪个FBO,靠的就是它们关联在同一个context下。`[shaderProgram use]`开启`program`使用，`program`关联了vertext shader和fragment shader,也就是它知道这个渲染程序到底要干啥。总结来说就是：环境切换好了，程序开启了。
+* 设置FBO接收输出：
+
+ ```
+    outputFramebuffer = [[GPUImageContext sharedFramebufferCache] fetchFramebufferForSize:[self sizeOfFBO] textureOptions:self.outputTextureOptions onlyTexture:NO];
+    [outputFramebuffer activateFramebuffer];
+```
+* 然后就是一群gl开头的OpenGL ES的函数，先清空颜色缓冲区，在把`[firstInputFramebuffer texture]`作为输入传递，然后传入`vertices`作为顶点数据，`textureCoordinates`作为纹理坐标，最后`glDrawArrays`绘制一个矩形。这一段需要配合shader代码来看。
+
+上面的这些都是`GPUImageFilter`这个基类的，再回到`GPUImageCropFilter`这个裁剪功能的滤镜里。
+
+它的贡献是根据裁剪区域的不同，提供了不同的`textureCoordinates`,这个是纹理坐标。它的init方法里使用的shader是`kGPUImageCropFragmentShaderString`，核心也就一句话：`gl_FragColor = texture2D(inputImageTexture, textureCoordinate);`,使用纹理坐标采样纹理。所以对于输出结果而言，`textureCoordinates `就是关键因素。
+
+然后再看`calculateCropTextureCoordinates`方法，纹理坐标是怎么计算的。
+
+顶点数据是：
+
+```
+static const GLfloat cropSquareVertices[] = {
+        -1.0f, -1.0f,
+        1.0f, -1.0f,
+        -1.0f,  1.0f,
+        1.0f,  1.0f,
+    };
+```
+只有4个顶点，因为绘制矩形时使用的是`GL_TRIANGLE_STRIP`图元。OpenGL的坐标是y向上，x向右，配合顶点数据可知4个角的索引是这个样子的：
+
+|2|3|
+|:--:|:--:|
+|0|1|
+
+而纹理坐标跟OpenGL坐标是上下颠倒的：
+![纹理坐标](http://images2015.cnblogs.com/blog/782376/201610/782376-20161016200410077-635750941.png)
+
+所以在没有旋转的情况下,，顶点0对应纹理左下角,左下角是（0，0），考虑到裁剪，那么顶点0纹理坐标采用(minX, minY)。

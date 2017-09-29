@@ -122,9 +122,9 @@ NSString *const kGPUImageCropFragmentShaderString =  SHADER_STRING
     
     switch(inputRotation)
     {       //因为使用的是GL_TRIANGLE_STRIP，4个角的顺序是
-            /* 0——1
+            /* 2——3
                |  |
-             * 2——3
+             * 0——1
              * 然后纹理坐标和iOS本身的坐标是一样的，所以是下面的结果
              */
         case kGPUImageNoRotation: // Works
