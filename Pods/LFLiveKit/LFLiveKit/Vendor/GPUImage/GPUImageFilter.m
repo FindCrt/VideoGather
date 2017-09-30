@@ -30,7 +30,7 @@ NSString *const kGPUImagePassthroughFragmentShaderString = SHADER_STRING
  
  void main()
  {
-     gl_FragColor = texture2D(inputImageTexture, textureCoordinate);
+     gl_FragColor = texture2D(inputImageTexture, vec2(textureCoordinate.x, 1.0 - textureCoordinate.y));
 //     gl_FragColor = vec4(pos, 0, 0);
 //     gl_FragColor = vec4(textureCoordinate,0,0);
  }
@@ -226,24 +226,24 @@ NSString *const kGPUImagePassthroughFragmentShaderString = SHADER_STRING
 + (const GLfloat *)textureCoordinatesForRotation:(GPUImageRotationMode)rotationMode;
 {
     static const GLfloat noRotationTextureCoordinates[] = {
-        0.0f, 0.0f,
-        1.0f, 0.0f,
-        0.0f, 1.0f,
-        1.0f, 1.0f,
+        0.0f, 0.0f, //0
+        1.0f, 0.0f, //1
+        0.0f, 1.0f, //2
+        1.0f, 1.0f, //3
     };
     
     static const GLfloat rotateLeftTextureCoordinates[] = {
-        1.0f, 0.0f,
-        1.0f, 1.0f,
-        0.0f, 0.0f,
-        0.0f, 1.0f,
+        1.0f, 0.0f, //1
+        1.0f, 1.0f, //3
+        0.0f, 0.0f, //0
+        0.0f, 1.0f, //2
     };
     
     static const GLfloat rotateRightTextureCoordinates[] = {
-        0.0f, 1.0f,
-        0.0f, 0.0f,
-        1.0f, 1.0f,
-        1.0f, 0.0f,
+        0.0f, 1.0f, //2
+        0.0f, 0.0f, //0
+        1.0f, 1.0f, //3
+        1.0f, 0.0f, //1
     };
     
     static const GLfloat verticalFlipTextureCoordinates[] = {
@@ -317,7 +317,9 @@ NSString *const kGPUImagePassthroughFragmentShaderString = SHADER_STRING
     glClear(GL_COLOR_BUFFER_BIT);
 
 	glActiveTexture(GL_TEXTURE2);
-	glBindTexture(GL_TEXTURE_2D, [firstInputFramebuffer texture]);
+//    GLuint texture = [TFTextureImageConvert createTextureFromImage:@"github_reversed.jpeg"];
+    GLuint texture = [firstInputFramebuffer texture];
+	glBindTexture(GL_TEXTURE_2D, texture);
 	
 	glUniform1i(filterInputTextureUniform, 2);	
 

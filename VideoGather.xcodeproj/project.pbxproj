@@ -45,6 +45,7 @@
 		18591BBA1F7F3A9200E92646 /* shiliu.png in Resources */ = {isa = PBXBuildFile; fileRef = 18591BB91F7F3A9200E92646 /* shiliu.png */; };
 		18591BD71F7F5CC800E92646 /* TFTextureImageConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = 18591BD61F7F5CC800E92646 /* TFTextureImageConverter.m */; };
 		18591BD91F7F5DE900E92646 /* github.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 18591BD81F7F5DE900E92646 /* github.jpeg */; };
+		18591BE61F7F84DF00E92646 /* github_reversed.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 18591BE51F7F84DF00E92646 /* github_reversed.jpeg */; };
 		185AC6461F58FFFB00A154C0 /* TFMediaListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 185AC6451F58FFFB00A154C0 /* TFMediaListViewController.m */; };
 		185AC64A1F59048300A154C0 /* TFMediaCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 185AC6491F59048300A154C0 /* TFMediaCell.m */; };
 		185AC64E1F59053C00A154C0 /* TFMediaDataAnalyzer.m in Sources */ = {isa = PBXBuildFile; fileRef = 185AC64D1F59053C00A154C0 /* TFMediaDataAnalyzer.m */; };
@@ -223,6 +224,7 @@
 		18591BD51F7F5CC800E92646 /* TFTextureImageConverter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFTextureImageConverter.h; sourceTree = "<group>"; };
 		18591BD61F7F5CC800E92646 /* TFTextureImageConverter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFTextureImageConverter.m; sourceTree = "<group>"; };
 		18591BD81F7F5DE900E92646 /* github.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = github.jpeg; sourceTree = "<group>"; };
+		18591BE51F7F84DF00E92646 /* github_reversed.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = github_reversed.jpeg; sourceTree = "<group>"; };
 		185AC6411F58FFBD00A154C0 /* TFVideoPlayerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFVideoPlayerViewController.h; sourceTree = "<group>"; };
 		185AC6421F58FFBD00A154C0 /* TFVideoPlayerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFVideoPlayerViewController.m; sourceTree = "<group>"; };
 		185AC6441F58FFFB00A154C0 /* TFMediaListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFMediaListViewController.h; sourceTree = "<group>"; };
@@ -349,6 +351,7 @@
 			isa = PBXGroup;
 			children = (
 				18591BD81F7F5DE900E92646 /* github.jpeg */,
+				18591BE51F7F84DF00E92646 /* github_reversed.jpeg */,
 				18591BB91F7F3A9200E92646 /* shiliu.png */,
 				185AC66B1F59562400A154C0 /* cocosvideo.mp4 */,
 				183EF0C81F57C35F00E21DB4 /* AppDelegate.h */,
@@ -752,6 +755,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				18591BE61F7F84DF00E92646 /* github_reversed.jpeg in Resources */,
 				18591BBA1F7F3A9200E92646 /* shiliu.png in Resources */,
 				185AC66F1F59593E00A154C0 /* cocosvideo.mp4 in Resources */,
 				18591BD91F7F5DE900E92646 /* github.jpeg in Resources */,

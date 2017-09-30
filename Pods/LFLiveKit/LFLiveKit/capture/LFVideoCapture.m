@@ -329,9 +329,9 @@
 //        if(self.saveLocalVideo) [self.output addTarget:self.movieWriter];
 //    }
     
-//    [self.videoCamera addTarget:self.gpuImageView];
-    [self.videoCamera addTarget:self.output];
-    [self.output addTarget:self.gpuImageView];
+    [self.videoCamera addTarget:self.gpuImageView];
+//    [self.videoCamera addTarget:self.output];
+//    [self.output addTarget:self.gpuImageView];
     
     [self.filter forceProcessingAtSize:self.configuration.videoSize];
     [self.output forceProcessingAtSize:self.configuration.videoSize];

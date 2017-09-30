@@ -1,5 +1,6 @@
 #import "GPUImageContext.h"
 #import "GPUImageFramebuffer.h"
+#import "TFTextureImageConvert.h"
 
 #if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
 #import <UIKit/UIKit.h>

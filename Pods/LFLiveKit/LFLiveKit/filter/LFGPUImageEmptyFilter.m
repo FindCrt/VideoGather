@@ -11,9 +11,9 @@ NSString *const kLFGPUImageEmptyFragmentShaderString = SHADER_STRING
     void main(){
     lowp vec4 textureColor = texture2D(inputImageTexture, textureCoordinate);
 
-//    gl_FragColor = vec4((textureColor.rgb), textureColor.w);
-        highp vec2 pos2 = vec2(0, pos.y);
-        gl_FragColor = vec4(pos2, 0, 0);
+    gl_FragColor = vec4((textureColor.rgb), textureColor.w);
+//        highp vec2 pos2 = vec2(0, pos.y);
+//        gl_FragColor = vec4(pos, 0, 0);
 //        gl_FragColor = vec4(textureCoordinate,0,0);
 }
 

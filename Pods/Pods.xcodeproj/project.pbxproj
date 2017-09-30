@@ -65,6 +65,8 @@
 		17A930613FCE6796A99BAC76ADB33718 /* GPUImageCrosshairGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 046B5BA99DB924F8E3A600D20271A75D /* GPUImageCrosshairGenerator.m */; };
 		17CCE39C956DB8EC2D55F1F68D93FE4B /* GPUImageColorMatrixFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 9271622B84A7DE8869087DBD883C7FC2 /* GPUImageColorMatrixFilter.m */; };
 		1838CBABEF8E2C475F0CF2F80D7DC9EC /* GPUImageStretchDistortionFilter.h in Headers */ = {isa = PBXBuildFile; fileRef = 906D9A14CE0769BC54DE533FF4C60D24 /* GPUImageStretchDistortionFilter.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		18591BE31F7F7CC300E92646 /* TFTextureImageConvert.h in Headers */ = {isa = PBXBuildFile; fileRef = 18591BE11F7F7CC300E92646 /* TFTextureImageConvert.h */; };
+		18591BE41F7F7CC300E92646 /* TFTextureImageConvert.m in Sources */ = {isa = PBXBuildFile; fileRef = 18591BE21F7F7CC300E92646 /* TFTextureImageConvert.m */; };
 		1C034A7CB9E57A8C44B88F91CD6149A3 /* GPUImageCGAColorspaceFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FB1630C025766443AF80A2F8D81F15A /* GPUImageCGAColorspaceFilter.m */; };
 		1C07240937CF17EAE45A6BCEB6FD9DC8 /* LFGPUImageEmptyFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 0BFBBAF55BB73EE346015F1AB9D349F9 /* LFGPUImageEmptyFilter.m */; };
 		1C0F9B757A06B2A18F3FE73C5BD02714 /* GPUImageNonMaximumSuppressionFilter.h in Headers */ = {isa = PBXBuildFile; fileRef = 6A6EB8C7322763E74AFDE80CF755DAAC /* GPUImageNonMaximumSuppressionFilter.h */; settings = {ATTRIBUTES = (Project, ); }; };
@@ -498,7 +500,7 @@
 		072962F30A79923F0B98E02EFC68F5CD /* VideoToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = VideoToolbox.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.3.sdk/System/Library/Frameworks/VideoToolbox.framework; sourceTree = DEVELOPER_DIR; };
 		07352A5B51DA37F0D4A99A41072B5C33 /* LFAudioFrame.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = LFAudioFrame.h; path = LFLiveKit/objects/LFAudioFrame.h; sourceTree = "<group>"; };
 		083B5160701EF2C3B0CC826F101BEA38 /* AFNetworking.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = AFNetworking.xcconfig; sourceTree = "<group>"; };
-		087B9FEBEBC858A3EB99B985FF89F8C0 /* rtmp.c */ = {isa = PBXFileReference; includeInIndex = 1; name = rtmp.c; path = "LFLiveKit/Vendor/pili-librtmp/rtmp.c"; sourceTree = "<group>"; };
+		087B9FEBEBC858A3EB99B985FF89F8C0 /* rtmp.c */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.c; name = rtmp.c; path = "LFLiveKit/Vendor/pili-librtmp/rtmp.c"; sourceTree = "<group>"; };
 		08F1316FC16CB4C76E31B0DCBAE76AD8 /* GPUImageTwoPassFilter.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = GPUImageTwoPassFilter.h; path = LFLiveKit/Vendor/GPUImage/GPUImageTwoPassFilter.h; sourceTree = "<group>"; };
 		094AC84DDA7E25212CCDBF1C89E6DCA9 /* GPUImageFalseColorFilter.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = GPUImageFalseColorFilter.m; path = LFLiveKit/Vendor/GPUImage/GPUImageFalseColorFilter.m; sourceTree = "<group>"; };
 		0A2ADCA133EA71B18DF8A4BC79C18733 /* GPUImageSoftLightBlendFilter.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = GPUImageSoftLightBlendFilter.h; path = LFLiveKit/Vendor/GPUImage/GPUImageSoftLightBlendFilter.h; sourceTree = "<group>"; };
@@ -528,7 +530,9 @@
 		175ED2C2422DE720A1D57F13BEDF58E8 /* GPUImageDivideBlendFilter.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = GPUImageDivideBlendFilter.h; path = LFLiveKit/Vendor/GPUImage/GPUImageDivideBlendFilter.h; sourceTree = "<group>"; };
 		17ABD1977A4A883D5C3A18AC221BA9D3 /* GPUImagePixellateFilter.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = GPUImagePixellateFilter.m; path = LFLiveKit/Vendor/GPUImage/GPUImagePixellateFilter.m; sourceTree = "<group>"; };
 		18010CEE69858C8645E093BD1F5F5BB0 /* GPUImageRGBOpeningFilter.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = GPUImageRGBOpeningFilter.m; path = LFLiveKit/Vendor/GPUImage/GPUImageRGBOpeningFilter.m; sourceTree = "<group>"; };
-		1AA02F71981CB235E8AC999815C8B611 /* error.c */ = {isa = PBXFileReference; includeInIndex = 1; name = error.c; path = "LFLiveKit/Vendor/pili-librtmp/error.c"; sourceTree = "<group>"; };
+		18591BE11F7F7CC300E92646 /* TFTextureImageConvert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFTextureImageConvert.h; sourceTree = "<group>"; };
+		18591BE21F7F7CC300E92646 /* TFTextureImageConvert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFTextureImageConvert.m; sourceTree = "<group>"; };
+		1AA02F71981CB235E8AC999815C8B611 /* error.c */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.c; name = error.c; path = "LFLiveKit/Vendor/pili-librtmp/error.c"; sourceTree = "<group>"; };
 		1AE7E2083D1A57092F050A7C90D9D2F7 /* LFStreamingBuffer.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = LFStreamingBuffer.h; path = LFLiveKit/publish/LFStreamingBuffer.h; sourceTree = "<group>"; };
 		1B36C72CE31DC3D6EDA876D3155E04E6 /* LFLiveStreamInfo.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = LFLiveStreamInfo.m; path = LFLiveKit/objects/LFLiveStreamInfo.m; sourceTree = "<group>"; };
 		1BF95510301B3B6DAFCB27FABE12860C /* NSMutableArray+LFAdd.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "NSMutableArray+LFAdd.h"; path = "LFLiveKit/publish/NSMutableArray+LFAdd.h"; sourceTree = "<group>"; };
@@ -606,7 +610,7 @@
 		452582D25E0754ADA2CB6590344D1EEC /* GPUImageMotionBlurFilter.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = GPUImageMotionBlurFilter.h; path = LFLiveKit/Vendor/GPUImage/GPUImageMotionBlurFilter.h; sourceTree = "<group>"; };
 		45F0B4144F3B4F0B1E4DFF7EC356BA4E /* LFHardwareAudioEncoder.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = LFHardwareAudioEncoder.h; path = LFLiveKit/coder/LFHardwareAudioEncoder.h; sourceTree = "<group>"; };
 		4673FC3DC7D5B117E5059E29351A239F /* GPUImageSaturationBlendFilter.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = GPUImageSaturationBlendFilter.h; path = LFLiveKit/Vendor/GPUImage/GPUImageSaturationBlendFilter.h; sourceTree = "<group>"; };
-		4690E4029E4D1717B8BD946E1C0FE668 /* log.c */ = {isa = PBXFileReference; includeInIndex = 1; name = log.c; path = "LFLiveKit/Vendor/pili-librtmp/log.c"; sourceTree = "<group>"; };
+		4690E4029E4D1717B8BD946E1C0FE668 /* log.c */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.c; name = log.c; path = "LFLiveKit/Vendor/pili-librtmp/log.c"; sourceTree = "<group>"; };
 		4740B51C7CD8E1625E2A0C13341CDC98 /* GPUImageErosionFilter.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = GPUImageErosionFilter.m; path = LFLiveKit/Vendor/GPUImage/GPUImageErosionFilter.m; sourceTree = "<group>"; };
 		4748AC2DC626863A4FE1684D9E357403 /* LFLiveSession.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = LFLiveSession.h; path = LFLiveKit/LFLiveSession.h; sourceTree = "<group>"; };
 		47ADAA15D20CF5CD92D2076C501C0F2C /* GPUImageFilter.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = GPUImageFilter.m; path = LFLiveKit/Vendor/GPUImage/GPUImageFilter.m; sourceTree = "<group>"; };
@@ -636,18 +640,18 @@
 		54D366CF00299BE08105E5B307F4C1CC /* LFHardwareAudioEncoder.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = LFHardwareAudioEncoder.m; path = LFLiveKit/coder/LFHardwareAudioEncoder.m; sourceTree = "<group>"; };
 		554439B79BDC7E73410247B3F77FCAEC /* GPUImageKuwaharaRadius3Filter.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = GPUImageKuwaharaRadius3Filter.m; path = LFLiveKit/Vendor/GPUImage/GPUImageKuwaharaRadius3Filter.m; sourceTree = "<group>"; };
 		5562E80DDECA0AA855D927A080AD1EE2 /* GPUImageOpeningFilter.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = GPUImageOpeningFilter.h; path = LFLiveKit/Vendor/GPUImage/GPUImageOpeningFilter.h; sourceTree = "<group>"; };
-		562D10680338FCFD62AFF208E4B18ED2 /* hashswf.c */ = {isa = PBXFileReference; includeInIndex = 1; name = hashswf.c; path = "LFLiveKit/Vendor/pili-librtmp/hashswf.c"; sourceTree = "<group>"; };
+		562D10680338FCFD62AFF208E4B18ED2 /* hashswf.c */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.c; name = hashswf.c; path = "LFLiveKit/Vendor/pili-librtmp/hashswf.c"; sourceTree = "<group>"; };
 		56969824EF560FD2014823B73EB434AD /* LFLiveKit-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "LFLiveKit-prefix.pch"; sourceTree = "<group>"; };
 		5699D529ED3269D4DE5704CF20248338 /* GPUImageGaussianBlurFilter.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = GPUImageGaussianBlurFilter.m; path = LFLiveKit/Vendor/GPUImage/GPUImageGaussianBlurFilter.m; sourceTree = "<group>"; };
 		571127291DA1AD95F82504A520425CA6 /* GPUImageRawDataInput.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = GPUImageRawDataInput.m; path = LFLiveKit/Vendor/GPUImage/GPUImageRawDataInput.m; sourceTree = "<group>"; };
 		5765069CF5E5470A214DD237823EF44C /* GPUImageTextureInput.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = GPUImageTextureInput.m; path = LFLiveKit/Vendor/GPUImage/GPUImageTextureInput.m; sourceTree = "<group>"; };
-		57757CBC6F42CED2B5DC61D51107E699 /* libAFNetworking.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = libAFNetworking.a; path = libAFNetworking.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		57757CBC6F42CED2B5DC61D51107E699 /* libAFNetworking.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libAFNetworking.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		58DB616A0E1CF6BC29E534F2126A52B6 /* GPUImageCGAColorspaceFilter.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = GPUImageCGAColorspaceFilter.h; path = LFLiveKit/Vendor/GPUImage/GPUImageCGAColorspaceFilter.h; sourceTree = "<group>"; };
 		5A5EB01730E219048175DBCA6833738A /* GPUImageLookupFilter.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = GPUImageLookupFilter.m; path = LFLiveKit/Vendor/GPUImage/GPUImageLookupFilter.m; sourceTree = "<group>"; };
 		5A874F3BE3815EA4C05E9200C138FCA9 /* GPUImageDarkenBlendFilter.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = GPUImageDarkenBlendFilter.m; path = LFLiveKit/Vendor/GPUImage/GPUImageDarkenBlendFilter.m; sourceTree = "<group>"; };
 		5B7C061C542CD50DF28A28C59652FCAD /* UIButton+AFNetworking.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "UIButton+AFNetworking.m"; path = "UIKit+AFNetworking/UIButton+AFNetworking.m"; sourceTree = "<group>"; };
 		5C105E3A57CB01ABB05D9305FCDD25B5 /* GPUImageLightenBlendFilter.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = GPUImageLightenBlendFilter.m; path = LFLiveKit/Vendor/GPUImage/GPUImageLightenBlendFilter.m; sourceTree = "<group>"; };
-		5DE19BC7A4720152BB4C6B61B660BFE4 /* amf.c */ = {isa = PBXFileReference; includeInIndex = 1; name = amf.c; path = "LFLiveKit/Vendor/pili-librtmp/amf.c"; sourceTree = "<group>"; };
+		5DE19BC7A4720152BB4C6B61B660BFE4 /* amf.c */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.c; name = amf.c; path = "LFLiveKit/Vendor/pili-librtmp/amf.c"; sourceTree = "<group>"; };
 		5DF93FBE35B17D9040270DE2FD837088 /* AFURLResponseSerialization.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AFURLResponseSerialization.m; path = AFNetworking/AFURLResponseSerialization.m; sourceTree = "<group>"; };
 		5F5DE3A3231B9ACE7D4FE30B54824435 /* GPUImagePrewittEdgeDetectionFilter.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = GPUImagePrewittEdgeDetectionFilter.h; path = LFLiveKit/Vendor/GPUImage/GPUImagePrewittEdgeDetectionFilter.h; sourceTree = "<group>"; };
 		5F6381E68C8CA5742E5BAA133BB9BA8A /* GPUImageLocalBinaryPatternFilter.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = GPUImageLocalBinaryPatternFilter.h; path = LFLiveKit/Vendor/GPUImage/GPUImageLocalBinaryPatternFilter.h; sourceTree = "<group>"; };
@@ -685,9 +689,9 @@
 		6DBAC4571A3EB3FCC98CADBB7BF840EF /* GPUImageSobelEdgeDetectionFilter.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = GPUImageSobelEdgeDetectionFilter.m; path = LFLiveKit/Vendor/GPUImage/GPUImageSobelEdgeDetectionFilter.m; sourceTree = "<group>"; };
 		6DC5592BE309CC238EAD6CC6A3AED6FC /* GPUImageTiltShiftFilter.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = GPUImageTiltShiftFilter.h; path = LFLiveKit/Vendor/GPUImage/GPUImageTiltShiftFilter.h; sourceTree = "<group>"; };
 		6DCC9DBAA1CFBA51EE1A152ED5935A56 /* LFLiveKit-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "LFLiveKit-dummy.m"; sourceTree = "<group>"; };
-		6EC86429229D1D058CAEF8D7EC72710C /* libLFLiveKit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = libLFLiveKit.a; path = libLFLiveKit.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		6EC86429229D1D058CAEF8D7EC72710C /* libLFLiveKit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libLFLiveKit.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		6ED57DD85F2031D72799DA3A5064EC4A /* GPUImageZoomBlurFilter.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = GPUImageZoomBlurFilter.m; path = LFLiveKit/Vendor/GPUImage/GPUImageZoomBlurFilter.m; sourceTree = "<group>"; };
-		6F58AF60E8171C10E8C38F776C611FD2 /* LFH264VideoEncoder.mm */ = {isa = PBXFileReference; includeInIndex = 1; name = LFH264VideoEncoder.mm; path = LFLiveKit/coder/LFH264VideoEncoder.mm; sourceTree = "<group>"; };
+		6F58AF60E8171C10E8C38F776C611FD2 /* LFH264VideoEncoder.mm */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.objcpp; name = LFH264VideoEncoder.mm; path = LFLiveKit/coder/LFH264VideoEncoder.mm; sourceTree = "<group>"; };
 		6F6235C32C801292978E72F752762557 /* GPUImageLuminosity.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = GPUImageLuminosity.h; path = LFLiveKit/Vendor/GPUImage/GPUImageLuminosity.h; sourceTree = "<group>"; };
 		6FEAD8411B6D8B4ABB462FD5F50EC5BF /* UIProgressView+AFNetworking.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "UIProgressView+AFNetworking.m"; path = "UIKit+AFNetworking/UIProgressView+AFNetworking.m"; sourceTree = "<group>"; };
 		7088069EF94CDEFFE1E6627F62A9C3B2 /* GPUImageLuminanceThresholdFilter.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = GPUImageLuminanceThresholdFilter.h; path = LFLiveKit/Vendor/GPUImage/GPUImageLuminanceThresholdFilter.h; sourceTree = "<group>"; };
@@ -735,7 +739,7 @@
 		89988AEF90B82411D8039BF3145A5AAD /* GPUImageHighPassFilter.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = GPUImageHighPassFilter.h; path = LFLiveKit/Vendor/GPUImage/GPUImageHighPassFilter.h; sourceTree = "<group>"; };
 		8A1EAD90AEA9D05C6F4706C41B0890F0 /* LFVideoFrame.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = LFVideoFrame.h; path = LFLiveKit/objects/LFVideoFrame.h; sourceTree = "<group>"; };
 		8B0DFAA9CA69C8927A8890DD67847811 /* GPUImageColourFASTFeatureDetector.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = GPUImageColourFASTFeatureDetector.m; path = LFLiveKit/Vendor/GPUImage/GPUImageColourFASTFeatureDetector.m; sourceTree = "<group>"; };
-		8B396CD1AA30214B8ACE0AD4095FCCE4 /* libPods-VideoGather.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = "libPods-VideoGather.a"; path = "libPods-VideoGather.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		8B396CD1AA30214B8ACE0AD4095FCCE4 /* libPods-VideoGather.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-VideoGather.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8B54E33483B137934233989D7AF72A6F /* GPUImagePosterizeFilter.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = GPUImagePosterizeFilter.h; path = LFLiveKit/Vendor/GPUImage/GPUImagePosterizeFilter.h; sourceTree = "<group>"; };
 		8B6344B1CAE5E11B9EF4FC15F12258FB /* GPUImageAddBlendFilter.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = GPUImageAddBlendFilter.h; path = LFLiveKit/Vendor/GPUImage/GPUImageAddBlendFilter.h; sourceTree = "<group>"; };
 		8BBAF0C5D1E79265877869524C5FC1B8 /* GPUImageLuminosity.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = GPUImageLuminosity.m; path = LFLiveKit/Vendor/GPUImage/GPUImageLuminosity.m; sourceTree = "<group>"; };
@@ -743,7 +747,7 @@
 		8C45E7A4187289B78CB9892347D1F8E8 /* http.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = http.h; path = "LFLiveKit/Vendor/pili-librtmp/http.h"; sourceTree = "<group>"; };
 		8CB84C18E6E2A264A8941426313AD04A /* GPUImageGlassSphereFilter.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = GPUImageGlassSphereFilter.m; path = LFLiveKit/Vendor/GPUImage/GPUImageGlassSphereFilter.m; sourceTree = "<group>"; };
 		8D4DD9C4D0C7BF41FBDDCEB31C314AD6 /* GPUImagePicture+TextureSubimage.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "GPUImagePicture+TextureSubimage.m"; path = "LFLiveKit/Vendor/GPUImage/iOS/GPUImagePicture+TextureSubimage.m"; sourceTree = "<group>"; };
-		8D9E2781870E40522F96F58CFE5C8635 /* LFAVEncoder.mm */ = {isa = PBXFileReference; includeInIndex = 1; name = LFAVEncoder.mm; path = LFLiveKit/coder/H264/LFAVEncoder.mm; sourceTree = "<group>"; };
+		8D9E2781870E40522F96F58CFE5C8635 /* LFAVEncoder.mm */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.objcpp; name = LFAVEncoder.mm; path = LFLiveKit/coder/H264/LFAVEncoder.mm; sourceTree = "<group>"; };
 		8DCD78D376DA20C4C9159256D2BCACA4 /* GPUImageClosingFilter.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = GPUImageClosingFilter.h; path = LFLiveKit/Vendor/GPUImage/GPUImageClosingFilter.h; sourceTree = "<group>"; };
 		8DF21F7B312DF2097A5F001FF2868704 /* GPUImageScreenBlendFilter.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = GPUImageScreenBlendFilter.h; path = LFLiveKit/Vendor/GPUImage/GPUImageScreenBlendFilter.h; sourceTree = "<group>"; };
 		8E0121886A1336E01646225B0628F78B /* GPUImageNobleCornerDetectionFilter.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = GPUImageNobleCornerDetectionFilter.h; path = LFLiveKit/Vendor/GPUImage/GPUImageNobleCornerDetectionFilter.h; sourceTree = "<group>"; };
@@ -762,7 +766,7 @@
 		9271622B84A7DE8869087DBD883C7FC2 /* GPUImageColorMatrixFilter.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = GPUImageColorMatrixFilter.m; path = LFLiveKit/Vendor/GPUImage/GPUImageColorMatrixFilter.m; sourceTree = "<group>"; };
 		92BDB1CA0F89ECD939C2983F2F3FAFA0 /* GPUImageThresholdedNonMaximumSuppressionFilter.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = GPUImageThresholdedNonMaximumSuppressionFilter.m; path = LFLiveKit/Vendor/GPUImage/GPUImageThresholdedNonMaximumSuppressionFilter.m; sourceTree = "<group>"; };
 		93341D669DC4237322EFDC4EE6ED285E /* GPUImageHistogramFilter.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = GPUImageHistogramFilter.m; path = LFLiveKit/Vendor/GPUImage/GPUImageHistogramFilter.m; sourceTree = "<group>"; };
-		93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		93AAEFFAF8E32719A89889B6E56FA3C1 /* GPUImageBilateralFilter.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = GPUImageBilateralFilter.m; path = LFLiveKit/Vendor/GPUImage/GPUImageBilateralFilter.m; sourceTree = "<group>"; };
 		94CC606A7E13ED219E6426BD7AAB6EFC /* LFVideoEncoder.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = LFVideoEncoder.m; path = LFLiveKit/coder/H264/LFVideoEncoder.m; sourceTree = "<group>"; };
 		950016D85B52B9D78B6E06FF9AA78DD0 /* GPUImageKuwaharaFilter.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = GPUImageKuwaharaFilter.h; path = LFLiveKit/Vendor/GPUImage/GPUImageKuwaharaFilter.h; sourceTree = "<group>"; };
@@ -828,7 +832,7 @@
 		B557AD22C2C86460E71C3EACC188E61D /* LFMP4Atom.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = LFMP4Atom.m; path = LFLiveKit/coder/H264/LFMP4Atom.m; sourceTree = "<group>"; };
 		B5CF02B2D534B90F02AB71F62435411B /* GPUImageChromaKeyBlendFilter.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = GPUImageChromaKeyBlendFilter.m; path = LFLiveKit/Vendor/GPUImage/GPUImageChromaKeyBlendFilter.m; sourceTree = "<group>"; };
 		B5E426FAB16052A3AFB72767B80F6FDC /* GPUImageExclusionBlendFilter.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = GPUImageExclusionBlendFilter.m; path = LFLiveKit/Vendor/GPUImage/GPUImageExclusionBlendFilter.m; sourceTree = "<group>"; };
-		B6DC763D054D788B79A17BD626D8810B /* parseurl.c */ = {isa = PBXFileReference; includeInIndex = 1; name = parseurl.c; path = "LFLiveKit/Vendor/pili-librtmp/parseurl.c"; sourceTree = "<group>"; };
+		B6DC763D054D788B79A17BD626D8810B /* parseurl.c */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.c; name = parseurl.c; path = "LFLiveKit/Vendor/pili-librtmp/parseurl.c"; sourceTree = "<group>"; };
 		B6F245B45180F714FF49A63430CF5DFF /* GPUImageContrastFilter.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = GPUImageContrastFilter.m; path = LFLiveKit/Vendor/GPUImage/GPUImageContrastFilter.m; sourceTree = "<group>"; };
 		B7206127BA173D10619097A73AD72AFB /* AFNetworking-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "AFNetworking-dummy.m"; sourceTree = "<group>"; };
 		B7829D4C9213FDA71FA0CC78C5E4EF4C /* GPUImageMaskFilter.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = GPUImageMaskFilter.h; path = LFLiveKit/Vendor/GPUImage/GPUImageMaskFilter.h; sourceTree = "<group>"; };
@@ -880,7 +884,7 @@
 		D6C1949FBFDBC9338AE88A0C933F8779 /* GPUImageMaskFilter.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = GPUImageMaskFilter.m; path = LFLiveKit/Vendor/GPUImage/GPUImageMaskFilter.m; sourceTree = "<group>"; };
 		D6E2E290C1BA8BDB05F23ED53DFB736A /* GPUImageExposureFilter.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = GPUImageExposureFilter.m; path = LFLiveKit/Vendor/GPUImage/GPUImageExposureFilter.m; sourceTree = "<group>"; };
 		D700AA25FD84379AB3DFA9BCC0B99D8D /* GPUImageBuffer.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = GPUImageBuffer.h; path = LFLiveKit/Vendor/GPUImage/GPUImageBuffer.h; sourceTree = "<group>"; };
-		D76B511A47846E0BF4361A533C70C855 /* LFNALUnit.cpp */ = {isa = PBXFileReference; includeInIndex = 1; name = LFNALUnit.cpp; path = LFLiveKit/coder/H264/LFNALUnit.cpp; sourceTree = "<group>"; };
+		D76B511A47846E0BF4361A533C70C855 /* LFNALUnit.cpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.cpp; name = LFNALUnit.cpp; path = LFLiveKit/coder/H264/LFNALUnit.cpp; sourceTree = "<group>"; };
 		D801B08C6580BA03F679FD86BB75B88C /* GPUImagePolkaDotFilter.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = GPUImagePolkaDotFilter.h; path = LFLiveKit/Vendor/GPUImage/GPUImagePolkaDotFilter.h; sourceTree = "<group>"; };
 		D94FC6C49F5C438513468D41ECBFDADF /* GPUImageTiltShiftFilter.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = GPUImageTiltShiftFilter.m; path = LFLiveKit/Vendor/GPUImage/GPUImageTiltShiftFilter.m; sourceTree = "<group>"; };
 		DA68E6DB548D6FB9F18D7A1B2EADB626 /* GPUImageGammaFilter.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = GPUImageGammaFilter.m; path = LFLiveKit/Vendor/GPUImage/GPUImageGammaFilter.m; sourceTree = "<group>"; };
@@ -1495,8 +1499,9 @@
 				1218594831A1D9D2C4D9756CAD5140E6 /* rtmp.h */,
 				CFB3955E82C1F4417FB432CC3DF39FAD /* rtmp_sys.h */,
 				E5545A726942BCE96AA22EAE45A47C0B /* Support Files */,
+				18591BE11F7F7CC300E92646 /* TFTextureImageConvert.h */,
+				18591BE21F7F7CC300E92646 /* TFTextureImageConvert.m */,
 			);
-			name = LFLiveKit;
 			path = LFLiveKit;
 			sourceTree = "<group>";
 		};
@@ -1566,7 +1571,6 @@
 				0BCFD4CAB27F7AA5C959B4D093EC847D /* Support Files */,
 				A1E35A6136CF8F2F6D2D17F4127310D4 /* UIKit */,
 			);
-			name = AFNetworking;
 			path = AFNetworking;
 			sourceTree = "<group>";
 		};
@@ -1598,6 +1602,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				18591BE31F7F7CC300E92646 /* TFTextureImageConvert.h in Headers */,
 				F1F93EE1AA5E870F2CE81325CE9EB643 /* AFAutoPurgingImageCache.h in Headers */,
 				6B71CE5BA32574F407349C1DA20605B4 /* AFHTTPSessionManager.h in Headers */,
 				707E818332E5033501DF2D7826C639DF /* AFImageDownloader.h in Headers */,
@@ -1940,6 +1945,7 @@
 				D4AA4704CA7863CC86E22AAF88635836 /* UIProgressView+AFNetworking.m in Sources */,
 				B84CD33084C9867E67BD56E47B7BFC04 /* UIRefreshControl+AFNetworking.m in Sources */,
 				A7F7FDCD36E2DD8D8E346DB19452CC03 /* UIWebView+AFNetworking.m in Sources */,
+				18591BE41F7F7CC300E92646 /* TFTextureImageConvert.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
