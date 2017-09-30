@@ -303,33 +303,33 @@
     }
 
     ///< 调节镜像
-//    [self reloadMirror];
-//    
-//    //< 480*640 比例为4:3  强制转换为16:9
-//    if([self.configuration.avSessionPreset isEqualToString:AVCaptureSessionPreset640x480]){
-//        CGRect cropRect = self.configuration.landscape ? CGRectMake(0, 0.125, 1, 0.75) : CGRectMake(0.125, 0, 0.75, 1);
-//        self.cropfilter = [[GPUImageCropFilter alloc] initWithCropRegion:cropRect];
-//        [self.videoCamera addTarget:self.cropfilter];
-//        [self.cropfilter addTarget:self.filter];
-//    }else{
-//        [self.videoCamera addTarget:self.filter];
-//    }
-//    
-//    //< 添加水印
-//    if(self.warterMarkView){
-//        [self.filter addTarget:self.blendFilter];
-//        [self.uiElementInput addTarget:self.blendFilter];
-//        [self.blendFilter addTarget:self.gpuImageView];
-//        if(self.saveLocalVideo) [self.blendFilter addTarget:self.movieWriter];
-//        [self.filter addTarget:self.output];
-//        [self.uiElementInput update];
-//    }else{
-//        [self.filter addTarget:self.output];
-//        [self.output addTarget:self.gpuImageView];
-//        if(self.saveLocalVideo) [self.output addTarget:self.movieWriter];
-//    }
+    [self reloadMirror];
     
-    [self.videoCamera addTarget:self.gpuImageView];
+    //< 480*640 比例为4:3  强制转换为16:9
+    if(1/*[self.configuration.avSessionPreset isEqualToString:AVCaptureSessionPreset640x480]*/){
+        CGRect cropRect = self.configuration.landscape ? CGRectMake(0, 0.125, 1, 0.75) : CGRectMake(0.25, 0, 0.75, 1);
+        self.cropfilter = [[GPUImageCropFilter alloc] initWithCropRegion:cropRect];
+        [self.videoCamera addTarget:self.cropfilter];
+        [self.cropfilter addTarget:self.filter];
+    }else{
+        [self.videoCamera addTarget:self.filter];
+    }
+    
+    //< 添加水印
+    if(self.warterMarkView){
+        [self.filter addTarget:self.blendFilter];
+        [self.uiElementInput addTarget:self.blendFilter];
+        [self.blendFilter addTarget:self.gpuImageView];
+        if(self.saveLocalVideo) [self.blendFilter addTarget:self.movieWriter];
+        [self.filter addTarget:self.output];
+        [self.uiElementInput update];
+    }else{
+        [self.filter addTarget:self.output];
+        [self.output addTarget:self.gpuImageView];
+        if(self.saveLocalVideo) [self.output addTarget:self.movieWriter];
+    }
+    
+//    [self.videoCamera addTarget:self.gpuImageView];
 //    [self.videoCamera addTarget:self.output];
 //    [self.output addTarget:self.gpuImageView];
     

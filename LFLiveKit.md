@@ -182,18 +182,7 @@ FBO的构建具体看`GPUImageFramebuffer `的方法`generateFramebuffer`。
 
 说完`GPUImageFramebuffer`,再回到`newFrameReadyAtTime:atIndex `方法。
 
-它里面就两个方法：`renderToTextureWithVertices`这个是执行渲染，`informTargetsAboutNewFrameAtTime`是通知它的target，把图像传递给下一环节处理。
-
-对`renderToTextureWithVertices`做一步步的解析：
-
-* `[GPUImageContext setActiveShaderProgram:filterProgram];`内部做了两件事：`[EAGLContext setCurrentContext:imageProcessingContext];`把contex切换到图像处理的context, context这种东西就是用来把一些东西关联在一起的，执行的OpenGL函数`glxxx`为什么起作用，回执的结果为什么知道输出到哪个FBO,靠的就是它们关联在同一个context下。`[shaderProgram use]`开启`program`使用，`program`关联了vertext shader和fragment shader,也就是它知道这个渲染程序到底要干啥。总结来说就是：环境切换好了，程序开启了。
-* 设置FBO接收输出：
-
- ```
-    outputFramebuffer = [[GPUImageContext sharedFramebufferCache] fetchFramebufferForSize:[self sizeOfFBO] textureOptions:self.outputTextureOptions onlyTexture:NO];
-    [outputFramebuffer activateFramebuffer];
-```
-* 然后就是一群gl开头的OpenGL ES的函数，先清空颜色缓冲区，在把`[firstInputFramebuffer texture]`作为输入传递，然后传入`vertices`作为顶点数据，`textureCoordinates`作为纹理坐标，最后`glDrawArrays`绘制一个矩形。这一段需要配合shader代码来看。
+它里面就两个方法：`renderToTextureWithVertices`这个是执行OpenGL ES的渲染操作，`informTargetsAboutNewFrameAtTime`是通知它的target，把图像传递给下一环节处理。
 
 上面的这些都是`GPUImageFilter`这个基类的，再回到`GPUImageCropFilter`这个裁剪功能的滤镜里。
 
@@ -211,13 +200,36 @@ static const GLfloat cropSquareVertices[] = {
         1.0f,  1.0f,
     };
 ```
-只有4个顶点，因为绘制矩形时使用的是`GL_TRIANGLE_STRIP`图元。OpenGL的坐标是y向上，x向右，配合顶点数据可知4个角的索引是这个样子的：
+只有4个顶点，因为绘制矩形时使用的是`GL_TRIANGLE_STRIP`图元,[关于这个图元规则看这里](http://blog.csdn.net/xiajun07061225/article/details/7455283)。
+
+OpenGL的坐标是y向上，x向右，配合顶点数据可知4个角的索引是这个样子的：
 
 |2|3|
 |:--:|:--:|
 |0|1|
 
-而纹理坐标跟OpenGL坐标是上下颠倒的：
+纹理坐标跟OpenGL坐标方向是一样的的：
 ![纹理坐标](http://images2015.cnblogs.com/blog/782376/201610/782376-20161016200410077-635750941.png)
 
-所以在没有旋转的情况下,，顶点0对应纹理左下角,左下角是（0，0），考虑到裁剪，那么顶点0纹理坐标采用(minX, minY)。
+所以没有旋转的时候，第一个顶点在左下角，对于剪切范围：
+
+```
+CGFloat minX = _cropRegion.origin.x;
+CGFloat minY = _cropRegion.origin.y;
+CGFloat maxX = CGRectGetMaxX(_cropRegion);
+CGFloat maxY = CGRectGetMaxY(_cropRegion);
+```
+这四个点就是剪切区域的4个角，左下角对应的就是（minX,minY），所以第一个顶点的纹理坐标是：
+
+```
+cropTextureCoordinates[0] = minX;
+cropTextureCoordinates[1] = minY;
+```
+
+然后根据4个点的所在位置，设置对应的纹理坐标。
+
+对于有旋转考虑的就比较麻烦点，重点是：先旋转再剪切，设置的剪切比例也是之后的。因为你需要的是某个宽高的图像，如果先按这个比例剪切了，那么一旋转就错了。看向左旋转的，也就是顺时针方向。
+
+**假设有张图**
+
+还是从第一点看起，第一点是左下角，在输入纹理上对应的就是右下角，右下角的x值是距离纹理左边的距离，但是这是没旋转前的，在旋转之后的坐标里，它就是距离顶部的距离，那就是maxY。而y值是距离下边的距离，也就是旋转后的左边，所以是minX。从着看，貌似代码写错了，居中剪切的时候看不出来而已。
