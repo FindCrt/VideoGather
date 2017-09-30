@@ -9,11 +9,13 @@ NSString *const kGPUImageVertexShaderString = SHADER_STRING
  attribute vec4 inputTextureCoordinate;
  
  varying vec2 textureCoordinate;
+ varying vec2 pos;
  
  void main()
  {
      gl_Position = position;
      textureCoordinate = inputTextureCoordinate.xy;
+     pos = position.xy;
  }
  );
 
@@ -22,12 +24,15 @@ NSString *const kGPUImageVertexShaderString = SHADER_STRING
 NSString *const kGPUImagePassthroughFragmentShaderString = SHADER_STRING
 (
  varying highp vec2 textureCoordinate;
+ varying highp vec2 pos;
  
  uniform sampler2D inputImageTexture;
  
  void main()
  {
      gl_FragColor = texture2D(inputImageTexture, textureCoordinate);
+//     gl_FragColor = vec4(pos, 0, 0);
+//     gl_FragColor = vec4(textureCoordinate,0,0);
  }
 );
 

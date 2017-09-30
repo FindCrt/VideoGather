@@ -23,6 +23,8 @@
     LFLiveSession *_LFSession;
     UIView *_LFPreView;
     LFLiveStreamInfo *_streamInfo;
+    
+    UIScrollView *_scrollView;
 }
 
 @end
@@ -32,9 +34,24 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    self.edgesForExtendedLayout = UIRectEdgeNone;
+    self.automaticallyAdjustsScrollViewInsets = NO;
+    
     //[self setupSession];
     [self setupPreview];
     [self setupLFSession];
+}
+
+-(void)viewDidAppear:(BOOL)animated{
+//    [UIView animateWithDuration:1 delay:0 options:(UIViewAnimationOptionRepeat | UIViewAnimationOptionAutoreverse) animations:^{
+//        
+//        CGRect frame = _LFPreView.frame;
+//        frame.size.height = 200;
+//        _LFPreView.frame = frame;
+//        
+//    } completion:^(BOOL finished) {
+//        
+//    }];
 }
 
 -(BOOL)setupSession{
@@ -62,10 +79,17 @@
 }
 
 -(void)setupPreview{
-    _LFPreView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, 200)];
-    _LFPreView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleBottomMargin;
-    [self.view addSubview:_LFPreView];
+    _LFPreView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 270, 300)];
+//    _LFPreView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleBottomMargin;
+//    [self.view addSubview:_LFPreView];
+    
+    _scrollView = [[UIScrollView alloc] initWithFrame:self.view.bounds];
+    _scrollView.contentSize = _LFPreView.frame.size;
+    [_scrollView addSubview:_LFPreView];
+    [self.view addSubview:_scrollView];
 }
+
+
 
 -(void)setupLFSession{
     

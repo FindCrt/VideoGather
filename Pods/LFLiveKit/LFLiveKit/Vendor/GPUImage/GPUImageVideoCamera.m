@@ -932,6 +932,9 @@ void setColorConversion709( GLfloat conversionMatrix[9] )
         //    From the iOS 5.0 release notes:
         //    In previous iOS versions, the front-facing camera would always deliver buffers in AVCaptureVideoOrientationLandscapeLeft and the back-facing camera would always deliver buffers in AVCaptureVideoOrientationLandscapeRight.
         
+        internalRotation = kGPUImageNoRotation;
+        return;
+        
         if (captureAsYUV && [GPUImageContext supportsFastTextureUpload])
         {
             outputRotation = kGPUImageNoRotation;
