@@ -24,12 +24,9 @@
     return self;
 }
 
--(void)receiveNewAudioBuffers:(AudioBufferList *)bufferList{
-    self.bufferList = bufferList;
-}
-
--(void)startProcessing{
+-(void)receiveNewAudioBuffers:(TFAudioBufferData)bufferData{
     
 }
+
 
 @end

@@ -9,7 +9,7 @@
 #import "TFAudioFileWriter.h"
 
 @interface TFAudioFileWriter (){
-    AudioBufferList *_bufferList;
+    TFAudioBufferData _bufferData;
     
     ExtAudioFileRef mAudioFileRef;
     
@@ -26,10 +26,14 @@
 
 -(void)setFileType:(AudioFileTypeID)fileType{
     _fileType = fileType;
+    
+    [self configureAudioFile];
 }
 
--(void)setAudioDescription:(AudioStreamBasicDescription)audioDesc{
+-(void)setAudioDesc:(AudioStreamBasicDescription)audioDesc{
     _audioDesc = audioDesc;
+    
+    [self configureAudioFile];
 }
 
 -(AudioStreamBasicDescription)audioDesc{
@@ -64,12 +68,11 @@
     return nil;
 }
 
--(void)receiveNewAudioBuffers:(AudioBufferList *)bufferList{
-    _bufferList = bufferList;
-}
-
--(void)processBuffer{
+-(void)receiveNewAudioBuffers:(TFAudioBufferData)bufferData{
+    _bufferData = bufferData;
     
+    OSStatus status = ExtAudioFileWrite(mAudioFileRef, _bufferData.inNumberFrames, _bufferData.bufferList);
+    TFCheckStatus(status, @"audio write to file")
 }
 
 @end

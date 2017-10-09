@@ -8,14 +8,14 @@
 
 #import <Foundation/Foundation.h>
 #import "TFAudioInput.h"
-
+#import "TFAudioBufferData.h"
 
 
 typedef void(^TFAudioOutputCompletedHandler)();
 
 @interface TFAudioOutput : NSObject
 
-@property (nonatomic, assign) AudioBufferList *bufferList;
+@property (nonatomic, assign) TFAudioBufferData bufferData;
 
 @property (nonatomic, assign) AudioStreamBasicDescription audioDesc;
 

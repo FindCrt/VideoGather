@@ -267,6 +267,7 @@
 		1858A4451F8B71BB00784FC6 /* TFAudioFileWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFAudioFileWriter.m; sourceTree = "<group>"; };
 		1858A4471F8B722100784FC6 /* TFAudioCapture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFAudioCapture.h; sourceTree = "<group>"; };
 		1858A4481F8B722100784FC6 /* TFAudioCapture.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFAudioCapture.m; sourceTree = "<group>"; };
+		1858A44D1F8B7A0900784FC6 /* TFAudioBufferData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TFAudioBufferData.h; sourceTree = "<group>"; };
 		18591BB91F7F3A9200E92646 /* shiliu.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = shiliu.png; path = ../shiliu.png; sourceTree = "<group>"; };
 		18591BD51F7F5CC800E92646 /* TFTextureImageConverter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFTextureImageConverter.h; sourceTree = "<group>"; };
 		18591BD61F7F5CC800E92646 /* TFTextureImageConverter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFTextureImageConverter.m; sourceTree = "<group>"; };
@@ -723,6 +724,7 @@
 				1858A4431F8B6D3E00784FC6 /* TFAudioInput.h */,
 				1858A4471F8B722100784FC6 /* TFAudioCapture.h */,
 				1858A4481F8B722100784FC6 /* TFAudioCapture.m */,
+				1858A44D1F8B7A0900784FC6 /* TFAudioBufferData.h */,
 			);
 			path = AudioRecorder;
 			sourceTree = "<group>";

@@ -32,7 +32,7 @@
     [_targets addObject:target];
     
     if (_audioDesc.mSampleRate != 0) {
-        [target setAudioDescription:_audioDesc];
+        [target setAudioDesc:_audioDesc];
     }
 }
 
@@ -40,19 +40,14 @@
     _audioDesc = audioDesc;
     
     for (id<TFAudioInput> target in _targets) {
-        [target setAudioDescription:_audioDesc];
+        [target setAudioDesc:_audioDesc];
     }
 }
 
 -(void)transportAudioBuffersToNext{
     for (id<TFAudioInput>target in _targets) {
-        [target receiveNewAudioBuffers:self.bufferList];
+        [target receiveNewAudioBuffers:self.bufferData];
     }
-    
-    for (id<TFAudioInput>target in _targets) {
-        [target processBuffer];
-    }
-
     
     if (self.completedHandler) {
         self.completedHandler();

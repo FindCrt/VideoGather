@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <AudioToolbox/AudioToolbox.h>
+#import "TFAudioBufferData.h"
 
 @protocol TFAudioInput <NSObject>
 
@@ -21,11 +21,9 @@ NSLog(@"%@ error: %s",log,statusTex); return;\
 NSLog(@"%@ error:\n{%@}",log,error); return;\
 }
 
--(void)setAudioDescription:(AudioStreamBasicDescription)audioDesc;
+-(void)setAudioDesc:(AudioStreamBasicDescription)audioDesc;
 -(AudioStreamBasicDescription)audioDesc;
 
--(void)receiveNewAudioBuffers:(AudioBufferList *)bufferList;
-
--(void)processBuffer;
+-(void)receiveNewAudioBuffers:(TFAudioBufferData )bufferData;
 
 @end
