@@ -9,7 +9,7 @@
 #import "TFMediaListViewController.h"
 #import "TFMediaDataAnalyzer.h"
 #import "TFMediaCell.h"
-#import "TFVideoPlayerViewController.h"
+//#import "TFVideoPlayerViewController.h"
 @import MobileCoreServices;
 
 static NSString *mediaCellIdentifier = @"MediaCell";
@@ -54,6 +54,9 @@ static NSString *mediaCellIdentifier = @"MediaCell";
         if ([preferredUTIForExtention(extension) isEqualToString:@"public.mpeg-4"]) {
             TFMediaData *mediaData = [TFMediaDataAnalyzer mediaDataForItemAt:[item path]];
             [_mediaItems addObject:mediaData];
+        }else{
+            TFMediaData *mediaData = [TFMediaDataAnalyzer mediaDataForItemAt:[item path]];
+            [_mediaItems addObject:mediaData];
         }
     }
     
@@ -76,16 +79,14 @@ static NSString *mediaCellIdentifier = @"MediaCell";
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return 200;
+    TFMediaData *media = _mediaItems[indexPath.row];
+    return [TFMediaCell heightForMedia:media];
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    TFVideoPlayerViewController *videoPlayerVC = [[TFVideoPlayerViewController alloc]init];
-    videoPlayerVC.videoURL = [NSURL fileURLWithPath:_mediaItems[indexPath.row].filePath];
-    
-    
-    //[self presentViewController:videoPlayerVC animated:YES completion:nil];
-    [self.navigationController pushViewController:videoPlayerVC animated:YES];
+    if (self.selectHandler) {
+        self.selectHandler(_mediaItems[indexPath.row]);
+    }
 }
 
 NSString *preferredUTIForExtention(NSString *ext)

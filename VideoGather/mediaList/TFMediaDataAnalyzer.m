@@ -12,9 +12,6 @@
 
 @end
 
-
-
-
 @implementation TFMediaDataAnalyzer
 
 +(TFMediaData *)mediaDataForItemAt:(NSString *)filePath{
@@ -40,11 +37,22 @@
     mediaData.duration = CMTimeGetSeconds(asset.duration);
     
     AVAssetTrack *videoTrack = [asset tracksWithMediaType:AVMediaTypeVideo].firstObject;
-    CGAffineTransform transform = [videoTrack preferredTransform];
     
-    CGFloat radians = atan2f(transform.b, transform.a);
-    mediaData.rotatedDegree = radians * (180 / M_PI);
-    mediaData.frameSize = [videoTrack naturalSize];
+    
+    if (videoTrack) {
+        mediaData.isVideo = YES;
+        
+        CGAffineTransform transform = [videoTrack preferredTransform];
+        
+        CGFloat radians = atan2f(transform.b, transform.a);
+        mediaData.rotatedDegree = radians * (180 / M_PI);
+        mediaData.frameSize = [videoTrack naturalSize];
+    }else{
+        
+        mediaData.isVideo = NO;
+        
+        AVAssetTrack *audioTrack = [asset tracksWithMediaType:AVMediaTypeAudio].firstObject;
+    }
     
     return mediaData;
 }

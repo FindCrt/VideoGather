@@ -11,6 +11,8 @@
 
 @interface TFMediaData : NSObject
 
+@property (nonatomic, assign) BOOL isVideo;
+
 @property (nonatomic, copy) NSString *filePath;
 @property (nonatomic, copy) NSString *filename;
 @property (nonatomic, copy) NSString *type;

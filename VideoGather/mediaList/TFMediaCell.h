@@ -23,4 +23,6 @@
 
 @property (nonatomic, strong) TFMediaData *media;
 
++(CGFloat)heightForMedia:(TFMediaData *)media;
+
 @end

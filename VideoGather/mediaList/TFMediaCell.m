@@ -62,8 +62,13 @@
 -(void)setMedia:(TFMediaData *)media{
     _media = media;
     
-    _imageView.image = [TFVideoProcessor snapshotOfVideoAtPath:media.filePath time:0.4];
-    
+    if (media.isVideo) {
+        _imageView.image = [TFVideoProcessor snapshotOfVideoAtPath:media.filePath time:0.4];
+    }else{
+        _imageView.image = [UIImage imageNamed:@"audio"];
+        _imageView.backgroundColor = [UIColor colorWithWhite:0.4 alpha:1];
+    }
+
     _nameLabel.text = media.filename;
     _timeLabel.text = [NSString stringWithFormat:@"%@",media.createTime];
     _durationLabel.text = [NSString stringWithFormat:@"%@  %.2fM",[NSString timeTextFromSeconds:media.duration],media.size/1024.0f/1024.0f];
@@ -92,6 +97,14 @@
         if ([self.delegate respondsToSelector:@selector(mediaCell:shareMedia:)]) {
             [self.delegate mediaCell:self shareMedia:self.media];
         }
+    }
+}
+
++(CGFloat)heightForMedia:(TFMediaData *)media{
+    if (media.isVideo) {
+        return 200;
+    }else{
+        return 70;
     }
 }
 

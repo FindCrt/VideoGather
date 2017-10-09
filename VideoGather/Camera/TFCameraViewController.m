@@ -11,6 +11,8 @@
 #import "TFMediaListViewController.h"
 #import "VRVideoEncoder.h"
 #import "TFPhotoAlbumWriter.h"
+#import "TFVideoPlayerViewController.h"
+#import "TFMediaDataAnalyzer.h"
 
 #define ScreenWidth ([UIScreen mainScreen].bounds.size.width)
 #define UsingVideoEncoder   1
@@ -151,6 +153,15 @@
 -(void)showRecordVideoList{
     TFMediaListViewController *mediaListVC = [[TFMediaListViewController alloc] init];
     mediaListVC.mediaDir = [self recordDir];
+    mediaListVC.selectHandler = ^(TFMediaData *mediaData){
+        TFVideoPlayerViewController *videoPlayerVC = [[TFVideoPlayerViewController alloc]init];
+        videoPlayerVC.videoURL = [NSURL fileURLWithPath:mediaData.filePath];
+        
+        
+        //[self presentViewController:videoPlayerVC animated:YES completion:nil];
+        [self.navigationController pushViewController:videoPlayerVC animated:YES];
+
+    };
     [self.navigationController pushViewController:mediaListVC animated:YES];
 }
 

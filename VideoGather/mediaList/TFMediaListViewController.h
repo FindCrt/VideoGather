@@ -8,8 +8,13 @@
 
 #import <UIKit/UIKit.h>
 
+@class TFMediaData;
+typedef void(^TFMediaSelectedHandler)(TFMediaData *mediaData);
+
 @interface TFMediaListViewController : UIViewController
 
 @property (nonatomic, copy) NSString *mediaDir;
+
+@property (nonatomic, copy) TFMediaSelectedHandler selectHandler;
 
 @end
