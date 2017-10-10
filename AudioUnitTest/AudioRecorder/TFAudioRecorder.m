@@ -248,6 +248,11 @@ static OSStatus recordingCallback(void *inRefCon,
         NSLog(@"AudioUnitRender");
     }
     
+    TFAudioBufferData *bufferData = malloc(sizeof(TFAudioBufferData));
+    bufferData->bufferList = bufferList;
+    bufferData->inNumberFrames = inNumberFrames;
+    audioRecorder.bufferData = bufferData;
+    
     [audioRecorder transportAudioBuffersToNext];
 
     return noErr;

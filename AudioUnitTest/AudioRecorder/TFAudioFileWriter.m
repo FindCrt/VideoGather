@@ -9,7 +9,7 @@
 #import "TFAudioFileWriter.h"
 
 @interface TFAudioFileWriter (){
-    TFAudioBufferData _bufferData;
+    TFAudioBufferData *_bufferData;
     
     ExtAudioFileRef mAudioFileRef;
     
@@ -22,6 +22,8 @@
 
 -(void)setFilePath:(NSString *)filePath{
     _filePath = [filePath stringByDeletingPathExtension];
+    
+    [self configureAudioFile];
 }
 
 -(void)setFileType:(AudioFileTypeID)fileType{
@@ -41,12 +43,15 @@
 }
 
 -(void)configureAudioFile{
-    //export file
-    _filePath = [_filePath stringByAppendingPathExtension:[self pathExtensionForFileType:_fileType]];
-    NSURL *recordFilePath = [NSURL fileURLWithPath:_filePath];
     
-    OSStatus status = ExtAudioFileCreateWithURL((__bridge CFURLRef _Nonnull)(recordFilePath),_fileType, &_audioDesc, NULL, kAudioFileFlags_EraseFile, &mAudioFileRef);
-    TFCheckStatus(status, @"create ext audio file error")
+    if (_audioDesc.mSampleRate != 0 && _fileType != 0 && _filePath != nil) {
+        //export file
+        _filePath = [_filePath stringByAppendingPathExtension:[self pathExtensionForFileType:_fileType]];
+        NSURL *recordFilePath = [NSURL fileURLWithPath:_filePath];
+        
+        OSStatus status = ExtAudioFileCreateWithURL((__bridge CFURLRef _Nonnull)(recordFilePath),_fileType, &_audioDesc, NULL, kAudioFileFlags_EraseFile, &mAudioFileRef);
+        TFCheckStatus(status, @"create ext audio file error")
+    }
 }
 
 -(NSString *)pathExtensionForFileType:(AudioFileTypeID)fileType{
@@ -68,10 +73,10 @@
     return nil;
 }
 
--(void)receiveNewAudioBuffers:(TFAudioBufferData)bufferData{
+-(void)receiveNewAudioBuffers:(TFAudioBufferData *)bufferData{
     _bufferData = bufferData;
     
-    OSStatus status = ExtAudioFileWrite(mAudioFileRef, _bufferData.inNumberFrames, _bufferData.bufferList);
+    OSStatus status = ExtAudioFileWrite(mAudioFileRef, _bufferData->inNumberFrames, &_bufferData->bufferList);
     TFCheckStatus(status, @"audio write to file")
 }
 

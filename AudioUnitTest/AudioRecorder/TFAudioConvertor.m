@@ -24,7 +24,7 @@
     return self;
 }
 
--(void)receiveNewAudioBuffers:(TFAudioBufferData)bufferData{
+-(void)receiveNewAudioBuffers:(TFAudioBufferData *)bufferData{
     
 }
 

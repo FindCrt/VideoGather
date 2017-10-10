@@ -24,6 +24,6 @@ NSLog(@"%@ error:\n{%@}",log,error); return;\
 -(void)setAudioDesc:(AudioStreamBasicDescription)audioDesc;
 -(AudioStreamBasicDescription)audioDesc;
 
--(void)receiveNewAudioBuffers:(TFAudioBufferData )bufferData;
+-(void)receiveNewAudioBuffers:(TFAudioBufferData *)bufferData;
 
 @end

@@ -15,7 +15,7 @@ typedef void(^TFAudioOutputCompletedHandler)();
 
 @interface TFAudioOutput : NSObject
 
-@property (nonatomic, assign) TFAudioBufferData bufferData;
+@property (nonatomic, assign) TFAudioBufferData *bufferData;
 
 @property (nonatomic, assign) AudioStreamBasicDescription audioDesc;
 

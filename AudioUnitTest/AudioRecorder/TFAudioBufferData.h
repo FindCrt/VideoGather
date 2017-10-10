@@ -13,9 +13,33 @@
 
 typedef struct{
     
-    AudioBufferList *bufferList;
+    AudioBufferList bufferList;
     UInt32 inNumberFrames;
     
+    int refCount;
+    
 }TFAudioBufferData;
+
+TFAudioBufferData *TFCreateAudioBufferData(AudioBufferList *bufferList, UInt32 inNumberFrames){
+    TFAudioBufferData *bufferData = malloc(sizeof(TFAudioBufferData));
+    bufferData->bufferList = &bufferList;
+    bufferData->inNumberFrames = inNumberFrames;
+    audioRecorder.bufferData = bufferData;
+
+}
+
+void TFRefAudioBufferData(TFAudioBufferData *bufferData){
+    bufferData->refCount = bufferData->refCount + 1;
+}
+
+void TFUnrefAudioBufferData(TFAudioBufferData *bufferData){
+
+    bufferData->refCount = bufferData->refCount - 1;
+    if (bufferData->refCount == 0) {
+        free(bufferData);
+    }
+}
+
+
 
 #endif /* TFAudioBufferData_h */
