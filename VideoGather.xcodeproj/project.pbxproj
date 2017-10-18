@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		1815292C1F665F4D00FA3619 /* TFVideoGatherViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1815292B1F665F4D00FA3619 /* TFVideoGatherViewController.m */; };
 		1815292F1F665F7D00FA3619 /* TFVideoTransfer.m in Sources */ = {isa = PBXBuildFile; fileRef = 1815292E1F665F7D00FA3619 /* TFVideoTransfer.m */; };
+		183B50071F90910C00FFCA3F /* TFAudioBufferData.m in Sources */ = {isa = PBXBuildFile; fileRef = 183B50061F90910C00FFCA3F /* TFAudioBufferData.m */; };
 		183EF0C71F57C35F00E21DB4 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 183EF0C61F57C35F00E21DB4 /* main.m */; };
 		183EF0CA1F57C35F00E21DB4 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 183EF0C91F57C35F00E21DB4 /* AppDelegate.m */; };
 		183EF0D21F57C35F00E21DB4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 183EF0D11F57C35F00E21DB4 /* Assets.xcassets */; };
@@ -90,6 +91,7 @@
 		1815292B1F665F4D00FA3619 /* TFVideoGatherViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFVideoGatherViewController.m; sourceTree = "<group>"; };
 		1815292D1F665F7D00FA3619 /* TFVideoTransfer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFVideoTransfer.h; sourceTree = "<group>"; };
 		1815292E1F665F7D00FA3619 /* TFVideoTransfer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFVideoTransfer.m; sourceTree = "<group>"; };
+		183B50061F90910C00FFCA3F /* TFAudioBufferData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFAudioBufferData.m; sourceTree = "<group>"; };
 		183EF0C21F57C35F00E21DB4 /* VideoGather.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VideoGather.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		183EF0C61F57C35F00E21DB4 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		183EF0C81F57C35F00E21DB4 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -725,6 +727,7 @@
 				1858A4471F8B722100784FC6 /* TFAudioCapture.h */,
 				1858A4481F8B722100784FC6 /* TFAudioCapture.m */,
 				1858A44D1F8B7A0900784FC6 /* TFAudioBufferData.h */,
+				183B50061F90910C00FFCA3F /* TFAudioBufferData.m */,
 			);
 			path = AudioRecorder;
 			sourceTree = "<group>";
@@ -1014,6 +1017,7 @@
 				1858A4461F8B71BB00784FC6 /* TFAudioFileWriter.m in Sources */,
 				1858A43F1F8B6B7400784FC6 /* TFAudioConvertor.m in Sources */,
 				1858A43A1F8B1DDC00784FC6 /* TFAudioUnitRecordViewController.m in Sources */,
+				183B50071F90910C00FFCA3F /* TFAudioBufferData.m in Sources */,
 				1858A42C1F8B057500784FC6 /* TFMediaDataAnalyzer.m in Sources */,
 				1858A4491F8B722100784FC6 /* TFAudioCapture.m in Sources */,
 				1858A42D1F8B057500784FC6 /* TFMediaListViewController.m in Sources */,
@@ -1240,6 +1244,7 @@
 				1858A4111F8B00F900784FC6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

@@ -12,4 +12,6 @@
 
 @interface TFAudioConvertor : TFAudioOutput<TFAudioInput>
 
+@property (nonatomic, assign) AudioFormatID outputFormat;
+
 @end

@@ -10,6 +10,7 @@
 #import <AudioToolbox/AudioToolbox.h>
 #import <AVFoundation/AVFoundation.h>
 
+
 #define kOutputBus 0
 #define kInputBus 1
 #define  kSampleRate 44100.0   //8k时有问题
@@ -233,6 +234,7 @@ static OSStatus recordingCallback(void *inRefCon,
     //This is the reference to the object who owns the callback.
     TFAudioRecorder *audioRecorder = (__bridge TFAudioRecorder* )inRefCon;
 
+    //sampleRate是一秒钟的采样次数，不是样本数，每次采样形成一个frame，即一帧；每次采样，每个声道采样一次，也就是一个frame，n个channel,n个sample。只有在单声道时，sampleRate才等于一秒钟的样本数。
     int numberSamples = inNumberFrames * kChannelsPerFrame;
     buffer.mDataByteSize = numberSamples * kBitsPerChannel/8;
     buffer.mNumberChannels = kChannelsPerFrame;
@@ -248,10 +250,7 @@ static OSStatus recordingCallback(void *inRefCon,
         NSLog(@"AudioUnitRender");
     }
     
-    TFAudioBufferData *bufferData = malloc(sizeof(TFAudioBufferData));
-    bufferData->bufferList = bufferList;
-    bufferData->inNumberFrames = inNumberFrames;
-    audioRecorder.bufferData = bufferData;
+    audioRecorder.bufferData = TFCreateAudioBufferData(&bufferList, inNumberFrames);
     
     [audioRecorder transportAudioBuffersToNext];
 
