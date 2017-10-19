@@ -11,6 +11,7 @@
 #import "TFMediaListViewController.h"
 #import "TFMediaDataAnalyzer.h"
 #import "TFAudioFileWriter.h"
+#import "TFAudioConvertor.h"
 
 @interface TFAudioUnitRecordViewController (){
     NSString *_curRecordPath;
@@ -33,10 +34,14 @@
 -(void)setupRecorder{
     _recorder = [[TFAudioRecorder alloc] init];
     
+    TFAudioConvertor *converter = [[TFAudioConvertor alloc] init];
+    converter.outputFormat = kAudioFormatMPEG4AAC;
+    [_recorder addTarget:converter];
+    
     TFAudioFileWriter *fileWriter = [[TFAudioFileWriter alloc] init];
     fileWriter.filePath = [self nextRecordPath];
     fileWriter.fileType = kAudioFileCAFType;
-    [_recorder addTarget:fileWriter];
+    [converter addTarget:fileWriter];
 }
 
 -(NSString *)recordHome{

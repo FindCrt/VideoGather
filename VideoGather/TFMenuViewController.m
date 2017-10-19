@@ -22,7 +22,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+    UIWebView
     _funcNameList = @[@"video record",@"video play", @"video transfer"];
     //_funcVCList = @[@"TFCameraViewController",@"TFVideoPlayerViewController"];
 }

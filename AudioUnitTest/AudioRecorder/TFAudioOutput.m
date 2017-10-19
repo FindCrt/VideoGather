@@ -39,9 +39,15 @@
 -(void)setAudioDesc:(AudioStreamBasicDescription)audioDesc{
     _audioDesc = audioDesc;
     
+    
+    AudioStreamBasicDescription outputDesc = [self outputAudioDescWithInputDesc:audioDesc];
     for (id<TFAudioInput> target in _targets) {
-        [target setAudioDesc:_audioDesc];
+        [target setAudioDesc:outputDesc];
     }
+}
+
+-(AudioStreamBasicDescription)outputAudioDescWithInputDesc:(AudioStreamBasicDescription)audioDesc{
+    return audioDesc; //默认输出与输入一样的格式
 }
 
 -(void)transportAudioBuffersToNext{

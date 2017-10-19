@@ -21,6 +21,7 @@ typedef void(^TFAudioOutputCompletedHandler)();
 
 @property (nonatomic, copy, readonly) NSArray *targets;
 
+-(AudioStreamBasicDescription)outputAudioDescWithInputDesc:(AudioStreamBasicDescription)audioDesc;
 -(void)transportAudioBuffersToNext;
 
 @property (nonatomic, copy) TFAudioOutputCompletedHandler completedHandler;

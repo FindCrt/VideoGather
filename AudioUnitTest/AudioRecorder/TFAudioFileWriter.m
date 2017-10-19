@@ -74,6 +74,7 @@
 }
 
 -(void)receiveNewAudioBuffers:(TFAudioBufferData *)bufferData{
+    //NSLog(@"file writer in buffer");
     _bufferData = bufferData;
     
     OSStatus status = ExtAudioFileWrite(mAudioFileRef, _bufferData->inNumberFrames, &_bufferData->bufferList);

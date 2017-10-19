@@ -11,7 +11,7 @@
 
 TFAudioBufferData *TFCreateAudioBufferData(AudioBufferList *bufferList, UInt32 inNumberFrames){
     TFAudioBufferData *bufferData = (TFAudioBufferData*)malloc(sizeof(TFAudioBufferData));
-    bufferData->bufferList = *bufferList;
+    if (bufferList) bufferData->bufferList = *bufferList;
     bufferData->inNumberFrames = inNumberFrames;
     
     return bufferData;
