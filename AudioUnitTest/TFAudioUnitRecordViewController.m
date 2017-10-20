@@ -12,6 +12,7 @@
 #import "TFMediaDataAnalyzer.h"
 #import "TFAudioFileWriter.h"
 #import "TFAudioConvertor.h"
+#import "TFAACFileWriter.h"
 
 @interface TFAudioUnitRecordViewController (){
     NSString *_curRecordPath;
@@ -38,9 +39,8 @@
     converter.outputFormat = kAudioFormatMPEG4AAC;
     [_recorder addTarget:converter];
     
-    TFAudioFileWriter *fileWriter = [[TFAudioFileWriter alloc] init];
+    TFAACFileWriter *fileWriter = [[TFAACFileWriter alloc] init];
     fileWriter.filePath = [self nextRecordPath];
-    fileWriter.fileType = kAudioFileCAFType;
     [converter addTarget:fileWriter];
 }
 
@@ -56,7 +56,7 @@
 }
 
 -(NSString *)nextRecordPath{
-    NSString *name = [NSString stringWithFormat:@"%.0f.caf",[[NSDate date] timeIntervalSince1970]];
+    NSString *name = [NSString stringWithFormat:@"%.0f",[[NSDate date] timeIntervalSince1970]];
     
     _curRecordPath = [self.recordHome stringByAppendingPathComponent:name];
     

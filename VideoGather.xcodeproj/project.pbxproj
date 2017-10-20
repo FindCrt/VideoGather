@@ -83,6 +83,7 @@
 		1861D6671F5AA1A50074D8B9 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1861D6661F5AA1A50074D8B9 /* GLKit.framework */; };
 		1861D66A1F5AAAD00074D8B9 /* CIImage+Filter.m in Sources */ = {isa = PBXBuildFile; fileRef = 1861D6691F5AAAD00074D8B9 /* CIImage+Filter.m */; };
 		1878ACBE1F67D25000007820 /* LFLiveKitAnalyze.md in Resources */ = {isa = PBXBuildFile; fileRef = 1878ACBD1F67D25000007820 /* LFLiveKitAnalyze.md */; };
+		18ED3F301F98CE970083F38F /* TFAACFileWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 18ED3F2F1F98CE970083F38F /* TFAACFileWriter.m */; };
 		1E2EA7AE2E48DB8AEAE8CA17 /* libPods-VideoGather.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 68CEE9AD81A6357AD09CAB5D /* libPods-VideoGather.a */; };
 /* End PBXBuildFile section */
 
@@ -299,6 +300,8 @@
 		1861D6681F5AAAD00074D8B9 /* CIImage+Filter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CIImage+Filter.h"; sourceTree = "<group>"; };
 		1861D6691F5AAAD00074D8B9 /* CIImage+Filter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CIImage+Filter.m"; sourceTree = "<group>"; };
 		1878ACBD1F67D25000007820 /* LFLiveKitAnalyze.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = LFLiveKitAnalyze.md; sourceTree = "<group>"; };
+		18ED3F2E1F98CE970083F38F /* TFAACFileWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFAACFileWriter.h; sourceTree = "<group>"; };
+		18ED3F2F1F98CE970083F38F /* TFAACFileWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFAACFileWriter.m; sourceTree = "<group>"; };
 		68CEE9AD81A6357AD09CAB5D /* libPods-VideoGather.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-VideoGather.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		73C62082D56A8E28A55CE9CB /* Pods-VideoGather.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VideoGather.debug.xcconfig"; path = "Pods/Target Support Files/Pods-VideoGather/Pods-VideoGather.debug.xcconfig"; sourceTree = "<group>"; };
 		E4F6AE68AF4C3112AD7C41FB /* Pods-VideoGather.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VideoGather.release.xcconfig"; path = "Pods/Target Support Files/Pods-VideoGather/Pods-VideoGather.release.xcconfig"; sourceTree = "<group>"; };
@@ -728,6 +731,8 @@
 				1858A4481F8B722100784FC6 /* TFAudioCapture.m */,
 				1858A44D1F8B7A0900784FC6 /* TFAudioBufferData.h */,
 				183B50061F90910C00FFCA3F /* TFAudioBufferData.m */,
+				18ED3F2E1F98CE970083F38F /* TFAACFileWriter.h */,
+				18ED3F2F1F98CE970083F38F /* TFAACFileWriter.m */,
 			);
 			path = AudioRecorder;
 			sourceTree = "<group>";
@@ -1015,6 +1020,7 @@
 				1858A42E1F8B059B00784FC6 /* TFVideoProcessor.m in Sources */,
 				1858A42B1F8B057500784FC6 /* TFMediaCell.m in Sources */,
 				1858A4461F8B71BB00784FC6 /* TFAudioFileWriter.m in Sources */,
+				18ED3F301F98CE970083F38F /* TFAACFileWriter.m in Sources */,
 				1858A43F1F8B6B7400784FC6 /* TFAudioConvertor.m in Sources */,
 				1858A43A1F8B1DDC00784FC6 /* TFAudioUnitRecordViewController.m in Sources */,
 				183B50071F90910C00FFCA3F /* TFAudioBufferData.m in Sources */,

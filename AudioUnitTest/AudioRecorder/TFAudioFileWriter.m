@@ -51,6 +51,11 @@
         
         OSStatus status = ExtAudioFileCreateWithURL((__bridge CFURLRef _Nonnull)(recordFilePath),_fileType, &_audioDesc, NULL, kAudioFileFlags_EraseFile, &mAudioFileRef);
         TFCheckStatus(status, @"create ext audio file error")
+        
+        UInt32 codecManf = kAppleSoftwareAudioCodecManufacturer;
+        ExtAudioFileSetProperty(mAudioFileRef, kExtAudioFileProperty_CodecManufacturer, sizeof(UInt32), &codecManf);
+        
+        ExtAudioFileSetProperty(mAudioFileRef, kExtAudioFileProperty_FileMaxPacketSize, sizeof(UInt32), &codecManf);
     }
 }
 

@@ -9,6 +9,7 @@
 /**
  参考：http://blog.csdn.net/andyhuabing/article/details/40983423
  http://www.mamicode.com/info-detail-986202.html
+ http://www.cnblogs.com/caosiyang/archive/2012/07/16/2594029.html
 */
 
 #import "TFAudioConvertor.h"
@@ -146,9 +147,9 @@
         leftLength -= bufferLengthPerConvert;
         
         //输出数据到下一个环节
-        NSLog(@"output buffer size:%d",outputBuffers.mBuffers[0].mDataByteSize);
+//        NSLog(@"output buffer size:%d",outputBuffers.mBuffers[0].mDataByteSize);
         self.bufferData->bufferList = outputBuffers;
-        self.bufferData->inNumberFrames = 1;//packetPerConvert*AAC_FRAME_NUM_PER_PACKET;  //包数 * 每个包的帧数（帧数+采样率计算时长）
+        self.bufferData->inNumberFrames = packetPerConvert*AAC_FRAME_NUM_PER_PACKET;  //包数 * 每个包的帧数（帧数+采样率计算时长）
         [self transportAudioBuffersToNext];
         
     } while (leftLength >= bufferLengthPerConvert);
