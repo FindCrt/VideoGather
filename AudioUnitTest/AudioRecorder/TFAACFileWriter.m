@@ -12,7 +12,8 @@
 
 /** AudioFileCreateWithURL  */
 
-#define TFUseAVAssetWriter  0
+#define TFUseAVAssetWriter  1
+#define TFUseAudioFile      0
 #define AAC_FRAMES_NUM_PER_PACKET   1024
 
 @interface TFAACFileWriter (){
@@ -22,6 +23,9 @@
     AVAssetWriterInput *_audioInput;
     
     double relativeStartTime;
+    
+    AudioFileID audioFile;
+    UInt32 packetIndex;
 }
 
 @end
@@ -42,6 +46,10 @@
 #if TFUseAVAssetWriter
     [self setupWriter];
 #endif
+    
+#if TFUseAudioFile
+    [self setupAudioFile];
+#endif
 }
 
 -(void)setAudioDesc:(AudioStreamBasicDescription)audioDesc{
@@ -49,6 +57,10 @@
     
 #if TFUseAVAssetWriter
     [self setupWriter];
+#endif
+    
+#if TFUseAudioFile
+    [self setupAudioFile];
 #endif
 }
 
@@ -62,12 +74,51 @@
     [self assetWriteAudioBuffers:bufferData];
 #endif
     
+#if TFUseAudioFile
+    [self audioFileWriteAudioBuffers:bufferData];
+#endif
+    
 }
 
 #pragma mark - audio file
 
+-(void)setupAudioFile{
+    
+    if (_audioDesc.mSampleRate == 0 || _filePath == nil) {
+        return;
+    }
+    
+    NSURL *fileURL = [NSURL fileURLWithPath:_filePath];
+    OSStatus status = AudioFileCreateWithURL((__bridge CFURLRef)fileURL, kAudioFileAAC_ADTSType, &(_audioDesc), kAudioFileFlags_EraseFile, &audioFile);
+    TFCheckStatusUnReturn(status, @"create audio file")
+    
+    packetIndex = 0;
+    totalSize = 0;
+}
+
+float totalSize = 0;
 -(void)audioFileWriteAudioBuffers:(TFAudioBufferData *)bufferData{
     
+    AudioBuffer inBuffer = bufferData->bufferList.mBuffers[0];
+    AudioStreamPacketDescription packetDesc = {0, 0, inBuffer.mDataByteSize};
+    UInt32 packetNum = 1;
+    
+    OSStatus status = AudioFileWritePackets(audioFile, NO, inBuffer.mDataByteSize, &packetDesc, packetIndex, &packetNum, inBuffer.mData);
+    
+    totalSize += inBuffer.mDataByteSize;
+    
+    
+    TFCheckStatusUnReturn(status, @"write packet")
+    
+    packetIndex++;
+}
+
+-(void)close{
+    AudioFileClose(audioFile);
+    memset(&_audioDesc, 0, sizeof(_audioDesc));
+    _filePath = nil;
+    
+    NSLog(@"%.3fM",totalSize/1024/1024);
 }
 
 #pragma mark - AVAssetWriter

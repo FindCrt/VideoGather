@@ -18,6 +18,8 @@
     NSString *_curRecordPath;
     
     TFAudioRecorder *_recorder;
+    
+    TFAACFileWriter *_fileWriter;
 }
 
 @property (nonatomic, copy) NSString *recordHome;
@@ -39,9 +41,9 @@
     converter.outputFormat = kAudioFormatMPEG4AAC;
     [_recorder addTarget:converter];
     
-    TFAACFileWriter *fileWriter = [[TFAACFileWriter alloc] init];
-    fileWriter.filePath = [self nextRecordPath];
-    [converter addTarget:fileWriter];
+    _fileWriter = [[TFAACFileWriter alloc] init];
+    _fileWriter.filePath = [self nextRecordPath];
+    [converter addTarget:_fileWriter];
 }
 
 -(NSString *)recordHome{
@@ -78,9 +80,12 @@
     if (_recorder.recording) {
         
         [_recorder stop];
+        [_fileWriter close];
+        
     }else{          //start
         
         [_recorder startRecordToPath:[self nextRecordPath]];
+        _fileWriter.filePath = _curRecordPath;
     }
     
     if (_recorder.recording) {
