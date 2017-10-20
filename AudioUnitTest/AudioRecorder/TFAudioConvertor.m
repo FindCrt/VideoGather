@@ -69,6 +69,7 @@
     //先按s16 PCM 转AAC样式来配置
     _outputDesc.mSampleRate = audioDesc.mSampleRate;
     _outputDesc.mFormatID = kAudioFormatMPEG4AAC;
+//    _outputDesc.mFormatFlags = kMPEG4Object_AAC_Main;
     _outputDesc.mFramesPerPacket = AAC_FRAME_NUM_PER_PACKET;  //AAC
     _outputDesc.mChannelsPerFrame = audioDesc.mChannelsPerFrame;
     

@@ -27,7 +27,6 @@ typedef NS_ENUM(NSInteger, TFAudioEncodeType){
 };
 
 @interface TFAudioRecorder (){
-    NSString *_path;
     AudioFileTypeID fileTypeID;
     AudioComponentInstance audioUnit;
     
@@ -50,11 +49,6 @@ typedef NS_ENUM(NSInteger, TFAudioEncodeType){
     }
     
     return self;
-}
-
--(void)startRecordToPath:(NSString *)path{
-    _path = [path stringByDeletingPathExtension];
-    [self start];
 }
 
 -(void)start{

@@ -2,4 +2,54 @@
 <Bucket
    type = "0"
    version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "AudioUnitTest/AudioRecorder/TFAudioFileWriter.m"
+            timestampString = "530187620.989916"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "126"
+            endingLineNumber = "126"
+            landmarkName = "-receiveNewAudioBuffers:"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[TFAudioFileWriter receiveNewAudioBuffers:]"
+                  moduleName = "AudioUnitTest"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/apple/myGit/VideoGather/AudioUnitTest/AudioRecorder/TFAudioFileWriter.m"
+                  timestampString = "530187657.665834"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "126"
+                  endingLineNumber = "126"
+                  offsetFromSymbolStart = "120">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[TFAudioFileWriter receiveNewAudioBuffers:]"
+                  moduleName = "AudioUnitTest"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/apple/myGit/VideoGather/AudioUnitTest/AudioRecorder/TFAudioFileWriter.m"
+                  timestampString = "530187657.66757"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "126"
+                  endingLineNumber = "126"
+                  offsetFromSymbolStart = "128">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
 </Bucket>

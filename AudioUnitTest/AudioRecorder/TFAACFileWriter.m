@@ -12,8 +12,8 @@
 
 /** AudioFileCreateWithURL  */
 
-#define TFUseAVAssetWriter  1
-#define TFUseAudioFile      0
+#define TFUseAVAssetWriter  0
+#define TFUseAudioFile      1
 #define AAC_FRAMES_NUM_PER_PACKET   1024
 
 @interface TFAACFileWriter (){
@@ -41,7 +41,7 @@
 }
 
 -(void)setFilePath:(NSString *)filePath{
-    _filePath = [[filePath stringByDeletingPathExtension] stringByAppendingPathExtension:@"m4a"];
+    _filePath = [[filePath stringByDeletingPathExtension] stringByAppendingPathExtension:@"mp4"];
     
 #if TFUseAVAssetWriter
     [self setupWriter];
@@ -89,7 +89,7 @@
     }
     
     NSURL *fileURL = [NSURL fileURLWithPath:_filePath];
-    OSStatus status = AudioFileCreateWithURL((__bridge CFURLRef)fileURL, kAudioFileAAC_ADTSType, &(_audioDesc), kAudioFileFlags_EraseFile, &audioFile);
+    OSStatus status = AudioFileCreateWithURL((__bridge CFURLRef)fileURL, kAudioFileMPEG4Type, &(_audioDesc), kAudioFileFlags_EraseFile, &audioFile);
     TFCheckStatusUnReturn(status, @"create audio file")
     
     packetIndex = 0;
@@ -100,14 +100,15 @@ float totalSize = 0;
 -(void)audioFileWriteAudioBuffers:(TFAudioBufferData *)bufferData{
     
     AudioBuffer inBuffer = bufferData->bufferList.mBuffers[0];
+    
+    //write packet kAudioFileAAC_ADTSType
     AudioStreamPacketDescription packetDesc = {0, 0, inBuffer.mDataByteSize};
     UInt32 packetNum = 1;
     
     OSStatus status = AudioFileWritePackets(audioFile, NO, inBuffer.mDataByteSize, &packetDesc, packetIndex, &packetNum, inBuffer.mData);
     
     totalSize += inBuffer.mDataByteSize;
-    
-    
+
     TFCheckStatusUnReturn(status, @"write packet")
     
     packetIndex++;

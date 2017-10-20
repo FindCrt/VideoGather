@@ -19,7 +19,8 @@
     
     TFAudioRecorder *_recorder;
     
-    TFAACFileWriter *_fileWriter;
+    TFAACFileWriter *_aacFileWriter;
+    TFAudioFileWriter *_pcmFileWriter;
 }
 
 @property (nonatomic, copy) NSString *recordHome;
@@ -37,13 +38,18 @@
 -(void)setupRecorder{
     _recorder = [[TFAudioRecorder alloc] init];
     
-    TFAudioConvertor *converter = [[TFAudioConvertor alloc] init];
-    converter.outputFormat = kAudioFormatMPEG4AAC;
-    [_recorder addTarget:converter];
+//    TFAudioConvertor *converter = [[TFAudioConvertor alloc] init];
+//    converter.outputFormat = kAudioFormatMPEG4AAC;
+//    [_recorder addTarget:converter];
+//    
+//    _aacFileWriter = [[TFAACFileWriter alloc] init];
+//    _aacFileWriter.filePath = [self nextRecordPath];
+//    [converter addTarget:_aacFileWriter];
     
-    _fileWriter = [[TFAACFileWriter alloc] init];
-    _fileWriter.filePath = [self nextRecordPath];
-    [converter addTarget:_fileWriter];
+    _pcmFileWriter = [[TFAudioFileWriter alloc] init];
+    _pcmFileWriter.filePath = [self nextRecordPath];
+    _pcmFileWriter.fileType = kAudioFileM4AType;
+    [_recorder addTarget:_pcmFileWriter];
 }
 
 -(NSString *)recordHome{
@@ -80,12 +86,12 @@
     if (_recorder.recording) {
         
         [_recorder stop];
-        [_fileWriter close];
+        [_aacFileWriter close];
         
     }else{          //start
         
-        [_recorder startRecordToPath:[self nextRecordPath]];
-        _fileWriter.filePath = _curRecordPath;
+        [_recorder start];
+        _aacFileWriter.filePath = _curRecordPath;
     }
     
     if (_recorder.recording) {

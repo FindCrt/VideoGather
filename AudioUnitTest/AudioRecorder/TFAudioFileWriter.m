@@ -45,17 +45,57 @@
 -(void)configureAudioFile{
     
     if (_audioDesc.mSampleRate != 0 && _fileType != 0 && _filePath != nil) {
-        //export file
+        
         _filePath = [_filePath stringByAppendingPathExtension:[self pathExtensionForFileType:_fileType]];
         NSURL *recordFilePath = [NSURL fileURLWithPath:_filePath];
         
-        OSStatus status = ExtAudioFileCreateWithURL((__bridge CFURLRef _Nonnull)(recordFilePath),_fileType, &_audioDesc, NULL, kAudioFileFlags_EraseFile, &mAudioFileRef);
-        TFCheckStatus(status, @"create ext audio file error")
+        if (_fileType == kAudioFileM4AType) {
+            
+            AudioStreamBasicDescription outputDesc;
+            outputDesc.mFormatID = kAudioFormatMPEG4AAC;
+            outputDesc.mChannelsPerFrame = _audioDesc.mChannelsPerFrame;
+            outputDesc.mSampleRate = _audioDesc.mSampleRate;
+//            outputDesc.mFramesPerPacket = 1024;
+            
+            OSStatus status = ExtAudioFileCreateWithURL((__bridge CFURLRef _Nonnull)(recordFilePath),_fileType, &outputDesc, NULL, kAudioFileFlags_EraseFile, &mAudioFileRef);
+            TFCheckStatus(status, @"create ext audio file error")
+            
+            //输入数据格式使用这个属性设置
+            UInt32 codecManf = kAppleSoftwareAudioCodecManufacturer;
+            status = ExtAudioFileSetProperty(mAudioFileRef, kExtAudioFileProperty_CodecManufacturer, sizeof(UInt32), &codecManf);
+            status = ExtAudioFileSetProperty(mAudioFileRef, kExtAudioFileProperty_ClientDataFormat, sizeof(_audioDesc), &_audioDesc);
+            
+            TFCheckStatusUnReturn(status, @"ext audio file set client format");
+            
+            //check
+            {
+                AudioConverterRef converter;
+                UInt32 dataSize = sizeof(converter);
+                ExtAudioFileGetProperty(mAudioFileRef, kExtAudioFileProperty_AudioConverter, &dataSize, &converter);
+                AudioFormatListItem *formatList;
+                UInt32 outSize = 0;
+                AudioConverterGetProperty(converter, kAudioConverterPropertyFormatList, &outSize, &formatList);
+                
+                UInt32 count = outSize / sizeof(AudioFormatListItem);
+                for (int i = 0; i<count; i++) {
+                    AudioFormatListItem format = formatList[i];
+                    
+                }
+            }
+            
+        }else if(_fileType == kAudioFileCAFType || _fileType == kAudioFileWAVEType){ //纯数据，不编码
+            
+            OSStatus status = ExtAudioFileCreateWithURL((__bridge CFURLRef _Nonnull)(recordFilePath),_fileType, &_audioDesc, NULL, kAudioFileFlags_EraseFile, &mAudioFileRef);
+            TFCheckStatus(status, @"create ext audio file error")
+            
+            UInt32 codecManf = kAppleHardwareAudioCodecManufacturer;
+            ExtAudioFileSetProperty(mAudioFileRef, kExtAudioFileProperty_CodecManufacturer, sizeof(UInt32), &codecManf);
+        }
         
-        UInt32 codecManf = kAppleSoftwareAudioCodecManufacturer;
-        ExtAudioFileSetProperty(mAudioFileRef, kExtAudioFileProperty_CodecManufacturer, sizeof(UInt32), &codecManf);
         
-        ExtAudioFileSetProperty(mAudioFileRef, kExtAudioFileProperty_FileMaxPacketSize, sizeof(UInt32), &codecManf);
+//        ExtAudioFileSetProperty(mAudioFileRef, kExtAudioFileProperty_FileMaxPacketSize, sizeof(UInt32), &codecManf);
+        
+        
     }
 }
 

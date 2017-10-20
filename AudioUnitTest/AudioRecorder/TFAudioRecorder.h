@@ -17,13 +17,9 @@ typedef NS_ENUM(NSInteger, TFOutputAudioFileType){
 
 @interface TFAudioRecorder : TFAudioOutput
 
-//-(instancetype)initWithOutputFileType:(TFOutputAudioFileType)outputFileType;
-
-//@property (nonatomic, assign) TFOutputAudioFileType outputFileType;
-
 @property (nonatomic, assign) BOOL recording;
 
--(void)startRecordToPath:(NSString *)path;
+-(void)start;
 
 -(void)stop;
 
