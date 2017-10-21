@@ -89,7 +89,7 @@
     }
     
     NSURL *fileURL = [NSURL fileURLWithPath:_filePath];
-    OSStatus status = AudioFileCreateWithURL((__bridge CFURLRef)fileURL, kAudioFileMPEG4Type, &(_audioDesc), kAudioFileFlags_EraseFile, &audioFile);
+    OSStatus status = AudioFileCreateWithURL((__bridge CFURLRef)fileURL, kAudioFileAAC_ADTSType, &(_audioDesc), kAudioFileFlags_EraseFile, &audioFile);
     TFCheckStatusUnReturn(status, @"create audio file")
     
     packetIndex = 0;

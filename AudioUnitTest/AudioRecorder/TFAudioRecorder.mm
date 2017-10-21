@@ -19,8 +19,6 @@
 #define kBitsPerChannel 16  //s16
 //#define BUFFER_SIZE 1024
 
-
-
 typedef NS_ENUM(NSInteger, TFAudioEncodeType){
     TFAudioEncodeTypePCM,
     TFAudioEncodeTypeAAC
@@ -167,6 +165,8 @@ typedef NS_ENUM(NSInteger, TFAudioEncodeType){
     AudioOutputUnitStart(audioUnit);
     
     _recording = YES;
+    
+    NSLog(@"recorder started!!");
 }
 
 -(void)stop{
@@ -182,14 +182,17 @@ typedef NS_ENUM(NSInteger, TFAudioEncodeType){
     AudioStreamBasicDescription audioFmt;
     
     if (type == TFAudioEncodeTypePCM) {
-        audioFmt.mSampleRate = kSampleRate;
-        audioFmt.mFormatID = kAudioFormatLinearPCM;
-        audioFmt.mFormatFlags = kAudioFormatFlagIsPacked | kAudioFormatFlagIsSignedInteger;
-        audioFmt.mFramesPerPacket = kFramesPerPacket;
-        audioFmt.mChannelsPerFrame = kChannelsPerFrame;
-        audioFmt.mBitsPerChannel = kBitsPerChannel;
-        audioFmt.mBytesPerPacket = kBitsPerChannel * kChannelsPerFrame * kFramesPerPacket / 8;
-        audioFmt.mBytesPerFrame = kBitsPerChannel * kChannelsPerFrame / 8;
+//        audioFmt.mSampleRate = kSampleRate;
+//        audioFmt.mFormatID = kAudioFormatLinearPCM;
+//        audioFmt.mFormatFlags = kAudioFormatFlagIsPacked | kAudioFormatFlagIsSignedInteger;
+//        audioFmt.mFramesPerPacket = kFramesPerPacket;
+//        audioFmt.mChannelsPerFrame = kChannelsPerFrame;
+//        audioFmt.mBitsPerChannel = kBitsPerChannel;
+//        audioFmt.mBytesPerPacket = kBitsPerChannel * kChannelsPerFrame * kFramesPerPacket / 8;
+//        audioFmt.mBytesPerFrame = kBitsPerChannel * kChannelsPerFrame / 8;
+//        audioFmt.mReserved = 0;
+        
+        FillOutASBDForLPCM (audioFmt,44100.0,kChannelsPerFrame,16,16,false,false,false);
         
         //FillOutASBDForLPCM
         

@@ -6,6 +6,8 @@
 //  Copyright © 2017年 shiwei. All rights reserved.
 //
 
+
+
 #ifndef TFAudioBufferData_h
 #define TFAudioBufferData_h
 
@@ -20,9 +22,16 @@ typedef struct{
     
 }TFAudioBufferData;
 
+#ifdef __cplusplus 
+extern "C" {
+#endif
+
 TFAudioBufferData *TFCreateAudioBufferData(AudioBufferList *bufferList, UInt32 inNumberFrames);
 void TFRefAudioBufferData(TFAudioBufferData *bufferData);
 void TFUnrefAudioBufferData(TFAudioBufferData *bufferData);
 
+#ifdef __cplusplus 
+}
+#endif
 
 #endif /* TFAudioBufferData_h */

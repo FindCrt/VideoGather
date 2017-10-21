@@ -14,6 +14,9 @@
 #import "TFAudioConvertor.h"
 #import "TFAACFileWriter.h"
 
+#define TFUseSystemConverter    0
+#define WriterCount             10
+
 @interface TFAudioUnitRecordViewController (){
     NSString *_curRecordPath;
     
@@ -21,6 +24,13 @@
     
     TFAACFileWriter *_aacFileWriter;
     TFAudioFileWriter *_pcmFileWriter;
+    
+    NSMutableArray<TFAudioRecorder *> *_multiRecorders;
+#if TFUseSystemConverter
+    NSMutableArray *_systemConvertWriter;
+#else
+    NSMutableArray *_selfConvertWriter;
+#endif
 }
 
 @property (nonatomic, copy) NSString *recordHome;
@@ -36,7 +46,7 @@
 }
 
 -(void)setupRecorder{
-    _recorder = [[TFAudioRecorder alloc] init];
+//    _recorder = [[TFAudioRecorder alloc] init];
     
 //    TFAudioConvertor *converter = [[TFAudioConvertor alloc] init];
 //    converter.outputFormat = kAudioFormatMPEG4AAC;
@@ -46,10 +56,53 @@
 //    _aacFileWriter.filePath = [self nextRecordPath];
 //    [converter addTarget:_aacFileWriter];
     
-    _pcmFileWriter = [[TFAudioFileWriter alloc] init];
-    _pcmFileWriter.filePath = [self nextRecordPath];
-    _pcmFileWriter.fileType = kAudioFileM4AType;
-    [_recorder addTarget:_pcmFileWriter];
+//    _pcmFileWriter = [[TFAudioFileWriter alloc] init];
+//    _pcmFileWriter.filePath = [self nextRecordPath];
+//    _pcmFileWriter.fileType = kAudioFileM4AType;
+//    [_recorder addTarget:_pcmFileWriter];
+    
+    _multiRecorders = [[NSMutableArray alloc] init];
+    for (int i = 0; i<WriterCount; i++) {
+        TFAudioRecorder *recorder = [[TFAudioRecorder alloc] init];
+        [_multiRecorders addObject:recorder];
+    }
+    [self setupWriters];
+}
+
+-(void)setupWriters{
+    
+#if TFUseSystemConverter
+    _systemConvertWriter = [[NSMutableArray alloc] init];
+    
+    for (int i = 0; i<WriterCount; i++) {
+        TFAudioFileWriter *writer = [[TFAudioFileWriter alloc]init];
+        writer.filePath = [[NSString alloc] initWithFormat:@"%@_%d",[self nextRecordPath],i];
+        writer.fileType = kAudioFileM4AType;
+        [_recorder addTarget:writer];
+        
+        [_systemConvertWriter addObject:writer];
+    }
+    
+#else
+    
+    _selfConvertWriter = [[NSMutableArray alloc] init];
+    
+    for (int i = 0; i<WriterCount; i++) {
+        
+        TFAudioRecorder *recorder = _multiRecorders[i];
+        
+        TFAudioConvertor *converter = [[TFAudioConvertor alloc] init];
+        converter.outputFormat = kAudioFormatMPEG4AAC;
+        [recorder addTarget:converter];
+        
+        TFAACFileWriter *writer = [[TFAACFileWriter alloc]init];
+        writer.filePath = [[NSString alloc] initWithFormat:@"%@_aac_%d",[self nextRecordPath],i];
+        [converter addTarget:writer];
+        
+        [_selfConvertWriter addObject:writer];
+    }
+    
+#endif
 }
 
 -(NSString *)recordHome{
@@ -62,6 +115,7 @@
 
     return _recordHome;
 }
+
 
 -(NSString *)nextRecordPath{
     NSString *name = [NSString stringWithFormat:@"%.0f",[[NSDate date] timeIntervalSince1970]];
@@ -83,18 +137,33 @@
 }
 
 - (IBAction)startOrStopRecord:(UIButton *)sender {
-    if (_recorder.recording) {
+    if (_multiRecorders.firstObject.recording) {
         
-        [_recorder stop];
-        [_aacFileWriter close];
+//        [_recorder stop];
         
-    }else{          //start
+        for (TFAudioRecorder *recorder in _multiRecorders) {
+            [recorder stop];
+        }
         
-        [_recorder start];
-        _aacFileWriter.filePath = _curRecordPath;
+#if TFUseSystemConverter
+        for (TFAudioFileWriter *writer in _systemConvertWriter) {
+            [writer close];
+        }
+#else
+        for (TFAACFileWriter *writer in _selfConvertWriter) {
+            [writer close];
+        }
+#endif
+        
+    }else{ //start
+        
+//        [_recorder start];
+        for (TFAudioRecorder *recorder in _multiRecorders) {
+            [recorder start];
+        }
     }
     
-    if (_recorder.recording) {
+    if (_multiRecorders.firstObject.recording) {
         [sender setTitle:@"stop" forState:(UIControlStateNormal)];
     }else{
         [sender setTitle:@"start" forState:(UIControlStateNormal)];

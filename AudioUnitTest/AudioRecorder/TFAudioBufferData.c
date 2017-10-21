@@ -9,6 +9,8 @@
 #include <stdio.h>
 #include "TFAudioBufferData.h"
 
+extern void writeNoiseToAudioFile(const char *fName,int mChannels,bool compress_with_m4a);
+
 TFAudioBufferData *TFCreateAudioBufferData(AudioBufferList *bufferList, UInt32 inNumberFrames){
     TFAudioBufferData *bufferData = (TFAudioBufferData*)malloc(sizeof(TFAudioBufferData));
     if (bufferList) bufferData->bufferList = *bufferList;

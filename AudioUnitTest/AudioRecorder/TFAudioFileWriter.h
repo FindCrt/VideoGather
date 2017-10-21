@@ -15,4 +15,6 @@
 
 @property (nonatomic, copy) NSString *filePath;
 
+-(void)close;
+
 @end
