@@ -14,7 +14,7 @@
 #import "TFAudioConvertor.h"
 #import "TFAACFileWriter.h"
 
-#define TFUseSystemConverter    0
+#define TFUseSystemConverter    0       //pcm+ExtAudioFile,ExtAudioFile involve converter of pcm to aac.
 #define WriterCount             10
 
 @interface TFAudioUnitRecordViewController (){
@@ -42,34 +42,134 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+//    [self setupPerformancePipline];  //性能测试
     [self setupRecorder];
 }
 
 -(void)setupRecorder{
-//    _recorder = [[TFAudioRecorder alloc] init];
+    _recorder = [[TFAudioRecorder alloc] init];
     
-//    TFAudioConvertor *converter = [[TFAudioConvertor alloc] init];
-//    converter.outputFormat = kAudioFormatMPEG4AAC;
-//    [_recorder addTarget:converter];
-//    
-//    _aacFileWriter = [[TFAACFileWriter alloc] init];
-//    _aacFileWriter.filePath = [self nextRecordPath];
-//    [converter addTarget:_aacFileWriter];
+    //aac+adts
+    [self setupAacAdtsPipline];
     
-//    _pcmFileWriter = [[TFAudioFileWriter alloc] init];
-//    _pcmFileWriter.filePath = [self nextRecordPath];
-//    _pcmFileWriter.fileType = kAudioFileM4AType;
-//    [_recorder addTarget:_pcmFileWriter];
+    //pcm+caf
+    [self setupPcmCafPipline];
     
+    //performance test: compare pcm+extAudioFile-->aac+m4a with pcm+aac encoder+AudioFile--->aac+adts;
+    [self setupPerformancePipline];
+}
+
+-(NSString *)recordHome{
+    if (!_recordHome) {
+        _recordHome = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES).firstObject stringByAppendingPathComponent:@"audioURecords"];
+        if (![[NSFileManager defaultManager] fileExistsAtPath:_recordHome]) {
+            [[NSFileManager defaultManager] createDirectoryAtPath:_recordHome withIntermediateDirectories:YES attributes:nil error:nil];
+        }
+    }
+
+    return _recordHome;
+}
+
+
+-(NSString *)nextRecordPath{
+    NSString *name = [NSString stringWithFormat:@"%.0f",[[NSDate date] timeIntervalSince1970]];
+    
+    _curRecordPath = [self.recordHome stringByAppendingPathComponent:name];
+    
+    return _curRecordPath;
+}
+
+- (IBAction)showRecordList:(id)sender {
+    TFMediaListViewController *mediaListVC = [[TFMediaListViewController alloc] init];
+    mediaListVC.mediaDir = self.recordHome;
+    
+    mediaListVC.selectHandler = ^(TFMediaData *mediaData){
+        NSLog(@"select audio file %@",mediaData.filename);
+    };
+    
+    [self.navigationController pushViewController:mediaListVC animated:YES];
+}
+
+- (IBAction)startOrStopRecord:(UIButton *)sender {
+    //aac+adts
+    [self aacAdtsStartOrStop:sender];
+    
+    //pcm+caf
+//    [self pcmCafStartOrStop:sender];
+    
+    //performance test: compare pcm+extAudioFile-->aac+m4a with pcm+aac encoder+AudioFile--->aac+adts;
+//    [self performanceTestSartOrStop:sender];
+}
+
+#pragma mark - write aac+adts
+
+-(void)setupAacAdtsPipline{
+    _recorder = [[TFAudioRecorder alloc] init];
+    
+    TFAudioConvertor *converter = [[TFAudioConvertor alloc] init];
+    converter.outputFormat = kAudioFormatMPEG4AAC;
+    [_recorder addTarget:converter];
+    
+    _aacFileWriter = [[TFAACFileWriter alloc] init];
+    _aacFileWriter.filePath = [self nextRecordPath];
+    [converter addTarget:_aacFileWriter];
+
+}
+
+-(void)aacAdtsStartOrStop:(UIButton *)button{
+    if (_recorder.recording) {
+        [_recorder stop];
+        [_aacFileWriter close];
+    }else{
+        [_recorder start];
+    }
+    
+    if (_recorder.recording) {
+        [button setTitle:@"stop" forState:(UIControlStateNormal)];
+    }else{
+        [button setTitle:@"start" forState:(UIControlStateNormal)];
+    }
+}
+
+#pragma mark - write pcm+caf
+
+-(void)setupPcmCafPipline{
+    _recorder = [[TFAudioRecorder alloc] init];
+    
+    _pcmFileWriter = [[TFAudioFileWriter alloc] init];
+    _pcmFileWriter.filePath = [self nextRecordPath];
+    _pcmFileWriter.fileType = kAudioFileCAFType;
+    [_recorder addTarget:_pcmFileWriter];
+}
+
+-(void)pcmCafStartOrStop:(UIButton *)button{
+    if (_recorder.recording) {
+        [_recorder stop];
+        [_pcmFileWriter close];
+    }else{
+        [_recorder start];
+    }
+    
+    if (_recorder.recording) {
+        [button setTitle:@"stop" forState:(UIControlStateNormal)];
+    }else{
+        [button setTitle:@"start" forState:(UIControlStateNormal)];
+    }
+}
+
+#pragma mark - performance test
+
+-(void)setupPerformancePipline{
     _multiRecorders = [[NSMutableArray alloc] init];
     for (int i = 0; i<WriterCount; i++) {
         TFAudioRecorder *recorder = [[TFAudioRecorder alloc] init];
         [_multiRecorders addObject:recorder];
     }
-    [self setupWriters];
+    
+    [self setupPerformanceWriters];
 }
 
--(void)setupWriters{
+-(void)setupPerformanceWriters{
     
 #if TFUseSystemConverter
     _systemConvertWriter = [[NSMutableArray alloc] init];
@@ -105,42 +205,9 @@
 #endif
 }
 
--(NSString *)recordHome{
-    if (!_recordHome) {
-        _recordHome = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES).firstObject stringByAppendingPathComponent:@"audioURecords"];
-        if (![[NSFileManager defaultManager] fileExistsAtPath:_recordHome]) {
-            [[NSFileManager defaultManager] createDirectoryAtPath:_recordHome withIntermediateDirectories:YES attributes:nil error:nil];
-        }
-    }
-
-    return _recordHome;
-}
-
-
--(NSString *)nextRecordPath{
-    NSString *name = [NSString stringWithFormat:@"%.0f",[[NSDate date] timeIntervalSince1970]];
-    
-    _curRecordPath = [self.recordHome stringByAppendingPathComponent:name];
-    
-    return _curRecordPath;
-}
-
-- (IBAction)showRecordList:(id)sender {
-    TFMediaListViewController *mediaListVC = [[TFMediaListViewController alloc] init];
-    mediaListVC.mediaDir = self.recordHome;
-    
-    mediaListVC.selectHandler = ^(TFMediaData *mediaData){
-        NSLog(@"select audio file %@",mediaData.filename);
-    };
-    
-    [self.navigationController pushViewController:mediaListVC animated:YES];
-}
-
-- (IBAction)startOrStopRecord:(UIButton *)sender {
+-(void)performanceTestSartOrStop:(UIButton *)button{
     if (_multiRecorders.firstObject.recording) {
-        
-//        [_recorder stop];
-        
+
         for (TFAudioRecorder *recorder in _multiRecorders) {
             [recorder stop];
         }
@@ -156,19 +223,16 @@
 #endif
         
     }else{ //start
-        
-//        [_recorder start];
         for (TFAudioRecorder *recorder in _multiRecorders) {
             [recorder start];
         }
     }
     
     if (_multiRecorders.firstObject.recording) {
-        [sender setTitle:@"stop" forState:(UIControlStateNormal)];
+        [button setTitle:@"stop" forState:(UIControlStateNormal)];
     }else{
-        [sender setTitle:@"start" forState:(UIControlStateNormal)];
+        [button setTitle:@"start" forState:(UIControlStateNormal)];
     }
-    
 }
 
 @end
