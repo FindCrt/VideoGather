@@ -133,7 +133,7 @@ typedef NS_ENUM(NSInteger, TFAudioEncodeType){
 //                                  sizeof(callbackStruct));
     
     // reset flag to 0
-    flag = 0;
+    flag = 1;
     /*
      we need to tell the audio unit to allocate the render buffer,
      that we can directly write into it.
@@ -171,6 +171,7 @@ typedef NS_ENUM(NSInteger, TFAudioEncodeType){
 
 -(void)stop{
     AudioOutputUnitStop(audioUnit);
+    AudioComponentInstanceDispose(audioUnit);
     
     ExtAudioFileDispose(mAudioFileRef);
     

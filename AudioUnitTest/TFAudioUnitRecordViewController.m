@@ -13,6 +13,7 @@
 #import "TFAudioFileWriter.h"
 #import "TFAudioConvertor.h"
 #import "TFAACFileWriter.h"
+#import "TFAudioUnitPlayer.h"
 
 #define TFUseSystemConverter    0       //pcm+ExtAudioFile,ExtAudioFile involve converter of pcm to aac.
 #define WriterCount             10
@@ -31,6 +32,8 @@
 #else
     NSMutableArray *_selfConvertWriter;
 #endif
+    
+    TFAudioUnitPlayer *_audioPlayer;
 }
 
 @property (nonatomic, copy) NSString *recordHome;
@@ -53,10 +56,10 @@
     [self setupAacAdtsPipline];
     
     //pcm+caf
-    [self setupPcmCafPipline];
+//    [self setupPcmCafPipline];
     
     //performance test: compare pcm+extAudioFile-->aac+m4a with pcm+aac encoder+AudioFile--->aac+adts;
-    [self setupPerformancePipline];
+//    [self setupPerformancePipline];
 }
 
 -(NSString *)recordHome{
@@ -85,6 +88,15 @@
     
     mediaListVC.selectHandler = ^(TFMediaData *mediaData){
         NSLog(@"select audio file %@",mediaData.filename);
+        
+        //play audio file
+        if ([mediaData.fileExtension isEqualToString:@"aac"]) {
+            if (!_audioPlayer) {
+                _audioPlayer = [[TFAudioUnitPlayer alloc] init];
+            }
+            
+            [_audioPlayer playLocalFile:mediaData.filePath];
+        }
     };
     
     [self.navigationController pushViewController:mediaListVC animated:YES];

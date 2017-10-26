@@ -10,9 +10,15 @@
 
 @implementation TFMediaData
 
+-(NSString *)fileExtension{
+    return [_filePath pathExtension];
+}
+
 @end
 
 @implementation TFMediaDataAnalyzer
+
+
 
 +(TFMediaData *)mediaDataForItemAt:(NSString *)filePath{
     

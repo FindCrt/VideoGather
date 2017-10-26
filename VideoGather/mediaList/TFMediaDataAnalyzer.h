@@ -19,6 +19,7 @@
 @property (nonatomic, copy) NSDate *createTime;
 @property (nonatomic, copy) NSDate *modifyTime;
 @property (nonatomic, assign) NSInteger size; //Bytes
+@property (nonatomic, copy) NSString *fileExtension;
 
 //video audio
 @property (nonatomic, assign) NSTimeInterval duration; //seconds

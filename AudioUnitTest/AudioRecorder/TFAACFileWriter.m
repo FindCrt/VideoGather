@@ -41,7 +41,7 @@
 }
 
 -(void)setFilePath:(NSString *)filePath{
-    _filePath = [[filePath stringByDeletingPathExtension] stringByAppendingPathExtension:@"mp4"];
+    _filePath = [[filePath stringByDeletingPathExtension] stringByAppendingPathExtension:@"aac"];
     
 #if TFUseAVAssetWriter
     [self setupWriter];
