@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11542" systemVersion="15G1611" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="dda-7q-ZXJ">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11524"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Navigation Controller-->
+        <scene sceneID="HCS-dN-ZnF">
+            <objects>
+                <navigationController id="dda-7q-ZXJ" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="ash-1f-Cky">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="4z2-IN-1ud" kind="relationship" relationship="rootViewController" id="K66-B2-snL"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="mRM-7g-ZwD" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-372" y="-8"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="sqc-4e-GTJ">
+            <objects>
+                <viewController id="4z2-IN-1ud" customClass="ViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="ttl-lx-gOc"/>
+                        <viewControllerLayoutGuide type="bottom" id="GDa-X0-D9q"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="3ua-iw-gcJ">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="no music" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xah-S4-ley">
+                                <rect key="frame" x="16" y="72" width="343" height="36"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="36" id="3V9-pg-Bcm"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aaI-Fy-hVO">
+                                <rect key="frame" x="165" y="135" width="45" height="30"/>
+                                <color key="backgroundColor" red="1" green="0.51618725809999999" blue="0.17701777530000001" alpha="1" colorSpace="calibratedRGB"/>
+                                <state key="normal" title="record">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="recordOrStop:" destination="4z2-IN-1ud" eventType="touchUpInside" id="RQX-H2-osD"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="xah-S4-ley" firstAttribute="centerX" secondItem="3ua-iw-gcJ" secondAttribute="centerX" id="Mwi-0l-cuL"/>
+                            <constraint firstItem="aaI-Fy-hVO" firstAttribute="centerX" secondItem="3ua-iw-gcJ" secondAttribute="centerX" id="V4j-3N-2Bd"/>
+                            <constraint firstItem="xah-S4-ley" firstAttribute="top" secondItem="ttl-lx-gOc" secondAttribute="bottom" constant="8" id="ccs-gV-oYM"/>
+                            <constraint firstAttribute="leadingMargin" secondItem="xah-S4-ley" secondAttribute="leading" id="ikx-Kb-dl9"/>
+                            <constraint firstItem="aaI-Fy-hVO" firstAttribute="top" secondItem="ttl-lx-gOc" secondAttribute="bottom" constant="71" id="olk-BM-E8I"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="clE-77-nuU">
+                        <barButtonItem key="rightBarButtonItem" title="select music" id="prd-sY-Dxf">
+                            <connections>
+                                <segue destination="DAT-VA-B4V" kind="show" identifier="selectMusic" id="sHC-iC-dCS"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="musicLabel" destination="xah-S4-ley" id="rtl-bj-Pag"/>
+                        <outlet property="recordButton" destination="aaI-Fy-hVO" id="7Kh-r3-80K"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="H7l-wo-zLc" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="325.60000000000002" y="-7.6461769115442282"/>
+        </scene>
+        <!--Music List View Controller-->
+        <scene sceneID="hGj-rW-2Zq">
+            <objects>
+                <tableViewController id="DAT-VA-B4V" customClass="TFMusicListViewController" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="MUR-42-6wZ">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="Uuq-0m-iut">
+                                <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Uuq-0m-iut" id="6rn-0P-XDV">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="DAT-VA-B4V" id="Ae4-I7-LNv"/>
+                            <outlet property="delegate" destination="DAT-VA-B4V" id="Ui7-o4-zvQ"/>
+                        </connections>
+                    </tableView>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="7Ej-El-ELh" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1041" y="-9"/>
+        </scene>
+    </scenes>
+</document>

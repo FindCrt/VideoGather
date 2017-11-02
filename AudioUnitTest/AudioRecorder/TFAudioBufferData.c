@@ -19,8 +19,26 @@ TFAudioBufferData *TFCreateAudioBufferData(AudioBufferList *bufferList, UInt32 i
     return bufferData;
 }
 
+TFAudioBufferData *TFAllocAudioBufferData(AudioStreamBasicDescription audioDesc, UInt32 inNumberFrames){
+    AudioBuffer buffer;
+    int numberSamples = inNumberFrames * audioDesc.mChannelsPerFrame;
+    buffer.mDataByteSize = numberSamples * audioDesc.mBitsPerChannel/8;
+    buffer.mNumberChannels = audioDesc.mChannelsPerFrame;
+    buffer.mData = malloc( buffer.mDataByteSize ); // buffer size
+    
+    AudioBufferList bufferList;
+    bufferList.mNumberBuffers = 1;
+    bufferList.mBuffers[0] = buffer;
+    return TFCreateAudioBufferData(&bufferList, inNumberFrames);
+}
+
 void TFRefAudioBufferData(TFAudioBufferData *bufferData){
     bufferData->refCount = bufferData->refCount + 1;
+}
+
+void TFCopyAudioBufferData(TFAudioBufferData *srcBufferData, TFAudioBufferData *destBufferData){
+    srcBufferData->refCount = srcBufferData->refCount +1;
+    destBufferData = srcBufferData;
 }
 
 void TFUnrefAudioBufferData(TFAudioBufferData *bufferData){

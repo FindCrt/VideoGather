@@ -26,9 +26,11 @@ typedef struct{
 extern "C" {
 #endif
 
-TFAudioBufferData *TFCreateAudioBufferData(AudioBufferList *bufferList, UInt32 inNumberFrames);
-void TFRefAudioBufferData(TFAudioBufferData *bufferData);
-void TFUnrefAudioBufferData(TFAudioBufferData *bufferData);
+    TFAudioBufferData *TFCreateAudioBufferData(AudioBufferList *bufferList, UInt32 inNumberFrames);
+    TFAudioBufferData *TFAllocAudioBufferData(AudioStreamBasicDescription audioDesc, UInt32 inNumberFrames);
+    void TFRefAudioBufferData(TFAudioBufferData *bufferData);
+    void TFCopyAudioBufferData(TFAudioBufferData *srcBufferData, TFAudioBufferData *destBufferData);
+    void TFUnrefAudioBufferData(TFAudioBufferData *bufferData);
 
 #ifdef __cplusplus 
 }

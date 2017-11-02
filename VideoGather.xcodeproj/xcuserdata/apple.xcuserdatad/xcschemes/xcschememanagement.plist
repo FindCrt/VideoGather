@@ -4,6 +4,11 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
+		<key>AudioMusicMixer.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>5</integer>
+		</dict>
 		<key>AudioUnitTest.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
@@ -23,6 +28,11 @@
 			<true/>
 		</dict>
 		<key>1858A3FB1F8B00F900784FC6</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>1858C1F81FAABC2E00DFBAF1</key>
 		<dict>
 			<key>primary</key>
 			<true/>

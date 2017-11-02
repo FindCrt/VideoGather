@@ -65,6 +65,29 @@
 		1858A4421F8B6D3000784FC6 /* TFAudioOutput.m in Sources */ = {isa = PBXBuildFile; fileRef = 1858A4411F8B6D3000784FC6 /* TFAudioOutput.m */; };
 		1858A4461F8B71BB00784FC6 /* TFAudioFileWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 1858A4451F8B71BB00784FC6 /* TFAudioFileWriter.m */; };
 		1858A4491F8B722100784FC6 /* TFAudioCapture.m in Sources */ = {isa = PBXBuildFile; fileRef = 1858A4481F8B722100784FC6 /* TFAudioCapture.m */; };
+		1858C1FD1FAABC2E00DFBAF1 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 1858C1FC1FAABC2E00DFBAF1 /* main.m */; };
+		1858C2001FAABC2E00DFBAF1 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1858C1FF1FAABC2E00DFBAF1 /* AppDelegate.m */; };
+		1858C2031FAABC2E00DFBAF1 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1858C2021FAABC2E00DFBAF1 /* ViewController.m */; };
+		1858C2061FAABC2E00DFBAF1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1858C2041FAABC2E00DFBAF1 /* Main.storyboard */; };
+		1858C2081FAABC2E00DFBAF1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1858C2071FAABC2E00DFBAF1 /* Assets.xcassets */; };
+		1858C20B1FAABC2E00DFBAF1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1858C2091FAABC2E00DFBAF1 /* LaunchScreen.storyboard */; };
+		1858C2121FAABCFC00DFBAF1 /* TFMusicListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1858C2111FAABCFC00DFBAF1 /* TFMusicListViewController.m */; };
+		1858C2141FAABE9400DFBAF1 /* TFMediaDataAnalyzer.m in Sources */ = {isa = PBXBuildFile; fileRef = 1858A4251F8B054800784FC6 /* TFMediaDataAnalyzer.m */; };
+		1858C2151FAAC0C400DFBAF1 /* TFAudioUnitPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 188BE5C51FA01CEB006B1CA3 /* TFAudioUnitPlayer.m */; };
+		1858C2171FAAC0D200DFBAF1 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1858C2161FAAC0D200DFBAF1 /* AudioToolbox.framework */; };
+		1858C21B1FAAC0DE00DFBAF1 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1858C21A1FAAC0DE00DFBAF1 /* CoreAudio.framework */; };
+		1858C21C1FAAC0E600DFBAF1 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 185AC6501F59098400A154C0 /* AVFoundation.framework */; };
+		1858C2231FAAC37F00DFBAF1 /* background.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 1858C21E1FAAC37F00DFBAF1 /* background.mp3 */; };
+		1858C2241FAAC37F00DFBAF1 /* effect2.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 1858C21F1FAAC37F00DFBAF1 /* effect2.mp3 */; };
+		1858C2251FAAC37F00DFBAF1 /* FX084.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 1858C2201FAAC37F00DFBAF1 /* FX084.mp3 */; };
+		1858C2261FAAC37F00DFBAF1 /* LuckyDay.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 1858C2211FAAC37F00DFBAF1 /* LuckyDay.mp3 */; };
+		1858C2271FAAC37F00DFBAF1 /* SmallFile.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 1858C2221FAAC37F00DFBAF1 /* SmallFile.mp3 */; };
+		1858C2281FAAC8B100DFBAF1 /* NSString+convience.m in Sources */ = {isa = PBXBuildFile; fileRef = 185AC6591F590C5400A154C0 /* NSString+convience.m */; };
+		1858C2291FAAF52B00DFBAF1 /* TFAudioRecorder.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1858A4361F8B0A8E00784FC6 /* TFAudioRecorder.mm */; };
+		1858C22A1FAAF52B00DFBAF1 /* TFAudioOutput.m in Sources */ = {isa = PBXBuildFile; fileRef = 1858A4411F8B6D3000784FC6 /* TFAudioOutput.m */; };
+		1858C22B1FAAF52B00DFBAF1 /* TFAudioBufferData.c in Sources */ = {isa = PBXBuildFile; fileRef = 183B50061F90910C00FFCA3F /* TFAudioBufferData.c */; };
+		1858C22E1FAAF56000DFBAF1 /* TFAudioMixer.m in Sources */ = {isa = PBXBuildFile; fileRef = 1858C22D1FAAF56000DFBAF1 /* TFAudioMixer.m */; };
+		1858C2311FAB0D3400DFBAF1 /* TFAudioFileReader.m in Sources */ = {isa = PBXBuildFile; fileRef = 1858C2301FAB0D3400DFBAF1 /* TFAudioFileReader.m */; };
 		18591BBA1F7F3A9200E92646 /* shiliu.png in Resources */ = {isa = PBXBuildFile; fileRef = 18591BB91F7F3A9200E92646 /* shiliu.png */; };
 		18591BD71F7F5CC800E92646 /* TFTextureImageConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = 18591BD61F7F5CC800E92646 /* TFTextureImageConverter.m */; };
 		18591BD91F7F5DE900E92646 /* github.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 18591BD81F7F5DE900E92646 /* github.jpeg */; };
@@ -274,6 +297,31 @@
 		1858A4471F8B722100784FC6 /* TFAudioCapture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFAudioCapture.h; sourceTree = "<group>"; };
 		1858A4481F8B722100784FC6 /* TFAudioCapture.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFAudioCapture.m; sourceTree = "<group>"; };
 		1858A44D1F8B7A0900784FC6 /* TFAudioBufferData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TFAudioBufferData.h; sourceTree = "<group>"; };
+		1858C1F91FAABC2E00DFBAF1 /* AudioMusicMixer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AudioMusicMixer.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		1858C1FC1FAABC2E00DFBAF1 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		1858C1FE1FAABC2E00DFBAF1 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		1858C1FF1FAABC2E00DFBAF1 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		1858C2011FAABC2E00DFBAF1 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		1858C2021FAABC2E00DFBAF1 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		1858C2051FAABC2E00DFBAF1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		1858C2071FAABC2E00DFBAF1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		1858C20A1FAABC2E00DFBAF1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		1858C20C1FAABC2E00DFBAF1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		1858C2101FAABCFC00DFBAF1 /* TFMusicListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFMusicListViewController.h; sourceTree = "<group>"; };
+		1858C2111FAABCFC00DFBAF1 /* TFMusicListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFMusicListViewController.m; sourceTree = "<group>"; };
+		1858C2161FAAC0D200DFBAF1 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		1858C2181FAAC0D900DFBAF1 /* AudioUnit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioUnit.framework; path = System/Library/Frameworks/AudioUnit.framework; sourceTree = SDKROOT; };
+		1858C21A1FAAC0DE00DFBAF1 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
+		1858C21E1FAAC37F00DFBAF1 /* background.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = background.mp3; sourceTree = "<group>"; };
+		1858C21F1FAAC37F00DFBAF1 /* effect2.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = effect2.mp3; sourceTree = "<group>"; };
+		1858C2201FAAC37F00DFBAF1 /* FX084.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = FX084.mp3; sourceTree = "<group>"; };
+		1858C2211FAAC37F00DFBAF1 /* LuckyDay.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = LuckyDay.mp3; sourceTree = "<group>"; };
+		1858C2221FAAC37F00DFBAF1 /* SmallFile.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = SmallFile.mp3; sourceTree = "<group>"; };
+		1858C22C1FAAF56000DFBAF1 /* TFAudioMixer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFAudioMixer.h; sourceTree = "<group>"; };
+		1858C22D1FAAF56000DFBAF1 /* TFAudioMixer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFAudioMixer.m; sourceTree = "<group>"; };
+		1858C22F1FAB0D3400DFBAF1 /* TFAudioFileReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFAudioFileReader.h; sourceTree = "<group>"; };
+		1858C2301FAB0D3400DFBAF1 /* TFAudioFileReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFAudioFileReader.m; sourceTree = "<group>"; };
+		1858C2331FAB121200DFBAF1 /* TFAudioReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFAudioReader.h; sourceTree = "<group>"; };
 		18591BB91F7F3A9200E92646 /* shiliu.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = shiliu.png; path = ../shiliu.png; sourceTree = "<group>"; };
 		18591BD51F7F5CC800E92646 /* TFTextureImageConverter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFTextureImageConverter.h; sourceTree = "<group>"; };
 		18591BD61F7F5CC800E92646 /* TFTextureImageConverter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFTextureImageConverter.m; sourceTree = "<group>"; };
@@ -349,6 +397,16 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		1858C1F61FAABC2E00DFBAF1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1858C21C1FAAC0E600DFBAF1 /* AVFoundation.framework in Frameworks */,
+				1858C21B1FAAC0DE00DFBAF1 /* CoreAudio.framework in Frameworks */,
+				1858C2171FAAC0D200DFBAF1 /* AudioToolbox.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -377,6 +435,7 @@
 			children = (
 				183EF0C41F57C35F00E21DB4 /* VideoGather */,
 				1858A3FD1F8B00F900784FC6 /* AudioUnitTest */,
+				1858C1FA1FAABC2E00DFBAF1 /* AudioMusicMixer */,
 				183EF0C31F57C35F00E21DB4 /* Products */,
 				185AC64F1F59098400A154C0 /* Frameworks */,
 				0085FFDDC989CC1069D0B62B /* Pods */,
@@ -388,6 +447,7 @@
 			children = (
 				183EF0C21F57C35F00E21DB4 /* VideoGather.app */,
 				1858A3FC1F8B00F900784FC6 /* AudioUnitTest.app */,
+				1858C1F91FAABC2E00DFBAF1 /* AudioMusicMixer.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -729,19 +789,15 @@
 		1858A4341F8B0A7D00784FC6 /* AudioRecorder */ = {
 			isa = PBXGroup;
 			children = (
+				1858C2321FAB11F400DFBAF1 /* audioChain */,
 				1858A4351F8B0A8E00784FC6 /* TFAudioRecorder.h */,
 				1858A4361F8B0A8E00784FC6 /* TFAudioRecorder.mm */,
 				1858A43D1F8B6B7400784FC6 /* TFAudioConvertor.h */,
 				1858A43E1F8B6B7400784FC6 /* TFAudioConvertor.m */,
 				1858A4441F8B71BB00784FC6 /* TFAudioFileWriter.h */,
 				1858A4451F8B71BB00784FC6 /* TFAudioFileWriter.m */,
-				1858A4401F8B6D3000784FC6 /* TFAudioOutput.h */,
-				1858A4411F8B6D3000784FC6 /* TFAudioOutput.m */,
-				1858A4431F8B6D3E00784FC6 /* TFAudioInput.h */,
 				1858A4471F8B722100784FC6 /* TFAudioCapture.h */,
 				1858A4481F8B722100784FC6 /* TFAudioCapture.m */,
-				1858A44D1F8B7A0900784FC6 /* TFAudioBufferData.h */,
-				183B50061F90910C00FFCA3F /* TFAudioBufferData.c */,
 				18ED3F2E1F98CE970083F38F /* TFAACFileWriter.h */,
 				18ED3F2F1F98CE970083F38F /* TFAACFileWriter.m */,
 				185AD5E01F9ADA2000898691 /* ExtAudioFileMixer.m */,
@@ -750,6 +806,62 @@
 				185AD5E41F9ADDE500898691 /* ExportAAC.hpp */,
 			);
 			path = AudioRecorder;
+			sourceTree = "<group>";
+		};
+		1858C1FA1FAABC2E00DFBAF1 /* AudioMusicMixer */ = {
+			isa = PBXGroup;
+			children = (
+				1858C21D1FAAC37500DFBAF1 /* music */,
+				1858C1FE1FAABC2E00DFBAF1 /* AppDelegate.h */,
+				1858C1FF1FAABC2E00DFBAF1 /* AppDelegate.m */,
+				1858C2011FAABC2E00DFBAF1 /* ViewController.h */,
+				1858C2021FAABC2E00DFBAF1 /* ViewController.m */,
+				1858C2101FAABCFC00DFBAF1 /* TFMusicListViewController.h */,
+				1858C2111FAABCFC00DFBAF1 /* TFMusicListViewController.m */,
+				1858C22C1FAAF56000DFBAF1 /* TFAudioMixer.h */,
+				1858C22D1FAAF56000DFBAF1 /* TFAudioMixer.m */,
+				1858C1FB1FAABC2E00DFBAF1 /* Supporting Files */,
+				1858C22F1FAB0D3400DFBAF1 /* TFAudioFileReader.h */,
+				1858C2301FAB0D3400DFBAF1 /* TFAudioFileReader.m */,
+			);
+			path = AudioMusicMixer;
+			sourceTree = "<group>";
+		};
+		1858C1FB1FAABC2E00DFBAF1 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				1858C2041FAABC2E00DFBAF1 /* Main.storyboard */,
+				1858C2071FAABC2E00DFBAF1 /* Assets.xcassets */,
+				1858C2091FAABC2E00DFBAF1 /* LaunchScreen.storyboard */,
+				1858C20C1FAABC2E00DFBAF1 /* Info.plist */,
+				1858C1FC1FAABC2E00DFBAF1 /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		1858C21D1FAAC37500DFBAF1 /* music */ = {
+			isa = PBXGroup;
+			children = (
+				1858C21E1FAAC37F00DFBAF1 /* background.mp3 */,
+				1858C21F1FAAC37F00DFBAF1 /* effect2.mp3 */,
+				1858C2201FAAC37F00DFBAF1 /* FX084.mp3 */,
+				1858C2211FAAC37F00DFBAF1 /* LuckyDay.mp3 */,
+				1858C2221FAAC37F00DFBAF1 /* SmallFile.mp3 */,
+			);
+			name = music;
+			sourceTree = "<group>";
+		};
+		1858C2321FAB11F400DFBAF1 /* audioChain */ = {
+			isa = PBXGroup;
+			children = (
+				1858A4401F8B6D3000784FC6 /* TFAudioOutput.h */,
+				1858A4411F8B6D3000784FC6 /* TFAudioOutput.m */,
+				1858A4431F8B6D3E00784FC6 /* TFAudioInput.h */,
+				1858C2331FAB121200DFBAF1 /* TFAudioReader.h */,
+				1858A44D1F8B7A0900784FC6 /* TFAudioBufferData.h */,
+				183B50061F90910C00FFCA3F /* TFAudioBufferData.c */,
+			);
+			name = audioChain;
 			sourceTree = "<group>";
 		};
 		185AC6401F58FF9000A154C0 /* Player */ = {
@@ -776,6 +888,9 @@
 		185AC64F1F59098400A154C0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				1858C21A1FAAC0DE00DFBAF1 /* CoreAudio.framework */,
+				1858C2181FAAC0D900DFBAF1 /* AudioUnit.framework */,
+				1858C2161FAAC0D200DFBAF1 /* AudioToolbox.framework */,
 				1858289C1F5EA8B00088C5C3 /* libiconv.tbd */,
 				1858289A1F5EA8870088C5C3 /* libbz2.tbd */,
 				185828981F5EA82F0088C5C3 /* libz.tbd */,
@@ -878,6 +993,23 @@
 			productReference = 1858A3FC1F8B00F900784FC6 /* AudioUnitTest.app */;
 			productType = "com.apple.product-type.application";
 		};
+		1858C1F81FAABC2E00DFBAF1 /* AudioMusicMixer */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1858C20F1FAABC2E00DFBAF1 /* Build configuration list for PBXNativeTarget "AudioMusicMixer" */;
+			buildPhases = (
+				1858C1F51FAABC2E00DFBAF1 /* Sources */,
+				1858C1F61FAABC2E00DFBAF1 /* Frameworks */,
+				1858C1F71FAABC2E00DFBAF1 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = AudioMusicMixer;
+			productName = AudioMusicMixer;
+			productReference = 1858C1F91FAABC2E00DFBAF1 /* AudioMusicMixer.app */;
+			productType = "com.apple.product-type.application";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -893,6 +1025,11 @@
 						ProvisioningStyle = Automatic;
 					};
 					1858A3FB1F8B00F900784FC6 = {
+						CreatedOnToolsVersion = 8.1;
+						DevelopmentTeam = UML9BQURX9;
+						ProvisioningStyle = Automatic;
+					};
+					1858C1F81FAABC2E00DFBAF1 = {
 						CreatedOnToolsVersion = 8.1;
 						DevelopmentTeam = UML9BQURX9;
 						ProvisioningStyle = Automatic;
@@ -914,6 +1051,7 @@
 			targets = (
 				183EF0C11F57C35F00E21DB4 /* VideoGather */,
 				1858A3FB1F8B00F900784FC6 /* AudioUnitTest */,
+				1858C1F81FAABC2E00DFBAF1 /* AudioMusicMixer */,
 			);
 		};
 /* End PBXProject section */
@@ -951,6 +1089,21 @@
 				1858A40E1F8B00F900784FC6 /* LaunchScreen.storyboard in Resources */,
 				1858A40B1F8B00F900784FC6 /* Assets.xcassets in Resources */,
 				1858A4091F8B00F900784FC6 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1858C1F71FAABC2E00DFBAF1 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1858C2261FAAC37F00DFBAF1 /* LuckyDay.mp3 in Resources */,
+				1858C2231FAAC37F00DFBAF1 /* background.mp3 in Resources */,
+				1858C2251FAAC37F00DFBAF1 /* FX084.mp3 in Resources */,
+				1858C20B1FAABC2E00DFBAF1 /* LaunchScreen.storyboard in Resources */,
+				1858C2271FAAC37F00DFBAF1 /* SmallFile.mp3 in Resources */,
+				1858C2241FAAC37F00DFBAF1 /* effect2.mp3 in Resources */,
+				1858C2081FAABC2E00DFBAF1 /* Assets.xcassets in Resources */,
+				1858C2061FAABC2E00DFBAF1 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1062,6 +1215,25 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		1858C1F51FAABC2E00DFBAF1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1858C2291FAAF52B00DFBAF1 /* TFAudioRecorder.mm in Sources */,
+				1858C22A1FAAF52B00DFBAF1 /* TFAudioOutput.m in Sources */,
+				1858C22B1FAAF52B00DFBAF1 /* TFAudioBufferData.c in Sources */,
+				1858C22E1FAAF56000DFBAF1 /* TFAudioMixer.m in Sources */,
+				1858C2281FAAC8B100DFBAF1 /* NSString+convience.m in Sources */,
+				1858C2311FAB0D3400DFBAF1 /* TFAudioFileReader.m in Sources */,
+				1858C2151FAAC0C400DFBAF1 /* TFAudioUnitPlayer.m in Sources */,
+				1858C2141FAABE9400DFBAF1 /* TFMediaDataAnalyzer.m in Sources */,
+				1858C2121FAABCFC00DFBAF1 /* TFMusicListViewController.m in Sources */,
+				1858C2031FAABC2E00DFBAF1 /* ViewController.m in Sources */,
+				1858C2001FAABC2E00DFBAF1 /* AppDelegate.m in Sources */,
+				1858C1FD1FAABC2E00DFBAF1 /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
@@ -1085,6 +1257,22 @@
 			isa = PBXVariantGroup;
 			children = (
 				1858A40D1F8B00F900784FC6 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		1858C2041FAABC2E00DFBAF1 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				1858C2051FAABC2E00DFBAF1 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		1858C2091FAABC2E00DFBAF1 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				1858C20A1FAABC2E00DFBAF1 /* Base */,
 			);
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
@@ -1250,6 +1438,30 @@
 			};
 			name = Release;
 		};
+		1858C20D1FAABC2E00DFBAF1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = UML9BQURX9;
+				INFOPLIST_FILE = AudioMusicMixer/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = shiwei.AudioMusicMixer;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		1858C20E1FAABC2E00DFBAF1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = UML9BQURX9;
+				INFOPLIST_FILE = AudioMusicMixer/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = shiwei.AudioMusicMixer;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -1276,6 +1488,15 @@
 			buildConfigurations = (
 				1858A4101F8B00F900784FC6 /* Debug */,
 				1858A4111F8B00F900784FC6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1858C20F1FAABC2E00DFBAF1 /* Build configuration list for PBXNativeTarget "AudioMusicMixer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1858C20D1FAABC2E00DFBAF1 /* Debug */,
+				1858C20E1FAABC2E00DFBAF1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

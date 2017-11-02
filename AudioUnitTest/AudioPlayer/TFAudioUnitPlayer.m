@@ -38,12 +38,10 @@ static UInt32 recordAudioElement = 1;   //接收硬件数据的组件编号
     _filePath = filePath;
     
     //plan1: AAC,ExtAudioFile
-//    [self setupExtAudioFileReader];
+    [self setupExtAudioFileReader];
     
     //plan2: AAC,AudioFileStream
-    [self setupAudioFileStream];
-    
-    
+//    [self setupAudioFileStream];
 }
 
 -(void)stop{
@@ -203,7 +201,8 @@ OSStatus playAudioBufferCallback(	void *							inRefCon,
     
     TFAudioUnitPlayer *player = (__bridge TFAudioUnitPlayer *)(inRefCon);
     
-    return [player readFrames:1024 toBufferList:ioData];
+    UInt32 framesPerPacket = player->fileDesc.mFramesPerPacket;
+    return [player readFrames:framesPerPacket toBufferList:ioData];
 }
 
 -(void)playPCMBuffer:(void *)buffer{
