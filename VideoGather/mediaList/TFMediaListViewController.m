@@ -44,7 +44,7 @@ static NSString *mediaCellIdentifier = @"MediaCell";
 
 -(void)loadMediaItems{
     NSError *error = nil;
-    NSArray *items = [[NSFileManager defaultManager] contentsOfDirectoryAtURL:[NSURL URLWithString:self.mediaDir] includingPropertiesForKeys:nil options:0 error:&error];
+    NSArray *items = [[NSFileManager defaultManager] contentsOfDirectoryAtURL:[NSURL fileURLWithPath:self.mediaDir] includingPropertiesForKeys:nil options:0 error:&error];
     if (error) {
         NSLog(@"fetch contents at (%@) error:\n%@",self.mediaDir, error);
         return;

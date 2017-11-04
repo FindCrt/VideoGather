@@ -57,13 +57,22 @@
                                     <action selector="recordOrStop:" destination="4z2-IN-1ud" eventType="touchUpInside" id="RQX-H2-osD"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3vV-2n-XQh">
+                                <rect key="frame" x="147" y="206" width="81" height="30"/>
+                                <state key="normal" title="show mixed"/>
+                                <connections>
+                                    <action selector="showMixedList:" destination="4z2-IN-1ud" eventType="touchUpInside" id="TcR-XG-riP"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="xah-S4-ley" firstAttribute="centerX" secondItem="3ua-iw-gcJ" secondAttribute="centerX" id="Mwi-0l-cuL"/>
                             <constraint firstItem="aaI-Fy-hVO" firstAttribute="centerX" secondItem="3ua-iw-gcJ" secondAttribute="centerX" id="V4j-3N-2Bd"/>
+                            <constraint firstItem="3vV-2n-XQh" firstAttribute="top" secondItem="aaI-Fy-hVO" secondAttribute="bottom" constant="41" id="WVC-0S-djV"/>
                             <constraint firstItem="xah-S4-ley" firstAttribute="top" secondItem="ttl-lx-gOc" secondAttribute="bottom" constant="8" id="ccs-gV-oYM"/>
                             <constraint firstAttribute="leadingMargin" secondItem="xah-S4-ley" secondAttribute="leading" id="ikx-Kb-dl9"/>
+                            <constraint firstItem="3vV-2n-XQh" firstAttribute="centerX" secondItem="3ua-iw-gcJ" secondAttribute="centerX" id="iwQ-zW-ckp"/>
                             <constraint firstItem="aaI-Fy-hVO" firstAttribute="top" secondItem="ttl-lx-gOc" secondAttribute="bottom" constant="71" id="olk-BM-E8I"/>
                         </constraints>
                     </view>
@@ -96,7 +105,7 @@
                                 <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Uuq-0m-iut" id="6rn-0P-XDV">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
                             </tableViewCell>

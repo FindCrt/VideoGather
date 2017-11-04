@@ -51,13 +51,15 @@
 }
 
 -(void)selectMusic:(UIButton *)button{
-    NSInteger index = button.tag - TFPlayButtonTag;
+    NSInteger index = button.tag - TFSelectButtonTag;
     
     TFMediaData *mediaData = _musicList[index];
     
     if (_selectMusicConpletionHandler) {
         _selectMusicConpletionHandler(mediaData);
     }
+    
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 -(void)dealloc{

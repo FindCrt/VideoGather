@@ -201,8 +201,8 @@ OSStatus playAudioBufferCallback(	void *							inRefCon,
     
     TFAudioUnitPlayer *player = (__bridge TFAudioUnitPlayer *)(inRefCon);
     
-    UInt32 framesPerPacket = player->fileDesc.mFramesPerPacket;
-    return [player readFrames:framesPerPacket toBufferList:ioData];
+//    UInt32 framesPerPacket = player->fileDesc.mFramesPerPacket;
+    return [player readFrames:1024 toBufferList:ioData];
 }
 
 -(void)playPCMBuffer:(void *)buffer{

@@ -34,9 +34,9 @@
         //TODO:如果处理时间太长，有丢帧风险
         //一个主动输入源，只对应audioBuffer1,且只取第一个输入源
         if (inputIndex == 0) {
-            TFCopyAudioBufferData(bufferData, audioBuffer1);
+            TFCopyAudioBufferData(&bufferData, &audioBuffer1);
             
-            [self pullAudioSource];
+            [self pullBufferFromAudioSource];
             [self mixAudioBuffer];
         }
         
@@ -51,9 +51,7 @@
     }
 }
 
--(TFAudioBufferData *)alloc
-
--(void)fullFromAudioSource{
+-(void)pullBufferFromAudioSource{
     NSAssert(_pullAudioSource, @"缺少静态音频数据源");
 
     //假设采样率和声道数一致，两者frame数相同
@@ -64,36 +62,55 @@
         audioBuffer2 = TFAllocAudioBufferData(self.audioDesc, framesNum);
         self.bufferData = TFAllocAudioBufferData(self.audioDesc, framesNum);
     }
+    memset(audioBuffer2->bufferList.mBuffers[0].mData, 0, audioBuffer2->bufferList.mBuffers[0].mDataByteSize);
     [_pullAudioSource readFrames:framesNum toBufferData:audioBuffer2];
 }
 
 -(void)mixAudioBuffer{
+    
+    memset(self.bufferData->bufferList.mBuffers[0].mData, 0, self.bufferData->bufferList.mBuffers[0].mDataByteSize);
     
     mixBuffer1(audioBuffer1->bufferList.mBuffers[0].mData,
                audioBuffer1->inNumberFrames,
                audioBuffer2->bufferList.mBuffers[0].mData,
                audioBuffer2->inNumberFrames,
                self.bufferData->bufferList.mBuffers[0].mData);
+    
+    TFUnrefAudioBufferData(audioBuffer1);
+    
+    NSLog(@">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>mix completed!");
+    
+    [self transportAudioBuffersToNext];
 }
 
-void mixBuffer1(void *buffer1, UInt32 frameCount1, SInt16 *buffer2 ,UInt32 frameCount2, SInt16 *outBuffer){
+int printInterval = 100;
+int count = 0;
+void mixBuffer1(SInt16 *buffer1, UInt32 frameCount1, SInt16 *buffer2 ,UInt32 frameCount2, SInt16 *outBuffer){
     
-    UInt8 bitOffset = 8 * sizeof(AudioSampleType);
+    UInt8 bitOffset = 8 * sizeof(SInt16);
     UInt64 bitMax = (UInt64) (pow(2, bitOffset));
     UInt64 bitMid = bitMax/2;
-    
+
     UInt32 frameCount = MAX(frameCount1, frameCount2);
     UInt32 minFrames = MIN(frameCount1, frameCount2);
     
-    UInt32 length = frameCount * 2;
-    for (int j =0; j < length; j++)
+    for (int i = 0; i< frameCount1; i++) {
+        *(outBuffer+i) = *(buffer2+i);
+    }
+    
+    return;
+    
+    UInt32 length = frameCount;
+    for (int j = 0; j < length; j++)
     {
-        if (j/2 < minFrames)
+        if (j < minFrames)
         {
             SInt32 sValue =0;
             
-            SInt16 value1 = (SInt16)*(buffer1+j);   //-32768 ~ 32767
-            SInt16 value2 = (SInt16)*(buffer2+j);   //-32768 ~ 32767
+            SInt16 value1 = *(buffer1+j);   //-32768 ~ 32767
+            SInt16 value2 = *(buffer2+j);   //-32768 ~ 32767
+            
+            
             
             SInt8 sign1 = (value1 == 0)? 0 : abs(value1)/value1;
             SInt8 sign2 = (value2== 0)? 0 : abs(value2)/value2;
@@ -135,6 +152,14 @@ void mixBuffer1(void *buffer1, UInt32 frameCount1, SInt16 *buffer2 ,UInt32 frame
             }
             
             *(outBuffer +j) = sValue;
+//            *(outBuffer +j) = value2;
+            
+            count++;
+            if (count % printInterval == 0) {
+                NSLog(@"(%d)recordValue:%d, musicValue: %d, result: %d, changed:%d",j,value1, value2, sValue, abs(sValue-value2));
+                count = 0;
+            }
+            
         }
         else{
             if (frameCount == frameCount1)

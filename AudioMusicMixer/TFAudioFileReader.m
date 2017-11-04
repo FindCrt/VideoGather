@@ -19,6 +19,17 @@
 
 @implementation TFAudioFileReader
 
+-(void)setFilePath:(NSString *)filePath{
+    if (![[NSFileManager defaultManager] fileExistsAtPath:filePath isDirectory:nil]) {
+        NSLog(@"audio play: no file at: %@",filePath);
+        return;
+    }
+    
+    _filePath = filePath;
+    
+    [self setupExtAudioFileReader];
+}
+
 -(void)setupExtAudioFileReader{
     
     NSURL *fileURL = [NSURL fileURLWithPath:_filePath];
@@ -60,10 +71,12 @@ fail:
 
 -(OSStatus)readFrames:(UInt32)framesNum toBufferData:(TFAudioBufferData *)bufferData{
     
+    NSAssert(audioFile, @"audioFileReader file uninstall!");
+    
     OSStatus status = ExtAudioFileRead(audioFile, &framesNum, &(bufferData->bufferList));
     bufferData->inNumberFrames = framesNum; //framesNum输入和输出可能不一致，输出是实际读取到的frame数
     
-    TFCheckStatusUnReturn(status, @"ExtAudioFile set client format")
+    TFCheckStatusUnReturn(status, @"ExtAudioFile read")
     
     return status;
 }

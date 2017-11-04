@@ -107,6 +107,10 @@
 		1861D6651F5AA1950074D8B9 /* TFCoreImageDisplayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1861D6641F5AA1950074D8B9 /* TFCoreImageDisplayView.m */; };
 		1861D6671F5AA1A50074D8B9 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1861D6661F5AA1A50074D8B9 /* GLKit.framework */; };
 		1861D66A1F5AAAD00074D8B9 /* CIImage+Filter.m in Sources */ = {isa = PBXBuildFile; fileRef = 1861D6691F5AAAD00074D8B9 /* CIImage+Filter.m */; };
+		187625251FABF7B700771635 /* TFAudioFileWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 1858A4451F8B71BB00784FC6 /* TFAudioFileWriter.m */; };
+		187625261FABF9FD00771635 /* TFMediaListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1858A4271F8B054800784FC6 /* TFMediaListViewController.m */; };
+		187625271FABFA0B00771635 /* TFMediaCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1858A4231F8B054800784FC6 /* TFMediaCell.m */; };
+		187625281FABFA1700771635 /* TFVideoProcessor.m in Sources */ = {isa = PBXBuildFile; fileRef = 185AC65C1F590DCB00A154C0 /* TFVideoProcessor.m */; };
 		1878ACBE1F67D25000007820 /* LFLiveKitAnalyze.md in Resources */ = {isa = PBXBuildFile; fileRef = 1878ACBD1F67D25000007820 /* LFLiveKitAnalyze.md */; };
 		188BE5C61FA01CEB006B1CA3 /* TFAudioUnitPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 188BE5C51FA01CEB006B1CA3 /* TFAudioUnitPlayer.m */; };
 		18ED3F301F98CE970083F38F /* TFAACFileWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 18ED3F2F1F98CE970083F38F /* TFAACFileWriter.m */; };
@@ -1219,6 +1223,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				187625281FABFA1700771635 /* TFVideoProcessor.m in Sources */,
+				187625271FABFA0B00771635 /* TFMediaCell.m in Sources */,
+				187625261FABF9FD00771635 /* TFMediaListViewController.m in Sources */,
+				187625251FABF7B700771635 /* TFAudioFileWriter.m in Sources */,
 				1858C2291FAAF52B00DFBAF1 /* TFAudioRecorder.mm in Sources */,
 				1858C22A1FAAF52B00DFBAF1 /* TFAudioOutput.m in Sources */,
 				1858C22B1FAAF52B00DFBAF1 /* TFAudioBufferData.c in Sources */,

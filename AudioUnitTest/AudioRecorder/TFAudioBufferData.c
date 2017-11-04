@@ -36,15 +36,17 @@ void TFRefAudioBufferData(TFAudioBufferData *bufferData){
     bufferData->refCount = bufferData->refCount + 1;
 }
 
-void TFCopyAudioBufferData(TFAudioBufferData *srcBufferData, TFAudioBufferData *destBufferData){
-    srcBufferData->refCount = srcBufferData->refCount +1;
-    destBufferData = srcBufferData;
+void TFCopyAudioBufferData(TFAudioBufferData **srcBufferData, TFAudioBufferData **destBufferData){
+    (*srcBufferData)->refCount = (*srcBufferData)->refCount +1;
+    *destBufferData = *srcBufferData;
 }
 
 void TFUnrefAudioBufferData(TFAudioBufferData *bufferData){
     
     bufferData->refCount = bufferData->refCount - 1;
     if (bufferData->refCount == 0) {
+        
+//        printf("free buffer data\n");
         free(bufferData);
     }
 }

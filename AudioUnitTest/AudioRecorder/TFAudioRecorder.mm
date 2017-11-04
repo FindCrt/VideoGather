@@ -251,6 +251,8 @@ static OSStatus recordingCallback(void *inRefCon,
     audioRecorder.bufferData = TFCreateAudioBufferData(&bufferList, inNumberFrames);
     
     [audioRecorder transportAudioBuffersToNext];
+    
+    TFUnrefAudioBufferData(audioRecorder.bufferData);
 
     return noErr;
 }
