@@ -26,6 +26,13 @@ typedef NS_ENUM(NSInteger, TFAudioMixerSourceType){
 
 @property (nonatomic, strong) id<TFAudioReader> pullAudioSource;
 
+@property (nonatomic, strong) id<TFAudioReader> pullAudioSource2;
+
 @property (nonatomic, assign) TFAudioMixerSourceType sourceType;
+
+-(void)start;
+-(void)stop;
+
+@property (nonatomic, assign) BOOL runing;
 
 @end

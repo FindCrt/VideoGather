@@ -6,21 +6,38 @@
 //  Copyright © 2017年 shiwei. All rights reserved.
 //
 
+/*
+ * 1. 采样率率不同,合成不了
+ * 2. 取值错误，*(xxx+1)写成了*xxx+1
+ *
+ */
+
 #import "TFAudioMixer.h"
+
+#define TFAudioSourcePullTimePerSecond   50
 
 @interface TFAudioMixer (){
     TFAudioBufferData *audioBuffer1;
     TFAudioBufferData *audioBuffer2;
+    
+    BOOL _shouldMix;
 }
 
 @end
 
 @implementation TFAudioMixer
 
+//call by push audio source
 -(void)setAudioDesc:(AudioStreamBasicDescription)audioDesc{
     [super setAudioDesc:audioDesc];
+
     
-    
+    if (self.sourceType == TFAudioMixerSourceTypeOnePushOnePull &&
+        [_pullAudioSource outputDesc].mSampleRate != audioDesc.mSampleRate) {
+        
+        NSLog(@"override pullAudioSource's sampleRate");
+        [_pullAudioSource setDesireSampleRate:audioDesc.mSampleRate];
+    }
 }
 
 -(void)receiveNewAudioBuffers:(TFAudioBufferData *)bufferData{
@@ -28,6 +45,8 @@
 }
 
 -(void)receiveNewAudioBuffers:(TFAudioBufferData *)bufferData inputIndex:(NSInteger)inputIndex{
+    
+    NSAssert(self.sourceType != TFAudioMixerSourceTypeTwoPull, @"with sourceType of two pull,mix don't receive audio buffer");
     
     if (self.sourceType == TFAudioMixerSourceTypeOnePushOnePull) {
         
@@ -51,19 +70,17 @@
     }
 }
 
--(void)pullBufferFromAudioSource{
-    NSAssert(_pullAudioSource, @"缺少静态音频数据源");
-
-    //假设采样率和声道数一致，两者frame数相同
-    UInt32 framesNum = audioBuffer1->inNumberFrames;
-    
-    if (!audioBuffer2 && !self.bufferData) {
-        
-        audioBuffer2 = TFAllocAudioBufferData(self.audioDesc, framesNum);
-        self.bufferData = TFAllocAudioBufferData(self.audioDesc, framesNum);
+-(void)start{
+    if (self.sourceType == TFAudioMixerSourceTypeTwoPull) {
+        _shouldMix = YES;
+        [self startAudioSourcePullLoop];
     }
-    memset(audioBuffer2->bufferList.mBuffers[0].mData, 0, audioBuffer2->bufferList.mBuffers[0].mDataByteSize);
-    [_pullAudioSource readFrames:framesNum toBufferData:audioBuffer2];
+}
+
+-(void)stop{
+    if (self.sourceType == TFAudioMixerSourceTypeTwoPull) {
+        _shouldMix = NO;
+    }
 }
 
 -(void)mixAudioBuffer{
@@ -78,10 +95,10 @@
     
     TFUnrefAudioBufferData(audioBuffer1);
     
-    NSLog(@">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>mix completed!");
-    
     [self transportAudioBuffersToNext];
 }
+
+#pragma mark - mix functions
 
 int printInterval = 100;
 int count = 0;
@@ -94,12 +111,6 @@ void mixBuffer1(SInt16 *buffer1, UInt32 frameCount1, SInt16 *buffer2 ,UInt32 fra
     UInt32 frameCount = MAX(frameCount1, frameCount2);
     UInt32 minFrames = MIN(frameCount1, frameCount2);
     
-    for (int i = 0; i< frameCount1; i++) {
-        *(outBuffer+i) = *(buffer2+i);
-    }
-    
-    return;
-    
     UInt32 length = frameCount;
     for (int j = 0; j < length; j++)
     {
@@ -107,9 +118,11 @@ void mixBuffer1(SInt16 *buffer1, UInt32 frameCount1, SInt16 *buffer2 ,UInt32 fra
         {
             SInt32 sValue =0;
             
+            //record voice is too low
+//            *(buffer1+j) <<= 8;
+            
             SInt16 value1 = *(buffer1+j);   //-32768 ~ 32767
             SInt16 value2 = *(buffer2+j);   //-32768 ~ 32767
-            
             
             
             SInt8 sign1 = (value1 == 0)? 0 : abs(value1)/value1;
@@ -175,6 +188,73 @@ void mixBuffer1(SInt16 *buffer1, UInt32 frameCount1, SInt16 *buffer2 ,UInt32 fra
         }
     }
 
+}
+
+#pragma mark - one pull one push
+
+-(void)pullBufferFromAudioSource{
+    NSAssert(_pullAudioSource, @"缺少静态音频数据源");
+    
+    //假设采样率和声道数一致，两者frame数相同
+    UInt32 framesNum = audioBuffer1->inNumberFrames;
+    
+    if (!audioBuffer2 && !self.bufferData) {
+        
+        audioBuffer2 = TFAllocAudioBufferData(self.audioDesc, framesNum);
+        self.bufferData = TFAllocAudioBufferData(self.audioDesc, framesNum);
+    }
+    memset(audioBuffer2->bufferList.mBuffers[0].mData, 0, audioBuffer2->bufferList.mBuffers[0].mDataByteSize);
+    [_pullAudioSource readFrames:&framesNum toBufferData:audioBuffer2];
+}
+
+#pragma mark - pull two 
+
+-(void)startAudioSourcePullLoop{
+    
+    NSAssert(_pullAudioSource && _pullAudioSource2, @"Mixer must has two pullAudioSource when it's sourceType is TFAudioMixerSourceTypeTwoPull!");
+    
+    //除了采样率，其他都按照“s16单声道的PCM”设置
+    if ([_pullAudioSource outputDesc].mSampleRate != [_pullAudioSource2 outputDesc].mSampleRate) {
+        Float32 maxSampleRate = MAX([_pullAudioSource outputDesc].mSampleRate, [_pullAudioSource2 outputDesc].mSampleRate);
+        [_pullAudioSource setDesireSampleRate:maxSampleRate];
+        [_pullAudioSource2 setDesireSampleRate:maxSampleRate];
+        
+        NSLog(@"maxSampleRate %.0f",maxSampleRate);
+    }
+    
+    _runing = YES;
+    
+    //set audio desc
+    [self setAudioDesc:[_pullAudioSource outputDesc]];
+    
+    //plan1: dont care pull rate
+    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+        
+        UInt32 framesNum1 = 1024, framesNum2 = framesNum1;
+        audioBuffer1 = TFAllocAudioBufferData(self.audioDesc, framesNum1);
+        audioBuffer2 = TFAllocAudioBufferData(self.audioDesc, framesNum2);
+        
+        self.bufferData = TFAllocAudioBufferData(self.audioDesc, framesNum1);
+        
+        while (framesNum1 > 0 && framesNum2 > 0 && _shouldMix) {
+            
+            memset(audioBuffer1->bufferList.mBuffers[0].mData, 0, audioBuffer1->bufferList.mBuffers[0].mDataByteSize);
+            memset(audioBuffer2->bufferList.mBuffers[0].mData, 0, audioBuffer2->bufferList.mBuffers[0].mDataByteSize);
+            
+            [_pullAudioSource readFrames:&framesNum1 toBufferData:audioBuffer1];
+            [_pullAudioSource2 readFrames:&framesNum2 toBufferData:audioBuffer2];
+            
+            [self mixAudioBuffer];
+        }
+        
+        _runing = NO;
+        _shouldMix = NO;
+
+    });
+    
+    //plan2: stable pull rate
+    
+    
 }
 
 @end

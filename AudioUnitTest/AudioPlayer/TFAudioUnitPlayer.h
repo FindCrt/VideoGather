@@ -13,10 +13,14 @@
 
 @interface TFAudioUnitPlayer : NSObject
 
+@property (nonatomic, assign, readonly) BOOL playing;
+
 -(void)playLocalFile:(NSString *)filePath;
 
 -(void)playPCMBuffer:(void *)buffer;
 
 -(void)stop;
+
+@property (nonatomic, assign) BOOL repeatPlay;
 
 @end

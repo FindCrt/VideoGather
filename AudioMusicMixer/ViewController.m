@@ -18,11 +18,23 @@
 #define SimultaneousRecordAndMix    1
 #define MixPcmData  1
 
+#define TestTwoFileMix  1
+#define TestOneFileAndRecordVoice    0
+
 @interface ViewController (){
-    TFMediaData *_selectedMusic;
     
-    TFAudioRecorder *_recorder;
+    TFMediaData *_selectedMusic;
     TFAudioFileReader *_fileReader;
+    
+#if TestTwoFileMix
+    TFMediaData *_selectedMusic2;
+    TFAudioFileReader *_fileReader2;
+#endif
+    
+#if TestOneFileAndRecordVoice
+    TFAudioRecorder *_recorder;
+#endif
+
     TFAudioMixer *_mixer;
     TFAudioFileWriter *_writer;
     
@@ -48,28 +60,45 @@
     if ([segue.identifier isEqualToString:@"selectMusic"]) {
         TFMusicListViewController *destVC = segue.destinationViewController;
         destVC.selectMusicConpletionHandler = ^(TFMediaData *music){
-            _selectedMusic = music;
-            _musicLabel.text = music.filename;
             
+            
+            if (!_selectedMusic) {
+                _selectedMusic = music;
+                _musicLabel.text = music.filename;
+            }else{
+                _selectedMusic2 = music;
+                _musicLabel.text = music.filename;
+            }
         };
     }
+}
+
+-(BOOL)mixRuning{
+#if TestTwoFileMix
+    return _mixer.runing;
+#endif
+    
+#if TestOneFileAndRecordVoice
+    return _recorder.recording
+#endif
 }
 
 - (IBAction)recordOrStop:(UIButton *)button {
     //TODO:先获取麦克风权限
     
-    if (_recorder.recording) {
+    if ([self mixRuning]) {
         
+#if TestOneFileAndRecordVoice
         [_recorder stop];
-        [_writer close];
+#endif
         
-        [button setTitle:@"record" forState:(UIControlStateNormal)];
+#if TestTwoFileMix
+        [_mixer stop];
+#endif
+        [_writer close];
         
     }else{
         _mixer = [[TFAudioMixer alloc] init];
-        
-        _recorder = [[TFAudioRecorder alloc] init];
-        [_recorder addTarget:_mixer inputIndex:0];
         
         _fileReader = [[TFAudioFileReader alloc] init];
         _fileReader.filePath = _selectedMusic.filePath;
@@ -80,9 +109,27 @@
         _writer.fileType = kAudioFileCAFType;
         [_mixer addTarget:_writer];
         
+#if TestOneFileAndRecordVoice
+        _recorder = [[TFAudioRecorder alloc] init];
+        [_recorder addTarget:_mixer inputIndex:0];
         [_recorder start];
+#endif
         
+#if TestTwoFileMix
+        _fileReader2= [[TFAudioFileReader alloc] init];
+        _fileReader2.filePath = _selectedMusic2.filePath;
+        _mixer.pullAudioSource2 = _fileReader2;
+        
+        _mixer.sourceType = TFAudioMixerSourceTypeTwoPull;
+        [_mixer start];
+#endif
+        
+    }
+    
+    if ([self mixRuning]) {
         [button setTitle:@"stop" forState:(UIControlStateNormal)];
+    }else{
+        [button setTitle:@"run" forState:(UIControlStateNormal)];
     }
     
 }
@@ -118,7 +165,7 @@
             if (!_audioPlayer) {
                 _audioPlayer = [[TFAudioUnitPlayer alloc] init];
             }
-            
+            NSLog(@"play mixed");
             [_audioPlayer playLocalFile:mediaData.filePath];
         }
     };

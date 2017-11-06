@@ -14,8 +14,12 @@
 
 @interface TFAudioFileReader : NSObject<TFAudioReader>
 
+@property (nonatomic, assign, readonly) BOOL readAviable;
+
 @property (nonatomic, copy) NSString *filePath;
 
 @property (nonatomic, assign, readonly) AudioStreamBasicDescription outputDesc;
+
+@property (nonatomic, assign) BOOL isRepeat;
 
 @end

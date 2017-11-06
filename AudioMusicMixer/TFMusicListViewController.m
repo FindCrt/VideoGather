@@ -33,6 +33,7 @@
     }
     
     audioPlayer = [[TFAudioUnitPlayer alloc] init];
+    audioPlayer.repeatPlay = YES;
 }
 
 -(void)viewWillDisappear:(BOOL)animated{
@@ -45,8 +46,6 @@
     NSInteger index = button.tag - TFPlayButtonTag;
     
     TFMediaData *mediaData = _musicList[index];
-    
-    
     [audioPlayer playLocalFile:mediaData.filePath];
 }
 

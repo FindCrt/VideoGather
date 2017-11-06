@@ -37,6 +37,10 @@ static UInt32 recordAudioElement = 1;   //接收硬件数据的组件编号
     
     _filePath = filePath;
     
+    if (_playing) {
+        [self stop];
+    }
+    
     //plan1: AAC,ExtAudioFile
     [self setupExtAudioFileReader];
     
@@ -48,18 +52,27 @@ static UInt32 recordAudioElement = 1;   //接收硬件数据的组件编号
     
     if (audioFile) {
         ExtAudioFileDispose(audioFile);
+        audioFile = nil;
     }
     
     if (audioUnit) {
         AudioOutputUnitStop(audioUnit);
         
         AudioComponentInstanceDispose(audioUnit);
+        audioUnit = nil;
     }
+    
+    _playing = NO;
 }
 
 #pragma mark - Ext audio file
 
 -(void)setupExtAudioFileReader{
+    
+    if (audioFile) {
+        ExtAudioFileDispose(audioFile);
+        audioFile = nil;
+    }
     
     NSURL *fileURL = [NSURL fileURLWithPath:_filePath];
     OSStatus status = ExtAudioFileOpenURL((__bridge CFURLRef)fileURL, &audioFile);
@@ -100,10 +113,27 @@ fail:
     audioFile = nil;
 }
 
--(OSStatus)readFrames:(UInt32)framesNum toBufferList:(AudioBufferList *)bufferList{
-    OSStatus status = ExtAudioFileRead(audioFile, &framesNum, bufferList);
+-(OSStatus)readFrames:(UInt32 *)framesNum toBufferList:(AudioBufferList *)bufferList{
+    if (audioFile == nil) {
+        *framesNum = 0;
+        return -1;
+    }
+    OSStatus status = ExtAudioFileRead(audioFile, framesNum, bufferList);
+    if (*framesNum <= 0) {
+        
+        if (_repeatPlay) {
+            
+            ExtAudioFileSeek(audioFile, 0);
+            status = ExtAudioFileRead(audioFile, framesNum, bufferList);
+            
+        }else{
+            memset(bufferList->mBuffers[0].mData, 0, bufferList->mBuffers[0].mDataByteSize);
+            
+            [self stop];
+        }
+    }
     
-    TFCheckStatusUnReturn(status, @"ExtAudioFile set client format")
+    TFCheckStatusUnReturn(status, @"ExtAudioFile read buffer")
     
     return status;
 }
@@ -181,12 +211,13 @@ void audioStreamPacketCallback(
     
     AudioOutputUnitStart(audioUnit);
     
-    NSLog(@"audio play started!");
-    
     if (status != 0) {
         AudioComponentInstanceDispose(audioUnit);
         audioUnit = nil;
     }
+    
+    NSLog(@"audio play started!");
+    _playing = YES;
 }
 
 
@@ -201,8 +232,10 @@ OSStatus playAudioBufferCallback(	void *							inRefCon,
     
     TFAudioUnitPlayer *player = (__bridge TFAudioUnitPlayer *)(inRefCon);
     
-//    UInt32 framesPerPacket = player->fileDesc.mFramesPerPacket;
-    return [player readFrames:1024 toBufferList:ioData];
+    UInt32 framesPerPacket = inNumberFrames;
+    OSStatus status = [player readFrames:&framesPerPacket toBufferList:ioData];
+    
+    return status;
 }
 
 -(void)playPCMBuffer:(void *)buffer{
