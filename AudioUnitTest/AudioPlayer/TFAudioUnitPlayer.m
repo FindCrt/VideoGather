@@ -118,11 +118,14 @@ fail:
         *framesNum = 0;
         return -1;
     }
+    
+    UInt32 inputFrameNum = *framesNum;
+    
     OSStatus status = ExtAudioFileRead(audioFile, framesNum, bufferList);
     if (*framesNum <= 0) {
         
         if (_repeatPlay) {
-            
+            *framesNum = inputFrameNum;
             ExtAudioFileSeek(audioFile, 0);
             status = ExtAudioFileRead(audioFile, framesNum, bufferList);
             

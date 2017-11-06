@@ -120,6 +120,12 @@
         _fileReader2.filePath = _selectedMusic2.filePath;
         _mixer.pullAudioSource2 = _fileReader2;
         
+        if (_selectedMusic.duration > _selectedMusic2.duration) {
+            _fileReader2.isRepeat = YES;
+        }else{
+            _fileReader.isRepeat = YES;
+        }
+        
         _mixer.sourceType = TFAudioMixerSourceTypeTwoPull;
         [_mixer start];
 #endif
@@ -168,6 +174,10 @@
             NSLog(@"play mixed");
             [_audioPlayer playLocalFile:mediaData.filePath];
         }
+    };
+    
+    mediaListVC.disappearHandler = ^(){
+        [_audioPlayer stop];
     };
     
     [self.navigationController pushViewController:mediaListVC animated:YES];

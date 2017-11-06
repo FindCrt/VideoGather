@@ -15,6 +15,8 @@
     UInt32 packetSize;
     
     Float64 _desireSampleRate;
+    
+    SInt64 totalFrames;
 }
 
 @end
@@ -66,20 +68,23 @@
     
     TFCheckStatusGoToFail(status, @"ExtAudioFile set client format")
     
+    size = sizeof(totalFrames);
+    ExtAudioFileGetProperty(audioFile, kExtAudioFileProperty_FileLengthFrames, &size, &totalFrames);
+    
     _readAviable = YES;
     
     return;
     
 fail:
-    [self resetAudioFile];
-    _readAviable = NO;
+    [self resetReader];
 }
 
--(void)resetAudioFile{
+-(void)resetReader{
     if (audioFile) {
         ExtAudioFileDispose(audioFile);
         audioFile = nil;
     }
+    _readAviable = NO;
 }
 
 -(BOOL)setDesireSampleRate:(Float64)desireSampleRate{
@@ -107,26 +112,34 @@ fail:
     
     NSAssert(audioFile, @"audioFileReader file uninstall!");
     
+    if (self.isRepeat) {
+        SInt64 curFrameOffset = 0;
+        
+        if (ExtAudioFileTell(audioFile, &curFrameOffset) == 0) {
+            if (curFrameOffset >= totalFrames) {
+                if (ExtAudioFileSeek(audioFile, 0) != 0) {
+                    
+                    //文件到底，回头失败，重置且返回0个frame
+                    *framesNum = 0;
+                    [self resetReader];
+                    
+                    return -1;
+                }
+            }
+        }
+    }
+    
+    
     OSStatus status = ExtAudioFileRead(audioFile, framesNum, &(bufferData->bufferList));
-    bufferData->inNumberFrames = *framesNum; //framesNum输入和输出可能不一致，输出是实际读取到的frame数
     
     TFCheckStatusUnReturn(status, @"ExtAudioFile read")
     
     if (*framesNum <= 0) {
         
-        if (self.isRepeat) {
-            
-            //return to file head, and read again
-            ExtAudioFileSeek(audioFile, 0);
-            [self readFrames:framesNum toBufferData:bufferData];
-            
-        }else{
-            _readAviable = NO;
-            memset(bufferData->bufferList.mBuffers[0].mData, 0, bufferData->bufferList.mBuffers[0].mDataByteSize);
-            
-            [self resetAudioFile];
-        }
+        [self resetReader];
     }
+    
+    bufferData->inNumberFrames = *framesNum; //framesNum输入和输出可能不一致，输出是实际读取到的frame数
     
     return status;
 }

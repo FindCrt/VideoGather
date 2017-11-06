@@ -97,6 +97,8 @@
     _previewLayer = [[AVCaptureVideoPreviewLayer alloc] initWithSession:_session];
     _previewLayer.frame = CGRectMake(10, 20, self.view.frame.size.width - 20, 200);
     
+    
+    _previewLayer.connection.videoOrientation = AVCaptureVideoOrientationLandscapeLeft;
     [self.view.layer addSublayer:_previewLayer];
 }
 

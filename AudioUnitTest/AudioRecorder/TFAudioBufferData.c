@@ -15,6 +15,7 @@ TFAudioBufferData *TFCreateAudioBufferData(AudioBufferList *bufferList, UInt32 i
     TFAudioBufferData *bufferData = (TFAudioBufferData*)malloc(sizeof(TFAudioBufferData));
     if (bufferList) bufferData->bufferList = *bufferList;
     bufferData->inNumberFrames = inNumberFrames;
+    bufferData->refCount = 1;
     
     return bufferData;
 }
@@ -46,7 +47,7 @@ void TFUnrefAudioBufferData(TFAudioBufferData *bufferData){
     bufferData->refCount = bufferData->refCount - 1;
     if (bufferData->refCount == 0) {
         
-//        printf("free buffer data\n");
+        printf("free buffer data\n");
         free(bufferData);
     }
 }

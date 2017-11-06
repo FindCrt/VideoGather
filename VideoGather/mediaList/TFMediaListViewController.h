@@ -17,4 +17,6 @@ typedef void(^TFMediaSelectedHandler)(TFMediaData *mediaData);
 
 @property (nonatomic, copy) TFMediaSelectedHandler selectHandler;
 
+@property (nonatomic, copy) void(^disappearHandler)();
+
 @end

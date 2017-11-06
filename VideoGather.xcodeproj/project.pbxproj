@@ -824,9 +824,9 @@
 				1858C2111FAABCFC00DFBAF1 /* TFMusicListViewController.m */,
 				1858C22C1FAAF56000DFBAF1 /* TFAudioMixer.h */,
 				1858C22D1FAAF56000DFBAF1 /* TFAudioMixer.m */,
-				1858C1FB1FAABC2E00DFBAF1 /* Supporting Files */,
 				1858C22F1FAB0D3400DFBAF1 /* TFAudioFileReader.h */,
 				1858C2301FAB0D3400DFBAF1 /* TFAudioFileReader.m */,
+				1858C1FB1FAABC2E00DFBAF1 /* Supporting Files */,
 			);
 			path = AudioMusicMixer;
 			sourceTree = "<group>";
@@ -1025,7 +1025,7 @@
 				TargetAttributes = {
 					183EF0C11F57C35F00E21DB4 = {
 						CreatedOnToolsVersion = 8.1;
-						DevelopmentTeam = M6385GL5N8;
+						DevelopmentTeam = UML9BQURX9;
 						ProvisioningStyle = Automatic;
 					};
 					1858A3FB1F8B00F900784FC6 = {
@@ -1383,7 +1383,7 @@
 			baseConfigurationReference = 73C62082D56A8E28A55CE9CB /* Pods-VideoGather.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = M6385GL5N8;
+				DEVELOPMENT_TEAM = UML9BQURX9;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/$(TARGET_NAME)/FFmpeg/include",
@@ -1405,7 +1405,7 @@
 			baseConfigurationReference = E4F6AE68AF4C3112AD7C41FB /* Pods-VideoGather.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = M6385GL5N8;
+				DEVELOPMENT_TEAM = UML9BQURX9;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/$(TARGET_NAME)/FFmpeg/include",

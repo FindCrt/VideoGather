@@ -53,10 +53,13 @@
         //TODO:如果处理时间太长，有丢帧风险
         //一个主动输入源，只对应audioBuffer1,且只取第一个输入源
         if (inputIndex == 0) {
+            
             TFCopyAudioBufferData(&bufferData, &audioBuffer1);
             
             [self pullBufferFromAudioSource];
             [self mixAudioBuffer];
+            
+            TFUnrefAudioBufferData(audioBuffer1);
         }
         
     }else if (self.sourceType == TFAudioMixerSourceTypeTwoPush){
@@ -93,15 +96,11 @@
                audioBuffer2->inNumberFrames,
                self.bufferData->bufferList.mBuffers[0].mData);
     
-    TFUnrefAudioBufferData(audioBuffer1);
-    
     [self transportAudioBuffersToNext];
 }
 
 #pragma mark - mix functions
 
-int printInterval = 100;
-int count = 0;
 void mixBuffer1(SInt16 *buffer1, UInt32 frameCount1, SInt16 *buffer2 ,UInt32 frameCount2, SInt16 *outBuffer){
     
     UInt8 bitOffset = 8 * sizeof(SInt16);
@@ -165,14 +164,7 @@ void mixBuffer1(SInt16 *buffer1, UInt32 frameCount1, SInt16 *buffer2 ,UInt32 fra
             }
             
             *(outBuffer +j) = sValue;
-//            *(outBuffer +j) = value2;
-            
-            count++;
-            if (count % printInterval == 0) {
-                NSLog(@"(%d)recordValue:%d, musicValue: %d, result: %d, changed:%d",j,value1, value2, sValue, abs(sValue-value2));
-                count = 0;
-            }
-            
+        
         }
         else{
             if (frameCount == frameCount1)
@@ -238,6 +230,12 @@ void mixBuffer1(SInt16 *buffer1, UInt32 frameCount1, SInt16 *buffer2 ,UInt32 fra
         
         while (framesNum1 > 0 && framesNum2 > 0 && _shouldMix) {
             
+            
+            framesNum1 = 1024;
+            framesNum2 = framesNum1;
+            audioBuffer1->bufferList.mBuffers[0].mDataByteSize = framesNum1 * self.audioDesc.mBytesPerFrame;
+            audioBuffer2->bufferList.mBuffers[0].mDataByteSize = framesNum2 * self.audioDesc.mBytesPerFrame;
+            
             memset(audioBuffer1->bufferList.mBuffers[0].mData, 0, audioBuffer1->bufferList.mBuffers[0].mDataByteSize);
             memset(audioBuffer2->bufferList.mBuffers[0].mData, 0, audioBuffer2->bufferList.mBuffers[0].mDataByteSize);
             
@@ -245,6 +243,8 @@ void mixBuffer1(SInt16 *buffer1, UInt32 frameCount1, SInt16 *buffer2 ,UInt32 fra
             [_pullAudioSource2 readFrames:&framesNum2 toBufferData:audioBuffer2];
             
             [self mixAudioBuffer];
+            
+            NSLog(@"%d --- %d",framesNum1,framesNum2);
         }
         
         _runing = NO;
