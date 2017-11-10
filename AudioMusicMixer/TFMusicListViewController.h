@@ -11,6 +11,8 @@
 
 @interface TFMusicListViewController : UITableViewController
 
+@property (nonatomic, copy) NSString *rootDirectory;
+
 @property (nonatomic, copy) void (^selectMusicConpletionHandler)(TFMediaData *music);
 
 @end

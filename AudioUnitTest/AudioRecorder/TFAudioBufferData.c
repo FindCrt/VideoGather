@@ -47,7 +47,7 @@ void TFUnrefAudioBufferData(TFAudioBufferData *bufferData){
     bufferData->refCount = bufferData->refCount - 1;
     if (bufferData->refCount == 0) {
         
-        printf("free buffer data\n");
+//        printf("free buffer data\n");
         free(bufferData);
     }
 }

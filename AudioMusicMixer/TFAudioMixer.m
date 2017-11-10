@@ -9,7 +9,7 @@
 /*
  * 1. 采样率率不同,合成不了
  * 2. 取值错误，*(xxx+1)写成了*xxx+1
- *
+ * 3. 把音频写入多个音轨里，而不是把数据混在一起
  */
 
 #import "TFAudioMixer.h"
@@ -100,8 +100,12 @@
 }
 
 #pragma mark - mix functions
-
+double totalRate = 0;
+UInt64 count = 0;
 void mixBuffer1(SInt16 *buffer1, UInt32 frameCount1, SInt16 *buffer2 ,UInt32 frameCount2, SInt16 *outBuffer){
+    
+//    memcpy(outBuffer, buffer1, frameCount1*2);
+//    return;
     
     UInt8 bitOffset = 8 * sizeof(SInt16);
     UInt64 bitMax = (UInt64) (pow(2, bitOffset));
@@ -117,13 +121,9 @@ void mixBuffer1(SInt16 *buffer1, UInt32 frameCount1, SInt16 *buffer2 ,UInt32 fra
         {
             SInt32 sValue =0;
             
-            //record voice is too low
-//            *(buffer1+j) <<= 8;
-            
             SInt16 value1 = *(buffer1+j);   //-32768 ~ 32767
             SInt16 value2 = *(buffer2+j);   //-32768 ~ 32767
-            
-            
+
             SInt8 sign1 = (value1 == 0)? 0 : abs(value1)/value1;
             SInt8 sign2 = (value2== 0)? 0 : abs(value2)/value2;
             
@@ -239,8 +239,14 @@ void mixBuffer1(SInt16 *buffer1, UInt32 frameCount1, SInt16 *buffer2 ,UInt32 fra
             memset(audioBuffer1->bufferList.mBuffers[0].mData, 0, audioBuffer1->bufferList.mBuffers[0].mDataByteSize);
             memset(audioBuffer2->bufferList.mBuffers[0].mData, 0, audioBuffer2->bufferList.mBuffers[0].mDataByteSize);
             
-            [_pullAudioSource readFrames:&framesNum1 toBufferData:audioBuffer1];
-            [_pullAudioSource2 readFrames:&framesNum2 toBufferData:audioBuffer2];
+            OSStatus status = [_pullAudioSource readFrames:&framesNum1 toBufferData:audioBuffer1];
+            if (status != 0) {
+                break;
+            }
+            status = [_pullAudioSource2 readFrames:&framesNum2 toBufferData:audioBuffer2];
+            if (status != 0) {
+                break;
+            }
             
             [self mixAudioBuffer];
             

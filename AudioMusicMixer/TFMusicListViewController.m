@@ -27,7 +27,7 @@
     [super viewDidLoad];
 
     _musicList = [[NSMutableArray alloc] init];
-    NSArray *items = [[NSBundle mainBundle] pathsForResourcesOfType:@"mp3" inDirectory:nil];
+    NSArray *items = [[NSBundle mainBundle] pathsForResourcesOfType:@"mp3" inDirectory:_rootDirectory];
     for (NSString *itemPath in items) {
         [_musicList addObject:[TFMediaDataAnalyzer mediaDataForItemAt:itemPath]];
     }

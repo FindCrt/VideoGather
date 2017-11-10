@@ -7,6 +7,7 @@
 //
 
 #import "TFMediaDataAnalyzer.h"
+#import <UIKit/UIKit.h>
 
 @implementation TFMediaData
 
@@ -38,13 +39,29 @@
     mediaData.modifyTime = [attributes objectForKey:NSFileModificationDate];
     mediaData.size = [[attributes objectForKey:NSFileSize] integerValue];
     
-    //video
+    
     AVURLAsset *asset = [[AVURLAsset alloc] initWithURL:[NSURL fileURLWithPath:filePath] options:nil];//TODO:options
     mediaData.duration = CMTimeGetSeconds(asset.duration);
     
+    for (NSString *metadataFmt in [asset availableMetadataFormats]) {
+        
+//        if ([metadataFmt isEqualToString:AVMetadataCommonKeyArtwork]) {
+        
+            NSArray *metaDatas = [asset metadataForFormat:metadataFmt];
+        for (AVMetadataItem *item in metaDatas) {
+            
+            if ([item.commonKey isEqualToString:AVMetadataCommonKeyArtwork]) {
+                mediaData.coverImage = [UIImage imageWithData:(NSData *)item.value];
+            }else if ([item.commonKey isEqualToString:AVMetadataCommonKeyAuthor]){
+                mediaData.author = (NSString *)item.value;
+            }
+        }
+
+//        }
+    }
+    
+    //video
     AVAssetTrack *videoTrack = [asset tracksWithMediaType:AVMediaTypeVideo].firstObject;
-    
-    
     if (videoTrack) {
         mediaData.isVideo = YES;
         

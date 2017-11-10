@@ -25,6 +25,8 @@
 @property (nonatomic, assign) NSTimeInterval duration; //seconds
 @property (nonatomic, assign) float rotatedDegree;
 @property (nonatomic, assign) CGSize frameSize;
+@property (nonatomic, strong) UIImage *coverImage; //封面图
+@property (nonatomic, copy) NSString *author;
 
 @end
 

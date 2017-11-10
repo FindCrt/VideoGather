@@ -18,8 +18,8 @@
 #define SimultaneousRecordAndMix    1
 #define MixPcmData  1
 
-#define TestTwoFileMix  1
-#define TestOneFileAndRecordVoice    0
+#define TestTwoFileMix  0
+#define TestOneFileAndRecordVoice    1
 
 @interface ViewController (){
     
@@ -61,7 +61,12 @@
         TFMusicListViewController *destVC = segue.destinationViewController;
         destVC.selectMusicConpletionHandler = ^(TFMediaData *music){
             
+#if TestOneFileAndRecordVoice
+            _selectedMusic = music;
+            _musicLabel.text = music.filename;
+#endif
             
+#if TestTwoFileMix
             if (!_selectedMusic) {
                 _selectedMusic = music;
                 _musicLabel.text = music.filename;
@@ -69,6 +74,7 @@
                 _selectedMusic2 = music;
                 _musicLabel.text = music.filename;
             }
+#endif
         };
     }
 }
@@ -79,7 +85,7 @@
 #endif
     
 #if TestOneFileAndRecordVoice
-    return _recorder.recording
+    return _recorder.recording;
 #endif
 }
 

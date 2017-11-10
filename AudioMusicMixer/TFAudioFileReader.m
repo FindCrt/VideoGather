@@ -25,7 +25,7 @@
 
 -(void)setFilePath:(NSString *)filePath{
     if (![[NSFileManager defaultManager] fileExistsAtPath:filePath isDirectory:nil]) {
-        NSLog(@"audio play: no file at: %@",filePath);
+        NSLog(@"audio reader's file is empty: %@",filePath);
         return;
     }
     
@@ -107,6 +107,7 @@ fail:
 -(OSStatus)readFrames:(UInt32 *)framesNum toBufferData:(TFAudioBufferData *)bufferData{
     
     if (!_readAviable) {
+        *framesNum = 0;
         return -1;
     }
     
@@ -115,6 +116,7 @@ fail:
     if (self.isRepeat) {
         SInt64 curFrameOffset = 0;
         
+        //获取当前读取了多少frame
         if (ExtAudioFileTell(audioFile, &curFrameOffset) == 0) {
             if (curFrameOffset >= totalFrames) {
                 if (ExtAudioFileSeek(audioFile, 0) != 0) {

@@ -74,6 +74,10 @@ extern void writeNoiseToAudioFile(const char *fName,int mChannels,bool compress_
             outputDesc.mBitsPerChannel = 0;
             outputDesc.mReserved = 0;
             
+            NSString *fileDir = [recordFilePath.path stringByDeletingLastPathComponent];
+            if (![[NSFileManager defaultManager] fileExistsAtPath:fileDir]) {
+                [[NSFileManager defaultManager] createDirectoryAtPath:fileDir withIntermediateDirectories:YES attributes:nil error:nil];
+            }
             OSStatus status = ExtAudioFileCreateWithURL((__bridge CFURLRef _Nonnull)(recordFilePath),_fileType, &outputDesc, NULL, kAudioFileFlags_EraseFile, &mAudioFileRef);
             TFCheckStatus(status, @"create ext audio file error")
             
@@ -112,6 +116,11 @@ extern void writeNoiseToAudioFile(const char *fName,int mChannels,bool compress_
             
         }else if(_fileType == kAudioFileCAFType || _fileType == kAudioFileWAVEType){ //纯数据，不编码
             
+            NSString *fileDir = [recordFilePath.path stringByDeletingLastPathComponent];
+            if (![[NSFileManager defaultManager] fileExistsAtPath:fileDir]) {
+                [[NSFileManager defaultManager] createDirectoryAtPath:fileDir withIntermediateDirectories:YES attributes:nil error:nil];
+            }
+
             OSStatus status = ExtAudioFileCreateWithURL((__bridge CFURLRef _Nonnull)(recordFilePath),_fileType, &_audioDesc, NULL, kAudioFileFlags_EraseFile, &mAudioFileRef);
             TFCheckStatus(status, @"create ext audio file error")
             

@@ -14,6 +14,11 @@
 			<key>orderHint</key>
 			<integer>4</integer>
 		</dict>
+		<key>SingASong.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>6</integer>
+		</dict>
 		<key>VideoGather.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
@@ -33,6 +38,16 @@
 			<true/>
 		</dict>
 		<key>1858C1F81FAABC2E00DFBAF1</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>1880B5111FB57A1900C652E8</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>1880B53B1FB57F9400C652E8</key>
 		<dict>
 			<key>primary</key>
 			<true/>
