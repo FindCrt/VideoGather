@@ -62,6 +62,7 @@
     
     //video
     AVAssetTrack *videoTrack = [asset tracksWithMediaType:AVMediaTypeVideo].firstObject;
+    AVAssetTrack *audioTrack = [asset tracksWithMediaType:AVMediaTypeAudio].firstObject;
     if (videoTrack) {
         mediaData.isVideo = YES;
         
@@ -70,11 +71,9 @@
         CGFloat radians = atan2f(transform.b, transform.a);
         mediaData.rotatedDegree = radians * (180 / M_PI);
         mediaData.frameSize = [videoTrack naturalSize];
-    }else{
+    }else if(audioTrack){
         
-        mediaData.isVideo = NO;
-        
-        AVAssetTrack *audioTrack = [asset tracksWithMediaType:AVMediaTypeAudio].firstObject;
+        mediaData.isAudio = YES;
     }
     
     return mediaData;

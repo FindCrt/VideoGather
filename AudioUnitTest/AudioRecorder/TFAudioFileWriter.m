@@ -82,7 +82,7 @@ extern void writeNoiseToAudioFile(const char *fName,int mChannels,bool compress_
             TFCheckStatus(status, @"create ext audio file error")
             
             //输入数据格式使用这个属性设置
-            UInt32 codecManf = kAppleSoftwareAudioCodecManufacturer;
+            UInt32 codecManf = kAppleHardwareAudioCodecManufacturer;
             status = ExtAudioFileSetProperty(mAudioFileRef, kExtAudioFileProperty_CodecManufacturer, sizeof(UInt32), &codecManf);
             status = ExtAudioFileSetProperty(mAudioFileRef, kExtAudioFileProperty_ClientDataFormat, sizeof(_audioDesc), &_audioDesc);
             
@@ -100,10 +100,10 @@ extern void writeNoiseToAudioFile(const char *fName,int mChannels,bool compress_
                 
                 //fileFormat和_audioDesc一样，clientFormat和outputDesc一样
                 
-                AudioConverterRef converter;
+                AudioConverterRef converter = nil;
                 UInt32 dataSize = sizeof(converter);
                 ExtAudioFileGetProperty(mAudioFileRef, kExtAudioFileProperty_AudioConverter, &dataSize, &converter);
-                AudioFormatListItem *formatList;
+                AudioFormatListItem *formatList = nil;
                 UInt32 outSize = 0;
                 AudioConverterGetProperty(converter, kAudioConverterPropertyFormatList, &outSize, &formatList);
                 

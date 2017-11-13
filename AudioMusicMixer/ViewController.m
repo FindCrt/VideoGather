@@ -173,7 +173,7 @@
         NSLog(@"select audio file %@",mediaData.filename);
         
         //play audio file
-        if ([mediaData.fileExtension isEqualToString:@"caf"]) {
+        if (mediaData.isAudio) {
             if (!_audioPlayer) {
                 _audioPlayer = [[TFAudioUnitPlayer alloc] init];
             }

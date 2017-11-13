@@ -41,11 +41,7 @@ static UInt32 recordAudioElement = 1;   //接收硬件数据的组件编号
         [self stop];
     }
     
-    //plan1: AAC,ExtAudioFile
     [self setupExtAudioFileReader];
-    
-    //plan2: AAC,AudioFileStream
-//    [self setupAudioFileStream];
 }
 
 -(void)stop{
@@ -101,7 +97,7 @@ static UInt32 recordAudioElement = 1;   //接收硬件数据的组件编号
     
     size = sizeof(packetSize);
     ExtAudioFileGetProperty(audioFile, kExtAudioFileProperty_ClientMaxPacketSize, &size, &packetSize);
-    NSLog(@"read pcm packet/frame size: %d",(unsigned int)packetSize);
+//    NSLog(@"read pcm packet/frame size: %d",(unsigned int)packetSize);
     
     TFCheckStatusGoToFail(status, @"ExtAudioFile set client format")
     
@@ -184,7 +180,7 @@ void audioStreamPacketCallback(
     TFCheckStatusUnReturn(status, @"instance new audio component");
     
     //open render output
-    UInt32 falg = 0;
+    UInt32 falg = 1;
     status = AudioUnitSetProperty(audioUnit, kAudioOutputUnitProperty_EnableIO, kAudioUnitScope_Output, renderAudioElement, &falg, sizeof(UInt32));
     
     TFCheckStatusUnReturn(status, @"enable IO");
@@ -198,7 +194,9 @@ void audioStreamPacketCallback(
     AURenderCallbackStruct callbackSt;
     callbackSt.inputProcRefCon = (__bridge void * _Nullable)(self);
     callbackSt.inputProc = playAudioBufferCallback;
-    AudioUnitSetProperty(audioUnit, kAudioUnitProperty_SetRenderCallback, kAudioUnitScope_Group, renderAudioElement, &callbackSt, sizeof(callbackSt));
+    status = AudioUnitSetProperty(audioUnit, kAudioUnitProperty_SetRenderCallback, kAudioUnitScope_Group, renderAudioElement, &callbackSt, sizeof(callbackSt));
+    
+    TFCheckStatusUnReturn(status, @"set render callback");
     
     NSError *error = nil;
     [[AVAudioSession sharedInstance]setCategory:AVAudioSessionCategoryPlayback error:&error];
@@ -212,11 +210,10 @@ void audioStreamPacketCallback(
         return;
     }
     
-    AudioOutputUnitStart(audioUnit);
+    status = AudioOutputUnitStart(audioUnit);
     
     if (status != 0) {
-        AudioComponentInstanceDispose(audioUnit);
-        audioUnit = nil;
+        [self stop];
     }
     
     NSLog(@"audio play started!");

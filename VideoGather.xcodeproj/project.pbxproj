@@ -64,7 +64,6 @@
 		1858A43F1F8B6B7400784FC6 /* TFAudioConvertor.m in Sources */ = {isa = PBXBuildFile; fileRef = 1858A43E1F8B6B7400784FC6 /* TFAudioConvertor.m */; };
 		1858A4421F8B6D3000784FC6 /* TFAudioOutput.m in Sources */ = {isa = PBXBuildFile; fileRef = 1858A4411F8B6D3000784FC6 /* TFAudioOutput.m */; };
 		1858A4461F8B71BB00784FC6 /* TFAudioFileWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 1858A4451F8B71BB00784FC6 /* TFAudioFileWriter.m */; };
-		1858A4491F8B722100784FC6 /* TFAudioCapture.m in Sources */ = {isa = PBXBuildFile; fileRef = 1858A4481F8B722100784FC6 /* TFAudioCapture.m */; };
 		1858C1FD1FAABC2E00DFBAF1 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 1858C1FC1FAABC2E00DFBAF1 /* main.m */; };
 		1858C2001FAABC2E00DFBAF1 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1858C1FF1FAABC2E00DFBAF1 /* AppDelegate.m */; };
 		1858C2031FAABC2E00DFBAF1 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1858C2021FAABC2E00DFBAF1 /* ViewController.m */; };
@@ -324,8 +323,6 @@
 		1858A4431F8B6D3E00784FC6 /* TFAudioInput.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFAudioInput.h; sourceTree = "<group>"; };
 		1858A4441F8B71BB00784FC6 /* TFAudioFileWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFAudioFileWriter.h; sourceTree = "<group>"; };
 		1858A4451F8B71BB00784FC6 /* TFAudioFileWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFAudioFileWriter.m; sourceTree = "<group>"; };
-		1858A4471F8B722100784FC6 /* TFAudioCapture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFAudioCapture.h; sourceTree = "<group>"; };
-		1858A4481F8B722100784FC6 /* TFAudioCapture.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFAudioCapture.m; sourceTree = "<group>"; };
 		1858A44D1F8B7A0900784FC6 /* TFAudioBufferData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TFAudioBufferData.h; sourceTree = "<group>"; };
 		1858C1F91FAABC2E00DFBAF1 /* AudioMusicMixer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AudioMusicMixer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1858C1FC1FAABC2E00DFBAF1 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -855,8 +852,6 @@
 				1858A43E1F8B6B7400784FC6 /* TFAudioConvertor.m */,
 				1858A4441F8B71BB00784FC6 /* TFAudioFileWriter.h */,
 				1858A4451F8B71BB00784FC6 /* TFAudioFileWriter.m */,
-				1858A4471F8B722100784FC6 /* TFAudioCapture.h */,
-				1858A4481F8B722100784FC6 /* TFAudioCapture.m */,
 				18ED3F2E1F98CE970083F38F /* TFAACFileWriter.h */,
 				18ED3F2F1F98CE970083F38F /* TFAACFileWriter.m */,
 				185AD5E01F9ADA2000898691 /* ExtAudioFileMixer.m */,
@@ -1332,7 +1327,6 @@
 				188BE5C61FA01CEB006B1CA3 /* TFAudioUnitPlayer.m in Sources */,
 				183B50071F90910C00FFCA3F /* TFAudioBufferData.c in Sources */,
 				1858A42C1F8B057500784FC6 /* TFMediaDataAnalyzer.m in Sources */,
-				1858A4491F8B722100784FC6 /* TFAudioCapture.m in Sources */,
 				1858A42D1F8B057500784FC6 /* TFMediaListViewController.m in Sources */,
 				1858A4031F8B00F900784FC6 /* AppDelegate.m in Sources */,
 				1858A4371F8B0A8E00784FC6 /* TFAudioRecorder.mm in Sources */,
@@ -1702,6 +1696,7 @@
 				1880B5521FB57F9500C652E8 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

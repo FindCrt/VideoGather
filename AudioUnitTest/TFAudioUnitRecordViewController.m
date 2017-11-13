@@ -18,6 +18,8 @@
 #define TFUseSystemConverter    1       //pcm+ExtAudioFile,ExtAudioFile involve converter of pcm to aac.
 #define WriterCount             1
 
+#define AudioTestType   2  // 1: pcm+caf 2: aac+extAudioFile(m4a) 3: pcm+convertor+audioFile(adts) 4. multi recorders
+
 @interface TFAudioUnitRecordViewController (){
     NSString *_curRecordPath;
     
@@ -25,6 +27,7 @@
     
     TFAACFileWriter *_aacFileWriter;
     TFAudioFileWriter *_pcmFileWriter;
+    TFAudioFileWriter *_systemAACFileWriter;
     
     NSMutableArray<TFAudioRecorder *> *_multiRecorders;
 #if TFUseSystemConverter
@@ -52,14 +55,26 @@
 -(void)setupRecorder{
     _recorder = [[TFAudioRecorder alloc] init];
     
+#if AudioTestType == 1
     //pcm+caf
     [self setupPcmCafPipline];
     
+#elif AudioTestType == 2
+    
+    [self setupAACSystemConvertorPipline];
+    
+    
+#elif AudioTestType == 3
+    
     //aac+adts
-//    [self setupAacAdtsPipline];
+    [self setupAacAdtsPipline];
+    
+#elif AudioTestType == 4
     
     //performance test: compare pcm+extAudioFile-->aac+m4a with pcm+aac encoder+AudioFile--->aac+adts;
-//    [self setupPerformancePipline];
+    [self setupPerformancePipline];
+    
+#endif
 }
 
 -(NSString *)recordHome{
@@ -90,7 +105,7 @@
         NSLog(@"select audio file %@",mediaData.filename);
         
         //play audio file
-        if ([mediaData.fileExtension isEqualToString:@"aac"]) {
+        if (mediaData.isAudio) {
             if (!_audioPlayer) {
                 _audioPlayer = [[TFAudioUnitPlayer alloc] init];
             }
@@ -99,18 +114,33 @@
         }
     };
     
+    mediaListVC.disappearHandler = ^(){
+        [_audioPlayer stop];
+    };
+    
     [self.navigationController pushViewController:mediaListVC animated:YES];
 }
 
 - (IBAction)startOrStopRecord:(UIButton *)sender {
+    
+#if AudioTestType == 1
+    
+    //pcm+caf
+    [self pcmCafStartOrStop:sender];
+    
+#elif AudioTestType == 2
+    //aac+ExtAudioFile(m4a)
+    [self AACSystemConvertorStartOrStop:sender];
+    
+#elif AudioTestType == 3
+    
     //aac+adts
     [self aacAdtsStartOrStop:sender];
     
-    //pcm+caf
-//    [self pcmCafStartOrStop:sender];
-    
+#elif AudioTestType == 4
     //performance test: compare pcm+extAudioFile-->aac+m4a with pcm+aac encoder+AudioFile--->aac+adts;
-//    [self performanceTestSartOrStop:sender];
+    [self performanceTestSartOrStop:sender];
+#endif
 }
 
 #pragma mark - write aac+adts
@@ -168,6 +198,33 @@
         [button setTitle:@"start" forState:(UIControlStateNormal)];
     }
 }
+
+#pragma mark - write aac+ExtAudiFile+m4a
+
+-(void)setupAACSystemConvertorPipline{
+    _recorder = [[TFAudioRecorder alloc] init];
+    
+    _systemAACFileWriter = [[TFAudioFileWriter alloc] init];
+    _systemAACFileWriter.filePath = [self nextRecordPath];
+    _systemAACFileWriter.fileType = kAudioFileM4AType;
+    [_recorder addTarget:_systemAACFileWriter];
+}
+
+-(void)AACSystemConvertorStartOrStop:(UIButton *)button{
+    if (_recorder.recording) {
+        [_recorder stop];
+        [_systemAACFileWriter close];
+    }else{
+        [_recorder start];
+    }
+    
+    if (_recorder.recording) {
+        [button setTitle:@"stop" forState:(UIControlStateNormal)];
+    }else{
+        [button setTitle:@"start" forState:(UIControlStateNormal)];
+    }
+}
+
 
 #pragma mark - performance test
 
