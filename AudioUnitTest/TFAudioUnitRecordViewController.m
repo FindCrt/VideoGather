@@ -15,8 +15,8 @@
 #import "TFAACFileWriter.h"
 #import "TFAudioUnitPlayer.h"
 
-#define TFUseSystemConverter    0       //pcm+ExtAudioFile,ExtAudioFile involve converter of pcm to aac.
-#define WriterCount             10
+#define TFUseSystemConverter    1       //pcm+ExtAudioFile,ExtAudioFile involve converter of pcm to aac.
+#define WriterCount             1
 
 @interface TFAudioUnitRecordViewController (){
     NSString *_curRecordPath;
@@ -52,11 +52,11 @@
 -(void)setupRecorder{
     _recorder = [[TFAudioRecorder alloc] init];
     
-    //aac+adts
-    [self setupAacAdtsPipline];
-    
     //pcm+caf
-//    [self setupPcmCafPipline];
+    [self setupPcmCafPipline];
+    
+    //aac+adts
+//    [self setupAacAdtsPipline];
     
     //performance test: compare pcm+extAudioFile-->aac+m4a with pcm+aac encoder+AudioFile--->aac+adts;
 //    [self setupPerformancePipline];
@@ -189,7 +189,7 @@
     for (int i = 0; i<WriterCount; i++) {
         TFAudioFileWriter *writer = [[TFAudioFileWriter alloc]init];
         writer.filePath = [[NSString alloc] initWithFormat:@"%@_%d",[self nextRecordPath],i];
-        writer.fileType = kAudioFileM4AType;
+        writer.fileType = kAudioFileCAFType;
         [_recorder addTarget:writer];
         
         [_systemConvertWriter addObject:writer];

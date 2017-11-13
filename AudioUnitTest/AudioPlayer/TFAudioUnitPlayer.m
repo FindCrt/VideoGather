@@ -184,7 +184,7 @@ void audioStreamPacketCallback(
     TFCheckStatusUnReturn(status, @"instance new audio component");
     
     //open render output
-    UInt32 falg = 1;
+    UInt32 falg = 0;
     status = AudioUnitSetProperty(audioUnit, kAudioOutputUnitProperty_EnableIO, kAudioUnitScope_Output, renderAudioElement, &falg, sizeof(UInt32));
     
     TFCheckStatusUnReturn(status, @"enable IO");

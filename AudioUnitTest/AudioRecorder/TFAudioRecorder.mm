@@ -13,7 +13,7 @@
 
 #define kOutputBus 0
 #define kInputBus 1
-#define  kSampleRate 44100.0   //8k时有问题
+#define  kSampleRate 44100.0
 #define kFramesPerPacket 1
 #define kChannelsPerFrame 1
 #define kBitsPerChannel 16  //s16
@@ -66,21 +66,11 @@ typedef NS_ENUM(NSInteger, TFAudioEncodeType){
     
     UInt32 flag = 1;
     status = AudioUnitSetProperty(audioUnit,kAudioOutputUnitProperty_EnableIO, // use io
-                                  kAudioUnitScope_Input, // scope to input
-                                  kInputBus, // select input bus (1)
-                                  &flag, // set flag
+                                  kAudioUnitScope_Input, // 开启输入
+                                  kInputBus, //element1是硬件到APP的组件
+                                  &flag, // 开启，输出YES
                                   sizeof(flag));
     TFCheckStatus(status, @"enable input io")
-    
-    
-//    status = AudioUnitSetProperty(audioUnit,
-//                                  kAudioOutputUnitProperty_EnableIO, // use io
-//                                  kAudioUnitScope_Output, // scope to output
-//                                  kOutputBus, // select output bus (0)
-//                                  &flag, // set flag
-//                                  sizeof(flag));
-//    TFCheckStatus(status, @"enbale output io")
-    
 
 
     AudioStreamBasicDescription audioFormat;
@@ -94,24 +84,9 @@ typedef NS_ENUM(NSInteger, TFAudioEncodeType){
     //-10868 kAudioUnitErr_FormatNotSupported
     TFCheckStatus(status, @"set record output format")
     
-//    // set the format on the input stream
-//    status = AudioUnitSetProperty(audioUnit,
-//                                  kAudioUnitProperty_StreamFormat,
-//                                  kAudioUnitScope_Input,
-//                                  kOutputBus,
-//                                  &audioFormat,
-//                                  sizeof(audioFormat));
-//    TFCheckStatus(status, @"set play input format")
-    
-    /**
-     We need to define a callback structure which holds
-     a pointer to the recordingCallback and a reference to
-     the audio processor object
-     */
     AURenderCallbackStruct callbackStruct;
-    callbackStruct.inputProc = recordingCallback; // recordingCallback pointer
+    callbackStruct.inputProc = recordingCallback;
     callbackStruct.inputProcRefCon = (__bridge void * _Nullable)(self);
-    // set input callback to recording callback on the input bus
     status = AudioUnitSetProperty(audioUnit,kAudioOutputUnitProperty_SetInputCallback,
                                   kAudioUnitScope_Global,
                                   kInputBus,
@@ -119,25 +94,8 @@ typedef NS_ENUM(NSInteger, TFAudioEncodeType){
                                   sizeof(callbackStruct));
     TFCheckStatus(status, @"SetInputCallback")
 
- 
-    
-//    // set playback callback struct
-//    callbackStruct.inputProc = playbackCallback;
-//    callbackStruct.inputProcRefCon = (__bridge void * _Nullable)(self);
-//    // set playbackCallback as callback on our renderer for the output bus
-//    status = AudioUnitSetProperty(audioUnit,
-//                                  kAudioUnitProperty_SetRenderCallback,
-//                                  kAudioUnitScope_Global,
-//                                  kOutputBus,
-//                                  &callbackStruct,
-//                                  sizeof(callbackStruct));
-    
-    // reset flag to 0
     flag = 1;
-    /*
-     we need to tell the audio unit to allocate the render buffer,
-     that we can directly write into it.
-     */
+
     status = AudioUnitSetProperty(audioUnit,kAudioUnitProperty_ShouldAllocateBuffer,
                                   kAudioUnitScope_Output,
                                   kInputBus,
@@ -225,11 +183,8 @@ static OSStatus recordingCallback(void *inRefCon,
                                   UInt32 inNumberFrames,
                                   AudioBufferList *ioData) {
     
-    // the data gets rendered here
     AudioBuffer buffer;
-    // a variable where we check the status
     OSStatus status;
-    //This is the reference to the object who owns the callback.
     TFAudioRecorder *audioRecorder = (__bridge TFAudioRecorder* )inRefCon;
 
     //sampleRate是一秒钟的采样次数，不是样本数，每次采样形成一个frame，即一帧；每次采样，每个声道采样一次，也就是一个frame，n个channel,n个sample。只有在单声道时，sampleRate才等于一秒钟的样本数。
@@ -242,7 +197,6 @@ static OSStatus recordingCallback(void *inRefCon,
     bufferList.mNumberBuffers = 1;
     bufferList.mBuffers[0] = buffer;
     
-    // render input and check for error
     status = AudioUnitRender(audioRecorder->audioUnit, ioActionFlags, inTimeStamp, inBusNumber, inNumberFrames, &bufferList);
     if (status) {
         NSLog(@"AudioUnitRender");
