@@ -22,11 +22,11 @@
 @interface AUGraphMixer (){
     AUGraph processingGraph;
     AUNode playNode;
-    AUNode recordInputNode;
+//    AUNode recordInputNode;
     AUNode mixerNode;
     
     AudioUnit playUnit;
-    AudioUnit recordUnit;
+//    AudioUnit recordUnit;
     AudioUnit mixerUnit;
     
     AudioStreamBasicDescription inputStreamFmt;
@@ -57,15 +57,16 @@
     NewAUGraph(&processingGraph);
     
     OSStatus status = 0;
-    //record
-    AudioComponentDescription recordDesc;
-    recordDesc.componentType = kAudioUnitType_Output;
-    recordDesc.componentSubType = kAudioUnitSubType_RemoteIO;
-    recordDesc.componentManufacturer = kAudioUnitManufacturer_Apple;
-    recordDesc.componentFlagsMask = 0;
-    recordDesc.componentFlags = 0;
-    status = AUGraphAddNode(processingGraph, &recordDesc, &recordInputNode);
-    TFCheckStatusUnReturn(status, @"add record node");
+//    //record
+//    AudioComponentDescription recordDesc;
+//    recordDesc.componentType = kAudioUnitType_Output;
+//    recordDesc.componentSubType = kAudioUnitSubType_RemoteIO;
+//    recordDesc.componentManufacturer = kAudioUnitManufacturer_Apple;
+//    recordDesc.componentFlagsMask = 0;
+//    recordDesc.componentFlags = 0;
+//    status = AUGraphAddNode(processingGraph, &recordDesc, &recordInputNode);
+//    status = AUGraphAddNode(processingGraph, &recordDesc, &recordInputNode);
+//    TFCheckStatusUnReturn(status, @"add record node");
     
     
     //play
@@ -91,22 +92,26 @@
     status = AUGraphOpen(processingGraph);
     TFCheckStatusUnReturn(status, @"graph open");
     
-    status = AUGraphNodeInfo(processingGraph, recordInputNode, NULL, &recordUnit);
-    TFCheckStatusUnReturn(status, @"get record unit");
+//    status = AUGraphNodeInfo(processingGraph, recordInputNode, NULL, &recordUnit);
+//    TFCheckStatusUnReturn(status, @"get record unit");
     status = AUGraphNodeInfo(processingGraph, playNode, NULL, &playUnit);
     TFCheckStatusUnReturn(status, @"get play unit");
     status = AUGraphNodeInfo(processingGraph, mixerNode, NULL, &mixerUnit);
     TFCheckStatusUnReturn(status, @"get record unit");
     
     status = AUGraphConnectNodeInput(processingGraph, mixerNode, 0, playNode, 0);
-    TFCheckStatusUnReturn(status, @"connect nodes");
+    TFCheckStatusUnReturn(status, @"connect mixer to play");
     
-    status = AUGraphConnectNodeInput(processingGraph, recordInputNode, 0, mixerNode, 0);
+    status = AUGraphConnectNodeInput(processingGraph, playNode, 1, mixerNode, 0);
+    TFCheckStatusUnReturn(status, @"connect record to mixer");
     
     //set stream formats
     [self setStramFormats];
     
     [self setupFileReader];
+    
+    status = AudioUnitSetParameter(mixerUnit, kMultiChannelMixerParam_Volume, kAudioUnitScope_Input, 1, 0.1f, 0);
+    TFCheckStatusUnReturn(status, @"set mixer volume");
     
     status = AUGraphInitialize(processingGraph);
     TFCheckStatusUnReturn(status, @"init graph");
@@ -128,7 +133,7 @@
     
     //record
     UInt32 size = sizeof(inputStreamFmt);
-    OSStatus status = AudioUnitSetProperty(recordUnit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Output, 1, &inputStreamFmt, size);
+    OSStatus status = AudioUnitSetProperty(playUnit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Output, 1, &inputStreamFmt, size);
     TFCheckStatusUnReturn(status, @"set record unit format");
 //    AURenderCallbackStruct callbackStruct;
 //    callbackStruct.inputProc = recordingCallback;
@@ -136,7 +141,7 @@
 //    status = AudioUnitSetProperty(recordUnit, kAudioOutputUnitProperty_SetInputCallback, kAudioUnitScope_Global, 1, &callbackStruct, sizeof(AURenderCallbackStruct));
 //    TFCheckStatusUnReturn(status, @"set record callback");
     UInt32 flag = 1;
-    status = AudioUnitSetProperty(recordUnit, kAudioOutputUnitProperty_EnableIO, kAudioUnitScope_Input, 1, &flag, sizeof(flag));
+    status = AudioUnitSetProperty(playUnit, kAudioOutputUnitProperty_EnableIO, kAudioUnitScope_Input, 1, &flag, sizeof(flag));
     TFCheckStatusUnReturn(status, @"emable record unit IO");
     
     //play
