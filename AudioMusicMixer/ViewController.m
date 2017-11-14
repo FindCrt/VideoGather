@@ -14,12 +14,14 @@
 #import "TFAudioFileWriter.h"
 #import "TFMediaListViewController.h"
 #import "TFAudioUnitPlayer.h"
+#import "AUGraphMixer.h"
 
 #define SimultaneousRecordAndMix    1
 #define MixPcmData  1
 
 #define TestTwoFileMix  0
-#define TestOneFileAndRecordVoice    1
+#define TestOneFileAndRecordVoice    0
+#define TestAUGraphMixer 1      //使用audioUnit graph 实现音频文件和录音混音，再实时播放的需求
 
 @interface ViewController (){
     
@@ -33,6 +35,10 @@
     
 #if TestOneFileAndRecordVoice
     TFAudioRecorder *_recorder;
+#endif
+    
+#if TestAUGraphMixer
+    AUGraphMixer * _AUGraphMixer;
 #endif
 
     TFAudioMixer *_mixer;
@@ -61,7 +67,7 @@
         TFMusicListViewController *destVC = segue.destinationViewController;
         destVC.selectMusicConpletionHandler = ^(TFMediaData *music){
             
-#if TestOneFileAndRecordVoice
+#if TestOneFileAndRecordVoice || TestAUGraphMixer
             _selectedMusic = music;
             _musicLabel.text = music.filename;
 #endif
@@ -80,6 +86,7 @@
 }
 
 -(BOOL)mixRuning{
+    
 #if TestTwoFileMix
     return _mixer.runing;
 #endif
@@ -87,22 +94,38 @@
 #if TestOneFileAndRecordVoice
     return _recorder.recording;
 #endif
+    
+#if TestAUGraphMixer
+    return _AUGraphMixer.isRuning;
+#endif
 }
 
 - (IBAction)recordOrStop:(UIButton *)button {
-    //TODO:先获取麦克风权限
+    
+#if TestTwoFileMix
+    [self twoFileStartOrStop:button];
+#endif
+    
+#if TestOneFileAndRecordVoice
+    [self oneFileStartOrStop:button];
+#endif
+    
+#if TestAUGraphMixer
+    [self AUGraphMixerStartOrStop:button];
+#endif
     
     if ([self mixRuning]) {
-        
+        [button setTitle:@"stop" forState:(UIControlStateNormal)];
+    }else{
+        [button setTitle:@"run" forState:(UIControlStateNormal)];
+    }
+}
+
 #if TestOneFileAndRecordVoice
+-(void)oneFileStartOrStop:(UIButton *)sender{
+    if ([self mixRuning]) {
         [_recorder stop];
-#endif
-        
-#if TestTwoFileMix
-        [_mixer stop];
-#endif
         [_writer close];
-        
     }else{
         _mixer = [[TFAudioMixer alloc] init];
         
@@ -114,14 +137,33 @@
         _writer.filePath = [self nextRecordPath];
         _writer.fileType = kAudioFileCAFType;
         [_mixer addTarget:_writer];
-        
-#if TestOneFileAndRecordVoice
+
         _recorder = [[TFAudioRecorder alloc] init];
         [_recorder addTarget:_mixer inputIndex:0];
         [_recorder start];
+    }
+}
+
 #endif
-        
+
 #if TestTwoFileMix
+-(void)twoFileStartOrStop:(UIButton *)sender{
+    if ([self mixRuning]) {
+        [_mixer stop];
+        [_writer close];
+    }else{
+        
+        _mixer = [[TFAudioMixer alloc] init];
+        
+        _fileReader = [[TFAudioFileReader alloc] init];
+        _fileReader.filePath = _selectedMusic.filePath;
+        _mixer.pullAudioSource = _fileReader;
+        
+        _writer = [[TFAudioFileWriter alloc] init];
+        _writer.filePath = [self nextRecordPath];
+        _writer.fileType = kAudioFileCAFType;
+        [_mixer addTarget:_writer];
+        
         _fileReader2= [[TFAudioFileReader alloc] init];
         _fileReader2.filePath = _selectedMusic2.filePath;
         _mixer.pullAudioSource2 = _fileReader2;
@@ -134,17 +176,25 @@
         
         _mixer.sourceType = TFAudioMixerSourceTypeTwoPull;
         [_mixer start];
-#endif
-        
     }
-    
-    if ([self mixRuning]) {
-        [button setTitle:@"stop" forState:(UIControlStateNormal)];
-    }else{
-        [button setTitle:@"run" forState:(UIControlStateNormal)];
-    }
-    
 }
+
+#endif
+
+#if TestAUGraphMixer
+-(void)AUGraphMixerStartOrStop:(UIButton *)sender{
+    if ([self mixRuning]) {
+        [_AUGraphMixer stop];
+    }else{
+        
+        _AUGraphMixer = [[AUGraphMixer alloc] init];
+        [_AUGraphMixer setupAUGraph];
+        
+        _AUGraphMixer.musicFilePath = _selectedMusic.filePath;
+        [_AUGraphMixer start];
+    }
+}
+#endif
 
 -(NSString *)recordHome{
     if (!_recordHome) {

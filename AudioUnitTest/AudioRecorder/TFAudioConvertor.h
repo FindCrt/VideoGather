@@ -10,9 +10,11 @@
 #import "TFAudioInput.h"
 #import "TFAudioOutput.h"
 
+
 @interface TFAudioConvertor : TFAudioOutput<TFAudioInput>
 
-@property (nonatomic, assign) AudioFormatID outputFormat;
+/** 希望输出的格式，smaleRate设为0，则采取跟输入一样的sampleRate, 声道数也一样 */
+@property (nonatomic, assign) AudioStreamBasicDescription outputDesc;
 
 
 @end

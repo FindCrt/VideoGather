@@ -92,7 +92,6 @@ static frameBufferCount = 0;
             // Nothing in the cache, create a new framebuffer to use
             framebufferFromCache = [[GPUImageFramebuffer alloc] initWithSize:framebufferSize textureOptions:textureOptions onlyTexture:onlyTexture];
             frameBufferCount ++;
-            NSLog(@"create frame buffer: %d",frameBufferCount);
         }
         else
         {

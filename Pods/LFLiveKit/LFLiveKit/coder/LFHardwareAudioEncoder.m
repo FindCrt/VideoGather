@@ -177,6 +177,14 @@
     UInt32 outputBitrate = _configuration.audioBitrate;
     UInt32 propSize = sizeof(outputBitrate);
     
+    BOOL canResume = NO;
+    UInt32 size = sizeof(canResume);
+    OSStatus status = AudioConverterGetProperty(m_converter, kAudioConverterPropertyCanResumeFromInterruption, &size, &canResume);
+    
+    if (status != 0) {
+        NSLog(@"audio convertor isn't hardware codec");
+    }
+    
     
     if(result == noErr) {
         result = AudioConverterSetProperty(m_converter, kAudioConverterEncodeBitRate, propSize, &outputBitrate);

@@ -122,8 +122,8 @@ void setColorConversion709( GLfloat conversionMatrix[9] )
 	// Add the video frame output	
 	videoOutput = [[AVCaptureVideoDataOutput alloc] init];
 	[videoOutput setAlwaysDiscardsLateVideoFrames:NO];
-    captureAsYUV = NO;
     //相机输出只有这3种格式，2种N12和32_BGRA
+    captureAsYUV = NO;
 //    if (captureAsYUV && [GPUImageContext deviceSupportsRedTextures])
     if (captureAsYUV && [GPUImageContext supportsFastTextureUpload])
     {
@@ -787,6 +787,7 @@ void setColorConversion709( GLfloat conversionMatrix[9] )
         
         int bytesPerRow = (int) CVPixelBufferGetBytesPerRow(cameraFrame);
         outputFramebuffer = [[GPUImageContext sharedFramebufferCache] fetchFramebufferForSize:CGSizeMake(bytesPerRow / 4, bufferHeight) onlyTexture:YES];
+        
         [outputFramebuffer activateFramebuffer];
 
         glBindTexture(GL_TEXTURE_2D, [outputFramebuffer texture]);
@@ -897,7 +898,7 @@ void setColorConversion709( GLfloat conversionMatrix[9] )
         CFRetain(sampleBuffer);
         runAsynchronouslyOnVideoProcessingQueue(^{
             //Feature Detection Hook.
-            if (self.delegate)
+            if ([self.delegate respondsToSelector:@selector(willOutputSampleBuffer:)])
             {
                 [self.delegate willOutputSampleBuffer:sampleBuffer];
             }

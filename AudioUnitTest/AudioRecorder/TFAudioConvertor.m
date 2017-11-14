@@ -14,13 +14,11 @@
 
 #import "TFAudioConvertor.h"
 
-#define AAC_FRAME_NUM_PER_PACKET    1024
+//#define AAC_FRAME_NUM_PER_PACKET    1024
 #define PACKET_PER_CONVERT          1
 
 @interface TFAudioConvertor (){
     AudioConverterRef _audioConverter;
-    
-    AudioStreamBasicDescription _outputDesc;
     
     void *_convertedDataBuf;
     uint64_t bufferLengthPerConvert; //每次转换需要的数据长度
@@ -44,47 +42,56 @@
     return self;
 }
 
--(void)setOutputFormat:(AudioFormatID)outputFormat{
-    _outputDesc.mFormatID = outputFormat;
-    
-}
-
--(AudioFormatID)outputFormat{
-    return _outputDesc.mFormatID;
-}
-
 -(void)setAudioDesc:(AudioStreamBasicDescription)audioDesc{
     [super setAudioDesc:audioDesc];
     
     //根据输入数据格式确定每次转换需要的数据长度
-    bufferLengthPerConvert = audioDesc.mBytesPerFrame*AAC_FRAME_NUM_PER_PACKET*PACKET_PER_CONVERT;
+    bufferLengthPerConvert = audioDesc.mBytesPerFrame*_outputDesc.mFramesPerPacket*PACKET_PER_CONVERT;
     _convertedDataBuf = malloc(bufferLengthPerConvert);
     leftBuf = malloc(bufferLengthPerConvert);
     
     [self setupAudioConverter];
 }
 
+//根据数据格式调整输出格式
 -(AudioStreamBasicDescription)outputAudioDescWithInputDesc:(AudioStreamBasicDescription)audioDesc{
+
+    if (_outputDesc.mSampleRate == 0) {
+        _outputDesc.mSampleRate = audioDesc.mSampleRate;
+    }
     
-    //先按s16 PCM 转AAC样式来配置
-    _outputDesc.mSampleRate = audioDesc.mSampleRate;
-    _outputDesc.mFormatID = kAudioFormatMPEG4AAC;
-//    _outputDesc.mFormatFlags = kMPEG4Object_AAC_Main;
-    _outputDesc.mFramesPerPacket = AAC_FRAME_NUM_PER_PACKET;  //AAC
-    _outputDesc.mChannelsPerFrame = audioDesc.mChannelsPerFrame;
+    if (_outputDesc.mChannelsPerFrame == 0) {
+        _outputDesc.mChannelsPerFrame = audioDesc.mChannelsPerFrame;
+    }
     
     return _outputDesc;
 }
 
 -(void)setupAudioConverter{
     AudioStreamBasicDescription sourceDesc = self.audioDesc;
-    OSStatus status = AudioConverterNew(&sourceDesc, &_outputDesc, &_audioConverter);
+    AudioClassDescription hardwareCodec[1] = {
+        {
+            kAudioEncoderComponentType,
+            _outputDesc.mFormatID,
+            kAppleHardwareAudioCodecManufacturer
+        }
+    };
+    OSStatus status = AudioConverterNewSpecific(&sourceDesc, &_outputDesc, 1, hardwareCodec, &_audioConverter);
     
     TFCheckStatus(status, @"create audio convert failed!");
     
     //获取输出数据大小
     UInt32 size = sizeof(outPacketLength);
     AudioConverterGetProperty(_audioConverter, kAudioConverterPropertyMaximumOutputPacketSize, &size, &outPacketLength);
+    
+    BOOL canResume = NO;
+    size = sizeof(canResume);
+    status = AudioConverterGetProperty(_audioConverter, kAudioConverterPropertyCanResumeFromInterruption, &size, &canResume);
+    
+    if (status != 0) {
+        NSLog(@"audio convertor isn't hardware codec");
+    }
+    
 }
 
 -(void)receiveNewAudioBuffers:(TFAudioBufferData *)bufferData{
@@ -150,10 +157,15 @@
         //输出数据到下一个环节
 //        NSLog(@"output buffer size:%d",outputBuffers.mBuffers[0].mDataByteSize);
         self.bufferData->bufferList = outputBuffers;
-        self.bufferData->inNumberFrames = packetPerConvert*AAC_FRAME_NUM_PER_PACKET;  //包数 * 每个包的帧数（帧数+采样率计算时长）
+        self.bufferData->inNumberFrames = packetPerConvert*_outputDesc.mFramesPerPacket;  //包数 * 每个包的帧数（帧数+采样率计算时长）
         [self transportAudioBuffersToNext];
         
     } while (leftLength >= bufferLengthPerConvert);
+    
+    if (leftLength > 0) { //有剩余，保存数据到下一次输入一起处理
+        memset(leftBuf, 0, bufferLengthPerConvert);
+        memcpy(leftBuf, current, leftLength);
+    }
     
     TFUnrefAudioBufferData(bufferData);
 }

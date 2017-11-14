@@ -18,7 +18,7 @@
 
 @property (nonatomic, copy) NSString *filePath;
 
-@property (nonatomic, assign, readonly) AudioStreamBasicDescription outputDesc;
+@property (nonatomic, assign) AudioStreamBasicDescription outputDesc;
 
 @property (nonatomic, assign) BOOL isRepeat;
 

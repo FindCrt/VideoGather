@@ -98,7 +98,7 @@
     LFLiveVideoConfiguration *videoConfg = [LFLiveVideoConfiguration defaultConfiguration];
 
     
-    _LFSession = [[LFLiveSession alloc] initWithAudioConfiguration:audioConfig videoConfiguration:videoConfg captureType:LFLiveCaptureMaskVideo];
+    _LFSession = [[LFLiveSession alloc] initWithAudioConfiguration:audioConfig videoConfiguration:videoConfg captureType:LFLiveCaptureMaskAll];
     _LFSession.delegate = self;
     _LFSession.running = YES;
     _LFSession.preView = _LFPreView;

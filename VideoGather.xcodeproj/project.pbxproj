@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		1815292C1F665F4D00FA3619 /* TFVideoGatherViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1815292B1F665F4D00FA3619 /* TFVideoGatherViewController.m */; };
 		1815292F1F665F7D00FA3619 /* TFVideoTransfer.m in Sources */ = {isa = PBXBuildFile; fileRef = 1815292E1F665F7D00FA3619 /* TFVideoTransfer.m */; };
+		183972E61FBAD37F0016EE45 /* AUGraphMixer.m in Sources */ = {isa = PBXBuildFile; fileRef = 183972E51FBAD37F0016EE45 /* AUGraphMixer.m */; };
 		183B50071F90910C00FFCA3F /* TFAudioBufferData.c in Sources */ = {isa = PBXBuildFile; fileRef = 183B50061F90910C00FFCA3F /* TFAudioBufferData.c */; };
 		183EF0C71F57C35F00E21DB4 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 183EF0C61F57C35F00E21DB4 /* main.m */; };
 		183EF0CA1F57C35F00E21DB4 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 183EF0C91F57C35F00E21DB4 /* AppDelegate.m */; };
@@ -147,6 +148,8 @@
 		1815292B1F665F4D00FA3619 /* TFVideoGatherViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFVideoGatherViewController.m; sourceTree = "<group>"; };
 		1815292D1F665F7D00FA3619 /* TFVideoTransfer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFVideoTransfer.h; sourceTree = "<group>"; };
 		1815292E1F665F7D00FA3619 /* TFVideoTransfer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFVideoTransfer.m; sourceTree = "<group>"; };
+		183972E41FBAD37F0016EE45 /* AUGraphMixer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AUGraphMixer.h; sourceTree = "<group>"; };
+		183972E51FBAD37F0016EE45 /* AUGraphMixer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AUGraphMixer.m; sourceTree = "<group>"; };
 		183B50061F90910C00FFCA3F /* TFAudioBufferData.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = TFAudioBufferData.c; sourceTree = "<group>"; };
 		183EF0C21F57C35F00E21DB4 /* VideoGather.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VideoGather.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		183EF0C61F57C35F00E21DB4 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -876,6 +879,8 @@
 				1858C22D1FAAF56000DFBAF1 /* TFAudioMixer.m */,
 				1858C22F1FAB0D3400DFBAF1 /* TFAudioFileReader.h */,
 				1858C2301FAB0D3400DFBAF1 /* TFAudioFileReader.m */,
+				183972E41FBAD37F0016EE45 /* AUGraphMixer.h */,
+				183972E51FBAD37F0016EE45 /* AUGraphMixer.m */,
 				1858C1FB1FAABC2E00DFBAF1 /* Supporting Files */,
 			);
 			path = AudioMusicMixer;
@@ -1352,6 +1357,7 @@
 				1858C2151FAAC0C400DFBAF1 /* TFAudioUnitPlayer.m in Sources */,
 				1858C2141FAABE9400DFBAF1 /* TFMediaDataAnalyzer.m in Sources */,
 				1858C2121FAABCFC00DFBAF1 /* TFMusicListViewController.m in Sources */,
+				183972E61FBAD37F0016EE45 /* AUGraphMixer.m in Sources */,
 				1858C2031FAABC2E00DFBAF1 /* ViewController.m in Sources */,
 				1858C2001FAABC2E00DFBAF1 /* AppDelegate.m in Sources */,
 				1858C1FD1FAABC2E00DFBAF1 /* main.m in Sources */,

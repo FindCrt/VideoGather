@@ -19,8 +19,6 @@
 #endif
 #import <CoreVideo/CoreVideo.h>
 
-#define TFUsingRawCaptureSample 0
-
 @interface LFVideoCapture ()<GPUImageVideoCameraDelegate>
 
 @property (nonatomic, strong) GPUImageVideoCamera *videoCamera;
@@ -306,7 +304,7 @@
     [self reloadMirror];
     
     //< 480*640 比例为4:3  强制转换为16:9
-    if(1/*[self.configuration.avSessionPreset isEqualToString:AVCaptureSessionPreset640x480]*/){
+    if([self.configuration.avSessionPreset isEqualToString:AVCaptureSessionPreset640x480]){
         CGRect cropRect = self.configuration.landscape ? CGRectMake(0, 0.125, 1, 0.75) : CGRectMake(0.25, 0, 0.75, 1);
         self.cropfilter = [[GPUImageCropFilter alloc] initWithCropRegion:cropRect];
         [self.videoCamera addTarget:self.cropfilter];
@@ -325,13 +323,9 @@
         [self.uiElementInput update];
     }else{
         [self.filter addTarget:self.output];
-        [self.output addTarget:self.gpuImageView];
+//        [self.output addTarget:self.gpuImageView];
         if(self.saveLocalVideo) [self.output addTarget:self.movieWriter];
     }
-    
-//    [self.videoCamera addTarget:self.gpuImageView];
-//    [self.videoCamera addTarget:self.output];
-//    [self.output addTarget:self.gpuImageView];
     
     [self.filter forceProcessingAtSize:self.configuration.videoSize];
     [self.output forceProcessingAtSize:self.configuration.videoSize];
@@ -339,13 +333,11 @@
     [self.uiElementInput forceProcessingAtSize:self.configuration.videoSize];
     
 
-    
+    [self.videoCamera addTarget:self.gpuImageView];
     //< 输出数据
     __weak typeof(self) _self = self;
     [self.output setFrameProcessingCompletionBlock:^(GPUImageOutput *output, CMTime time) {
-#if !TFUsingRawCaptureSample
-       [_self processVideo:output];
-#endif
+//       [_self processVideo:output];
     }];
     
 }
@@ -392,27 +384,6 @@
             }
         }
     }
-}
-
-
--(void)willOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer{
-    
-    CVPixelBufferRef pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer);
-    
-//    int count = CVPixelBufferGetPlaneCount(pixelBuffer);
-//    size_t width = CVPixelBufferGetWidth(pixelBuffer);
-//    size_t height = CVPixelBufferGetHeight(pixelBuffer);
-//    size_t bytesPerRow = CVPixelBufferGetBytesPerRow(pixelBuffer);
-//    size_t size = CVPixelBufferGetDataSize(pixelBuffer);
-//    OSType type = CVPixelBufferGetPixelFormatType(pixelBuffer);
-//    
-//    char *typeName = &type;
-//    
-//    NSLog(@"pixelBuffer222222: size %d, width %d, height %d, countP %d, bytesPerRow %d, type %s",size,width, height,count, bytesPerRow, typeName);
-    
-#if TFUsingRawCaptureSample
-    [self.delegate captureOutput:self pixelBuffer:CMSampleBufferGetImageBuffer(sampleBuffer)];
-#endif
 }
 
 @end
