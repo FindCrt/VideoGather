@@ -46,11 +46,14 @@
     
     NSString *_curRecordPath;
     TFAudioUnitPlayer *_audioPlayer;
+    
 }
 @property (weak, nonatomic) IBOutlet UILabel *musicLabel;
 @property (weak, nonatomic) IBOutlet UIButton *recordButton;
 
 @property (nonatomic, copy) NSString *recordHome;
+@property (weak, nonatomic) IBOutlet UISlider *leftVolumeSlider;
+@property (weak, nonatomic) IBOutlet UISlider *rightVolumeSlider;
 
 @end
 
@@ -188,6 +191,8 @@
     }else{
         
         _AUGraphMixer = [[AUGraphMixer alloc] init];
+        _AUGraphMixer.leftVolume = _leftVolumeSlider.value;
+        _AUGraphMixer.rightVolume = _rightVolumeSlider.value;
         [_AUGraphMixer setupAUGraph];
         
         _AUGraphMixer.musicFilePath = _selectedMusic.filePath;
@@ -237,6 +242,15 @@
     };
     
     [self.navigationController pushViewController:mediaListVC animated:YES];
+}
+
+
+- (IBAction)volumeChanged:(UISlider *)slider {
+    if (slider == _leftVolumeSlider) {
+        _AUGraphMixer.leftVolume = slider.value;
+    }else{
+        _AUGraphMixer.rightVolume = slider.value;
+    }
 }
 
 

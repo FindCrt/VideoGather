@@ -19,4 +19,8 @@
 -(void)start;
 -(void)stop;
 
+@property (nonatomic, assign) float leftVolume;
+@property (nonatomic, assign) float rightVolume;
+
+
 @end

@@ -64,15 +64,49 @@
                                     <action selector="showMixedList:" destination="4z2-IN-1ud" eventType="touchUpInside" id="TcR-XG-riP"/>
                                 </connections>
                             </button>
+                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="doc-9d-sHe">
+                                <rect key="frame" x="14" y="318" width="347" height="31"/>
+                                <connections>
+                                    <action selector="volumeChanged:" destination="4z2-IN-1ud" eventType="valueChanged" id="Ysr-nf-Mah"/>
+                                </connections>
+                            </slider>
+                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="PMI-LB-3Iz">
+                                <rect key="frame" x="14" y="381" width="347" height="31"/>
+                                <connections>
+                                    <action selector="volumeChanged:" destination="4z2-IN-1ud" eventType="valueChanged" id="Ubx-hk-wDB"/>
+                                </connections>
+                            </slider>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="左边声音" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Eub-vG-qTQ">
+                                <rect key="frame" x="16" y="294" width="53.5" height="16"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="右边声音" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gNo-xT-85d">
+                                <rect key="frame" x="16" y="361" width="53.5" height="16"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="PMI-LB-3Iz" firstAttribute="top" secondItem="doc-9d-sHe" secondAttribute="bottom" constant="33" id="0N0-q2-isl"/>
+                            <constraint firstItem="PMI-LB-3Iz" firstAttribute="top" secondItem="gNo-xT-85d" secondAttribute="bottom" constant="4" id="6xE-XZ-1Bc"/>
+                            <constraint firstItem="doc-9d-sHe" firstAttribute="top" secondItem="Eub-vG-qTQ" secondAttribute="bottom" constant="8" id="HnW-HJ-CLg"/>
+                            <constraint firstItem="doc-9d-sHe" firstAttribute="centerY" secondItem="3ua-iw-gcJ" secondAttribute="centerY" id="Hom-Mh-CLa"/>
+                            <constraint firstItem="PMI-LB-3Iz" firstAttribute="leading" secondItem="doc-9d-sHe" secondAttribute="leading" id="LSc-RV-UoN"/>
+                            <constraint firstItem="PMI-LB-3Iz" firstAttribute="trailing" secondItem="doc-9d-sHe" secondAttribute="trailing" id="MJq-yW-WMQ"/>
                             <constraint firstItem="xah-S4-ley" firstAttribute="centerX" secondItem="3ua-iw-gcJ" secondAttribute="centerX" id="Mwi-0l-cuL"/>
                             <constraint firstItem="aaI-Fy-hVO" firstAttribute="centerX" secondItem="3ua-iw-gcJ" secondAttribute="centerX" id="V4j-3N-2Bd"/>
                             <constraint firstItem="3vV-2n-XQh" firstAttribute="top" secondItem="aaI-Fy-hVO" secondAttribute="bottom" constant="41" id="WVC-0S-djV"/>
                             <constraint firstItem="xah-S4-ley" firstAttribute="top" secondItem="ttl-lx-gOc" secondAttribute="bottom" constant="8" id="ccs-gV-oYM"/>
+                            <constraint firstItem="gNo-xT-85d" firstAttribute="leading" secondItem="PMI-LB-3Iz" secondAttribute="leading" id="gbL-YY-adi"/>
                             <constraint firstAttribute="leadingMargin" secondItem="xah-S4-ley" secondAttribute="leading" id="ikx-Kb-dl9"/>
                             <constraint firstItem="3vV-2n-XQh" firstAttribute="centerX" secondItem="3ua-iw-gcJ" secondAttribute="centerX" id="iwQ-zW-ckp"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="doc-9d-sHe" secondAttribute="trailing" id="kBi-UX-4o9"/>
+                            <constraint firstAttribute="leadingMargin" secondItem="doc-9d-sHe" secondAttribute="leading" id="m6n-11-Bso"/>
+                            <constraint firstItem="Eub-vG-qTQ" firstAttribute="leading" secondItem="doc-9d-sHe" secondAttribute="leading" id="nr3-oI-FfO"/>
                             <constraint firstItem="aaI-Fy-hVO" firstAttribute="top" secondItem="ttl-lx-gOc" secondAttribute="bottom" constant="71" id="olk-BM-E8I"/>
                         </constraints>
                     </view>
@@ -84,8 +118,10 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="leftVolumeSlider" destination="doc-9d-sHe" id="g8E-aA-NHt"/>
                         <outlet property="musicLabel" destination="xah-S4-ley" id="rtl-bj-Pag"/>
                         <outlet property="recordButton" destination="aaI-Fy-hVO" id="7Kh-r3-80K"/>
+                        <outlet property="rightVolumeSlider" destination="PMI-LB-3Iz" id="YwG-Wv-eMn"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="H7l-wo-zLc" userLabel="First Responder" sceneMemberID="firstResponder"/>
