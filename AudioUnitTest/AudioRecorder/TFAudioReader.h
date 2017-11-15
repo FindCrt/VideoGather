@@ -24,6 +24,6 @@
 //以packet为度量单位，对于编码压缩的类型实现/使用这个方法更好
 -(OSStatus)readPackets:(UInt32)packetsNum toBufferData:(TFAudioBufferData *)bufferData;
 
--(BOOL)setDesireSampleRate:(Float64)desireSampleRate;
+-(BOOL)setDesireOutputFormat:(AudioStreamBasicDescription)desireFmt;
 
 @end

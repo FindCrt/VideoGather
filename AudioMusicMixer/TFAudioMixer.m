@@ -36,7 +36,7 @@
         [_pullAudioSource outputDesc].mSampleRate != audioDesc.mSampleRate) {
         
         NSLog(@"override pullAudioSource's sampleRate");
-        [_pullAudioSource setDesireSampleRate:audioDesc.mSampleRate];
+        [_pullAudioSource setDesireOutputFormat:audioDesc];
     }
 }
 
@@ -208,8 +208,11 @@ void mixBuffer1(SInt16 *buffer1, UInt32 frameCount1, SInt16 *buffer2 ,UInt32 fra
     //除了采样率，其他都按照“s16单声道的PCM”设置
     if ([_pullAudioSource outputDesc].mSampleRate != [_pullAudioSource2 outputDesc].mSampleRate) {
         Float32 maxSampleRate = MAX([_pullAudioSource outputDesc].mSampleRate, [_pullAudioSource2 outputDesc].mSampleRate);
-        [_pullAudioSource setDesireSampleRate:maxSampleRate];
-        [_pullAudioSource2 setDesireSampleRate:maxSampleRate];
+        
+        AudioStreamBasicDescription desireFmt = [_pullAudioSource outputDesc];
+        desireFmt.mSampleRate = maxSampleRate;
+        [_pullAudioSource setDesireOutputFormat:desireFmt];
+        [_pullAudioSource2 setDesireOutputFormat:desireFmt];
         
         NSLog(@"maxSampleRate %.0f",maxSampleRate);
     }

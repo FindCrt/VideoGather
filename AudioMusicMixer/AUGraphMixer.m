@@ -110,7 +110,7 @@
     
     [self setupFileReader];
     
-    status = AudioUnitSetParameter(mixerUnit, kMultiChannelMixerParam_Volume, kAudioUnitScope_Input, 1, 0.1f, 0);
+    status = AudioUnitSetParameter(mixerUnit, kMultiChannelMixerParam_Volume, kAudioUnitScope_Input, 1, 0.8f, 0);
     TFCheckStatusUnReturn(status, @"set mixer volume");
     
     status = AUGraphInitialize(processingGraph);
@@ -129,7 +129,7 @@
     inputStreamFmt.mReserved = 0;
     
     outputStreamFmt = inputStreamFmt;
-    outputStreamFmt.mChannelsPerFrame = 2;
+//    outputStreamFmt.mChannelsPerFrame = 2;
     
     //record
     UInt32 size = sizeof(inputStreamFmt);
@@ -176,11 +176,12 @@
 -(void)setupFileReader{
     _fileReader = [[TFAudioFileReader alloc] init];
     _fileReader.filePath = self.musicFilePath;
-    _fileReader.outputDesc = inputStreamFmt;
+    [_fileReader setDesireOutputFormat:inputStreamFmt];
     _fileReader.isRepeat = YES;
 }
 
 -(void)setMusicFilePath:(NSString *)musicFilePath{
+    _musicFilePath = musicFilePath;
     _fileReader.filePath = musicFilePath;
 }
 

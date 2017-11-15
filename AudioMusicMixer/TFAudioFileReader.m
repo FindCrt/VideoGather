@@ -14,7 +14,7 @@
     AudioStreamBasicDescription fileDesc;
     UInt32 packetSize;
     
-    Float64 _desireSampleRate;
+    AudioStreamBasicDescription _desireFmt;
     
     SInt64 totalFrames;
 }
@@ -47,9 +47,6 @@
     TFCheckStatusGoToFail(status, @"ExtAudioFile get file format")
     
     //read with pcm format
-    if (_desireSampleRate == 0) {
-        _outputDesc.mSampleRate = fileDesc.mSampleRate;
-    }
     _outputDesc.mFormatID = kAudioFormatLinearPCM;
     _outputDesc.mFormatFlags = kAudioFormatFlagIsSignedInteger | kAudioFormatFlagIsPacked;
     _outputDesc.mReserved = 0;
@@ -58,6 +55,8 @@
     _outputDesc.mFramesPerPacket = 1;
     _outputDesc.mBytesPerFrame = _outputDesc.mChannelsPerFrame * _outputDesc.mBitsPerChannel / 8;
     _outputDesc.mBytesPerPacket = _outputDesc.mBytesPerFrame;
+    
+    [self modifyOutputFormatByDesireFmt];
     
     size = sizeof(_outputDesc);
     status = ExtAudioFileSetProperty(audioFile, kExtAudioFileProperty_ClientDataFormat, size, &_outputDesc);
@@ -87,21 +86,38 @@ fail:
     _readAviable = NO;
 }
 
--(BOOL)setDesireSampleRate:(Float64)desireSampleRate{
-    _desireSampleRate = desireSampleRate;
+-(BOOL)setDesireOutputFormat:(AudioStreamBasicDescription)desireFmt{
+    _desireFmt = desireFmt;
     
-    if (_readAviable && _outputDesc.mSampleRate != desireSampleRate) {
+    [self modifyOutputFormatByDesireFmt];
+    
+    if (_readAviable) {
         
-        _outputDesc.mSampleRate = desireSampleRate;
         UInt32 size = sizeof(_outputDesc);
         OSStatus status = ExtAudioFileSetProperty(audioFile, kExtAudioFileProperty_ClientDataFormat, size, &_outputDesc);
         
         return status == 0;
-    }else{
-        _outputDesc.mSampleRate = desireSampleRate;
     }
-
+    
     return YES;
+}
+
+-(void)modifyOutputFormatByDesireFmt{
+    if (_desireFmt.mSampleRate > 0) {
+        _outputDesc.mSampleRate = _desireFmt.mSampleRate;
+    }
+    if (_desireFmt.mChannelsPerFrame > 0) {
+        _outputDesc.mChannelsPerFrame = _desireFmt.mChannelsPerFrame;
+    }
+    if (_desireFmt.mBitsPerChannel > 0) {
+        _outputDesc.mBitsPerChannel = _desireFmt.mBitsPerChannel;
+    }
+    if (_desireFmt.mFormatFlags != _outputDesc.mFormatFlags) {
+        _outputDesc.mFormatFlags = _desireFmt.mFormatFlags;
+    }
+    
+    _outputDesc.mBytesPerFrame = _outputDesc.mChannelsPerFrame * _outputDesc.mBitsPerChannel / 8;
+    _outputDesc.mBytesPerPacket = _outputDesc.mBytesPerFrame;
 }
 
 -(OSStatus)readFrames:(UInt32 *)framesNum toBufferData:(TFAudioBufferData *)bufferData{
