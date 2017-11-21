@@ -13,7 +13,7 @@ extern void writeNoiseToAudioFile(const char *fName,int mChannels,bool compress_
 
 TFAudioBufferData *TFCreateAudioBufferData(AudioBufferList *bufferList, UInt32 inNumberFrames){
     TFAudioBufferData *bufferData = (TFAudioBufferData*)malloc(sizeof(TFAudioBufferData));
-    if (bufferList) bufferData->bufferList = *bufferList;
+    if (bufferList) bufferData->bufferList = bufferList;
     bufferData->inNumberFrames = inNumberFrames;
     bufferData->refCount = 1;
     

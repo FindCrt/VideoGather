@@ -110,8 +110,6 @@
     status = AUGraphOpen(processingGraph);
     TFCheckStatusUnReturn(status, @"graph open");
     
-//    status = AUGraphNodeInfo(processingGraph, recordInputNode, NULL, &recordUnit);
-//    TFCheckStatusUnReturn(status, @"get record unit");
     status = AUGraphNodeInfo(processingGraph, recordPlayNode, NULL, &recordPlayUnit);
     TFCheckStatusUnReturn(status, @"get play unit");
     status = AUGraphNodeInfo(processingGraph, mixerNode, NULL, &mixerUnit);

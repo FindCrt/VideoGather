@@ -15,7 +15,7 @@
 
 typedef struct{
     
-    AudioBufferList bufferList;
+    AudioBufferList *bufferList;
     UInt32 inNumberFrames;
     
     int refCount;

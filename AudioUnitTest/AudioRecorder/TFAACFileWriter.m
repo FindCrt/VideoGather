@@ -99,7 +99,7 @@
 float totalSize = 0;
 -(void)audioFileWriteAudioBuffers:(TFAudioBufferData *)bufferData{
     
-    AudioBuffer inBuffer = bufferData->bufferList.mBuffers[0];
+    AudioBuffer inBuffer = bufferData->bufferList->mBuffers[0];
     
     //write packet kAudioFileAAC_ADTSType
     AudioStreamPacketDescription packetDesc = {0, 0, inBuffer.mDataByteSize};
@@ -156,7 +156,7 @@ float totalSize = 0;
 }
 
 -(void)assetWriteAudioBuffers:(TFAudioBufferData *)bufferData{
-    AudioBuffer inBuffer = bufferData->bufferList.mBuffers[0];
+    AudioBuffer inBuffer = bufferData->bufferList->mBuffers[0];
     
     CMBlockBufferRef BlockBuffer = NULL;
     OSStatus status = CMBlockBufferCreateWithMemoryBlock(NULL, inBuffer.mData, inBuffer.mDataByteSize,kCFAllocatorNull, NULL, 0, inBuffer.mDataByteSize, kCMBlockBufferAlwaysCopyDataFlag, &BlockBuffer);

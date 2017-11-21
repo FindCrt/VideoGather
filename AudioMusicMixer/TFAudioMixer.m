@@ -88,13 +88,13 @@
 
 -(void)mixAudioBuffer{
     
-    memset(self.bufferData->bufferList.mBuffers[0].mData, 0, self.bufferData->bufferList.mBuffers[0].mDataByteSize);
+    memset(self.bufferData->bufferList->mBuffers[0].mData, 0, self.bufferData->bufferList->mBuffers[0].mDataByteSize);
     
-    mixBuffer1(audioBuffer1->bufferList.mBuffers[0].mData,
+    mixBuffer1(audioBuffer1->bufferList->mBuffers[0].mData,
                audioBuffer1->inNumberFrames,
-               audioBuffer2->bufferList.mBuffers[0].mData,
+               audioBuffer2->bufferList->mBuffers[0].mData,
                audioBuffer2->inNumberFrames,
-               self.bufferData->bufferList.mBuffers[0].mData);
+               self.bufferData->bufferList->mBuffers[0].mData);
     
     [self transportAudioBuffersToNext];
 }
@@ -195,7 +195,7 @@ void mixBuffer1(SInt16 *buffer1, UInt32 frameCount1, SInt16 *buffer2 ,UInt32 fra
         audioBuffer2 = TFAllocAudioBufferData(self.audioDesc, framesNum);
         self.bufferData = TFAllocAudioBufferData(self.audioDesc, framesNum);
     }
-    memset(audioBuffer2->bufferList.mBuffers[0].mData, 0, audioBuffer2->bufferList.mBuffers[0].mDataByteSize);
+    memset(audioBuffer2->bufferList->mBuffers[0].mData, 0, audioBuffer2->bufferList->mBuffers[0].mDataByteSize);
     [_pullAudioSource readFrames:&framesNum toBufferData:audioBuffer2];
 }
 
@@ -236,11 +236,11 @@ void mixBuffer1(SInt16 *buffer1, UInt32 frameCount1, SInt16 *buffer2 ,UInt32 fra
             
             framesNum1 = 1024;
             framesNum2 = framesNum1;
-            audioBuffer1->bufferList.mBuffers[0].mDataByteSize = framesNum1 * self.audioDesc.mBytesPerFrame;
-            audioBuffer2->bufferList.mBuffers[0].mDataByteSize = framesNum2 * self.audioDesc.mBytesPerFrame;
+            audioBuffer1->bufferList->mBuffers[0].mDataByteSize = framesNum1 * self.audioDesc.mBytesPerFrame;
+            audioBuffer2->bufferList->mBuffers[0].mDataByteSize = framesNum2 * self.audioDesc.mBytesPerFrame;
             
-            memset(audioBuffer1->bufferList.mBuffers[0].mData, 0, audioBuffer1->bufferList.mBuffers[0].mDataByteSize);
-            memset(audioBuffer2->bufferList.mBuffers[0].mData, 0, audioBuffer2->bufferList.mBuffers[0].mDataByteSize);
+            memset(audioBuffer1->bufferList->mBuffers[0].mData, 0, audioBuffer1->bufferList->mBuffers[0].mDataByteSize);
+            memset(audioBuffer2->bufferList->mBuffers[0].mData, 0, audioBuffer2->bufferList->mBuffers[0].mDataByteSize);
             
             OSStatus status = [_pullAudioSource readFrames:&framesNum1 toBufferData:audioBuffer1];
             if (status != 0) {

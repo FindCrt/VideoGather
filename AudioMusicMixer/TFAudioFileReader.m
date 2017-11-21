@@ -152,7 +152,21 @@ fail:
     }
     
     
-    OSStatus status = ExtAudioFileRead(audioFile, framesNum, &(bufferData->bufferList));
+//    AudioBufferList bufList;
+//    bufList.mNumberBuffers = 2;
+//    bufList.mBuffers[0].mData = malloc(4096);
+//    bufList.mBuffers[0].mDataByteSize = 4096;
+//    bufList.mBuffers[0].mNumberChannels = 1;
+//    
+//    bufList.mBuffers[1].mData = malloc(4096);
+//    bufList.mBuffers[1].mDataByteSize = 4096;
+//    bufList.mBuffers[1].mNumberChannels = 1;
+//    
+//    bufferData->bufferList = bufList;
+
+
+    
+    OSStatus status = ExtAudioFileRead(audioFile, framesNum, bufferData->bufferList);
     
     TFCheckStatusUnReturn(status, @"ExtAudioFile read")
     

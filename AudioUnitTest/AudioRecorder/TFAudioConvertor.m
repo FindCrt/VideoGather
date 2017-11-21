@@ -101,7 +101,7 @@
     }
     
     TFRefAudioBufferData(bufferData);
-    AudioBuffer *inBuffer = & bufferData->bufferList.mBuffers[0];
+    AudioBuffer *inBuffer = & bufferData->bufferList->mBuffers[0];
     
     
     void *current = nil;
@@ -156,7 +156,7 @@
         
         //输出数据到下一个环节
 //        NSLog(@"output buffer size:%d",outputBuffers.mBuffers[0].mDataByteSize);
-        self.bufferData->bufferList = outputBuffers;
+        self.bufferData->bufferList = &outputBuffers;
         self.bufferData->inNumberFrames = packetPerConvert*_outputDesc.mFramesPerPacket;  //包数 * 每个包的帧数（帧数+采样率计算时长）
         [self transportAudioBuffersToNext];
         
