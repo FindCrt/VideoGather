@@ -8,6 +8,12 @@
 
 #import <Foundation/Foundation.h>
 
+typedef NS_ENUM(NSInteger, AUGraphMixerMixType){
+    AUGraphMixerMixTypeMusicLeft,
+    AUGraphMixerMixTypeMusicRight,
+    AUGraphMixerMixTypeMusicStereo
+};
+
 @interface AUGraphMixer : NSObject
 
 @property (nonatomic, copy) NSString *musicFilePath;
@@ -22,5 +28,6 @@
 @property (nonatomic, assign) float leftVolume;
 @property (nonatomic, assign) float rightVolume;
 
+@property (nonatomic, assign) AUGraphMixerMixType mixType;
 
 @end

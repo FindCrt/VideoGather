@@ -24,6 +24,7 @@
 //以packet为度量单位，对于编码压缩的类型实现/使用这个方法更好
 -(OSStatus)readPackets:(UInt32)packetsNum toBufferData:(TFAudioBufferData *)bufferData;
 
+//设置期望的输出格式，实际输出格式为outputDesc
 -(BOOL)setDesireOutputFormat:(AudioStreamBasicDescription)desireFmt;
 
 @end

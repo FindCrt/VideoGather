@@ -76,18 +76,26 @@
                                     <action selector="volumeChanged:" destination="4z2-IN-1ud" eventType="valueChanged" id="Ubx-hk-wDB"/>
                                 </connections>
                             </slider>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="左边声音" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Eub-vG-qTQ">
-                                <rect key="frame" x="16" y="294" width="53.5" height="16"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="音乐音量" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Eub-vG-qTQ">
+                                <rect key="frame" x="16" y="294" width="54" height="16"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="右边声音" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gNo-xT-85d">
-                                <rect key="frame" x="16" y="361" width="53.5" height="16"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="录音音量" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gNo-xT-85d">
+                                <rect key="frame" x="16" y="361" width="54" height="16"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fHY-HM-eVo">
+                                <rect key="frame" x="16" y="419" width="79" height="37"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="音乐在左"/>
+                                <connections>
+                                    <action selector="mixTypeChange:" destination="4z2-IN-1ud" eventType="touchUpInside" id="Fa6-KN-xvJ"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -119,6 +127,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="leftVolumeSlider" destination="doc-9d-sHe" id="g8E-aA-NHt"/>
+                        <outlet property="mixTypeButton" destination="fHY-HM-eVo" id="Fkk-kg-NHp"/>
                         <outlet property="musicLabel" destination="xah-S4-ley" id="rtl-bj-Pag"/>
                         <outlet property="recordButton" destination="aaI-Fy-hVO" id="7Kh-r3-80K"/>
                         <outlet property="rightVolumeSlider" destination="PMI-LB-3Iz" id="YwG-Wv-eMn"/>

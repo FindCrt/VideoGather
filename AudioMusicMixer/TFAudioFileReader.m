@@ -95,6 +95,7 @@ fail:
         
         UInt32 size = sizeof(_outputDesc);
         OSStatus status = ExtAudioFileSetProperty(audioFile, kExtAudioFileProperty_ClientDataFormat, size, &_outputDesc);
+        TFCheckStatusUnReturn(status, @"audio file reader set format");
         
         return status == 0;
     }
@@ -102,6 +103,7 @@ fail:
     return YES;
 }
 
+//根据期望的输出格式调整实际输出格式
 -(void)modifyOutputFormatByDesireFmt{
     if (_desireFmt.mSampleRate > 0) {
         _outputDesc.mSampleRate = _desireFmt.mSampleRate;
@@ -116,7 +118,9 @@ fail:
         _outputDesc.mFormatFlags = _desireFmt.mFormatFlags;
     }
     
-    _outputDesc.mBytesPerFrame = _outputDesc.mChannelsPerFrame * _outputDesc.mBitsPerChannel / 8;
+    //非交错，即分开，每个channel单独一个AudioBuffer，计算mBytesPerFrame按一倍算;反之，所有channel的数混叠在同一个AudioBuffer里
+    BOOL isNonInterleaved = _outputDesc.mFormatFlags & kLinearPCMFormatFlagIsNonInterleaved;
+    _outputDesc.mBytesPerFrame = (isNonInterleaved ? 1: _outputDesc.mChannelsPerFrame) * _outputDesc.mBitsPerChannel / 8;
     _outputDesc.mBytesPerPacket = _outputDesc.mBytesPerFrame;
 }
 

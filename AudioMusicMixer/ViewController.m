@@ -54,6 +54,7 @@
 @property (nonatomic, copy) NSString *recordHome;
 @property (weak, nonatomic) IBOutlet UISlider *leftVolumeSlider;
 @property (weak, nonatomic) IBOutlet UISlider *rightVolumeSlider;
+@property (weak, nonatomic) IBOutlet UIButton *mixTypeButton;
 
 @end
 
@@ -190,13 +191,42 @@
         [_AUGraphMixer stop];
     }else{
         
-        _AUGraphMixer = [[AUGraphMixer alloc] init];
-        _AUGraphMixer.leftVolume = _leftVolumeSlider.value;
-        _AUGraphMixer.rightVolume = _rightVolumeSlider.value;
-        [_AUGraphMixer setupAUGraph];
-        
+        if (!_AUGraphMixer) {
+            [self setupGraphMixer];
+        }
         _AUGraphMixer.musicFilePath = _selectedMusic.filePath;
         [_AUGraphMixer start];
+    }
+}
+
+-(void)setupGraphMixer{
+    _AUGraphMixer = [[AUGraphMixer alloc] init];
+    _AUGraphMixer.leftVolume = _leftVolumeSlider.value;
+    _AUGraphMixer.rightVolume = _rightVolumeSlider.value;
+    [_AUGraphMixer setupAUGraph];
+    
+}
+
+- (IBAction)mixTypeChange:(UIButton *)sender {
+    
+    if (!_AUGraphMixer) {
+        [self setupGraphMixer];
+    }
+    
+    if (_AUGraphMixer.mixType == AUGraphMixerMixTypeMusicLeft) {
+        
+        _AUGraphMixer.mixType = AUGraphMixerMixTypeMusicRight;
+        [sender setTitle:@"音乐在右" forState:(UIControlStateNormal)];
+        
+    }else if (_AUGraphMixer.mixType == AUGraphMixerMixTypeMusicRight){
+        
+        _AUGraphMixer.mixType = AUGraphMixerMixTypeMusicStereo;
+        [sender setTitle:@"双声道" forState:(UIControlStateNormal)];
+        
+    }else if (_AUGraphMixer.mixType == AUGraphMixerMixTypeMusicStereo){
+        
+        _AUGraphMixer.mixType = AUGraphMixerMixTypeMusicLeft;
+        [sender setTitle:@"音乐在左" forState:(UIControlStateNormal)];
     }
 }
 #endif
