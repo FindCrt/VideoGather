@@ -65,7 +65,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    
+    _musicLabel.text = @"music1: ~\nmusic2: ~";
 }
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
@@ -81,10 +81,10 @@
 #if TestTwoFileMix || TestAUGraphMixer
             if (!_selectedMusic) {
                 _selectedMusic = music;
-                _musicLabel.text = music.filename;
+                _musicLabel.text = [NSString stringWithFormat:@"music1: %@\nmusic2: ~",music.filename];
             }else{
                 _selectedMusic2 = music;
-                _musicLabel.text = music.filename;
+                _musicLabel.text = [NSString stringWithFormat:@"music1: %@\nmusic2: %@",_selectedMusic.filename,_selectedMusic2.filename];
             }
 #endif
         };

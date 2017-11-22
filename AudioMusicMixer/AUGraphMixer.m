@@ -193,12 +193,13 @@
     status = AudioUnitSetProperty(mixerUnit, kAudioUnitProperty_ElementCount, kAudioUnitScope_Input, 0, &inputCount, sizeof(inputCount));
     TFCheckStatusUnReturn(status, @"set mixer unit format");
     
+    //设置每个输入源的回调函数和输出格式
     for (int i = 0; i<inputCount; ++i) {
         
         AURenderCallbackStruct mixerInputCallback;
         mixerInputCallback.inputProc = &mixerDataInput;
         mixerInputCallback.inputProcRefCon = (__bridge void*)self;
-        
+    
         status = AUGraphSetNodeInputCallback(processingGraph, mixerNode, i, &mixerInputCallback);
         TFCheckStatusUnReturn(status, @"set mixer node callback");
         
