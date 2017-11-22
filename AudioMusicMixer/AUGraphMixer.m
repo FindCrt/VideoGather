@@ -20,7 +20,12 @@
 #define leftChannelIndex  0
 #define rightChannelIndex 1
 
-#define UsingTempAudioBuffer    0
+#define UsingTempAudioBuffer    0 //把录音数据存到临时位置
+
+#define MixerInputSourceCount   3
+#define FirstAudioFileIndex     0
+#define RecordUnitSourceIndex    1
+#define SecondAudioFileIndex    2
 
 #import "AUGraphMixer.h"
 #import <AudioToolbox/AudioToolbox.h>
@@ -31,25 +36,23 @@
 @interface AUGraphMixer (){
     AUGraph processingGraph;
     AUNode recordPlayNode;
-//    AUNode recordInputNode;
     AUNode mixerNode;
     
     AudioUnit recordPlayUnit;
-//    AudioUnit recordUnit;
     AudioUnit mixerUnit;
     
-    AudioStreamBasicDescription sourceStreamFmt;
+    AudioStreamBasicDescription sourceStreamFmts[MixerInputSourceCount];
     AudioStreamBasicDescription mixStreamFmt;
     
-    void *recordBuffer; //环形缓冲区，暂存录音数据
-    UInt32 recordTotalLength;
-    UInt32 startIndex;
-    UInt32 endIndex;
-    
     AudioBufferList tempRecordBuf;
+    
+    float volumes[MixerInputSourceCount];
 }
 
 @property (nonatomic, strong) TFAudioFileReader *fileReader;
+@property (nonatomic, strong) TFAudioFileReader *fileReader2;
+
+@property (nonatomic, strong) NSMutableDictionary *audioChannelTypes;
 
 @end
 
@@ -69,18 +72,11 @@
     _runing = NO;
 }
 
--(void)setLeftVolume:(float)leftVolume{
-    _leftVolume = leftVolume;
+-(void)setVolumeAtIndex:(NSInteger)index to:(float)volume{
+    volumes[index] = volume;
     
-    if (_runing) {
-        AudioUnitSetParameter(mixerUnit, kMultiChannelMixerParam_Volume, kAudioUnitScope_Input, 0, _leftVolume, 0);
-    }
-}
-
--(void)setRightVolume:(float)rightVolume{
-    _rightVolume = rightVolume;
-    if (_runing) {
-        AudioUnitSetParameter(mixerUnit, kMultiChannelMixerParam_Volume, kAudioUnitScope_Input, 1, _rightVolume, 0);
+    if (mixerUnit) {
+        AudioUnitSetParameter(mixerUnit, kMultiChannelMixerParam_Volume, kAudioUnitScope_Input, (UInt32)index, volume, 0);
     }
 }
 
@@ -127,41 +123,16 @@
     //set stream formats
     [self setStramFormats];
     
-    [self setupFileReader];
-    
-    //element0 left
-    status = AudioUnitSetParameter(mixerUnit, kMultiChannelMixerParam_Volume, kAudioUnitScope_Input, 0, _leftVolume, 0);
-    TFCheckStatusUnReturn(status, @"set mixer volume");
-    
-    //element1 right
-    status = AudioUnitSetParameter(mixerUnit, kMultiChannelMixerParam_Volume, kAudioUnitScope_Input, 1, _rightVolume, 0);
-    TFCheckStatusUnReturn(status, @"set mixer volume");
-    
+    [self setupFileReaders];
 
     status = AUGraphInitialize(processingGraph);
     TFCheckStatusUnReturn(status, @"init graph");
+    
+    for (int i = 0; i<MixerInputSourceCount; i++) {
+        AudioUnitSetParameter(mixerUnit, kMultiChannelMixerParam_Volume, kAudioUnitScope_Input, (UInt32)index, (volumes[i]?:0.5f), 0);
+    }
 }
 
--(OSStatus)setStramFormats{
-    
-    if (self.mixType == AUGraphMixerMixTypeMusicStereo) {
-        sourceStreamFmt = *([[AVAudioFormat alloc] initWithCommonFormat:AVAudioPCMFormatFloat32
-                                                             sampleRate:44100
-                                                               channels:2
-                                                            interleaved:NO].streamDescription);
-    }else{
-        sourceStreamFmt = *([[AVAudioFormat alloc] initWithCommonFormat:AVAudioPCMFormatFloat32
-                                                             sampleRate:44100
-                                                               channels:1
-                                                            interleaved:YES].streamDescription);
-    }
-
-    //interleaved设为NO,左右声道数据分别在不同AudioBuffer里
-    mixStreamFmt = *([[AVAudioFormat alloc] initWithCommonFormat:AVAudioPCMFormatFloat32
-                                                      sampleRate:sourceStreamFmt.mSampleRate
-                                                        channels:2
-                                                     interleaved:NO].streamDescription);
-    
 //    sourceStreamFmt.mSampleRate = 44100;
 //    sourceStreamFmt.mFormatID = kAudioFormatLinearPCM;
 //    sourceStreamFmt.mFormatFlags = kAudioFormatFlagIsPacked | kAudioFormatFlagIsSignedInteger;
@@ -176,10 +147,33 @@
 //    //混音组件使用不交错(NonInterleaved)的格式，那么回调方法的参数ioData就包含多个buffer，每个对应一个声道,而不是一个buffer里面包含多个声道，这样就可以方便的对单个声道数据进行处理
 //    mixStreamFmt.mFormatFlags |= kAudioFormatFlagIsNonInterleaved;
 //    mixStreamFmt.mChannelsPerFrame = 2;
+
+-(OSStatus)setStramFormats{
+    
+    for (int i = 0; i<MixerInputSourceCount; i++) {
+        if ([[self.audioChannelTypes objectForKey:@(i)] integerValue] == AUGraphMixerChannelTypeStereo) {
+            sourceStreamFmts[i] = *([[AVAudioFormat alloc] initWithCommonFormat:AVAudioPCMFormatFloat32
+                                                                         sampleRate:44100
+                                                                           channels:2
+                                                                        interleaved:NO].streamDescription);
+        }else{
+            sourceStreamFmts[i] = *([[AVAudioFormat alloc] initWithCommonFormat:AVAudioPCMFormatFloat32
+                                                                         sampleRate:44100
+                                                                           channels:1
+                                                                        interleaved:YES].streamDescription);
+        }
+    }
+    
+    //interleaved设为NO,左右声道数据分别在不同AudioBuffer里
+    mixStreamFmt = *([[AVAudioFormat alloc] initWithCommonFormat:AVAudioPCMFormatFloat32
+                                                      sampleRate:44100
+                                                        channels:2
+                                                     interleaved:NO].streamDescription);
+    
     
     //record
-    UInt32 size = sizeof(sourceStreamFmt);
-    OSStatus status = AudioUnitSetProperty(recordPlayUnit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Output, recordBus, &sourceStreamFmt, size);
+    UInt32 size = sizeof(sourceStreamFmts[RecordUnitSourceIndex]);
+    OSStatus status = AudioUnitSetProperty(recordPlayUnit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Output, recordBus, &sourceStreamFmts[RecordUnitSourceIndex], size);
     TFCheckStatusUnReturn(status, @"set record unit format");
     
     UInt32 flag = 1;
@@ -195,11 +189,11 @@
 #endif
     
     //mixer
-    UInt32 inputCount = 2;
+    UInt32 inputCount = MixerInputSourceCount;
     status = AudioUnitSetProperty(mixerUnit, kAudioUnitProperty_ElementCount, kAudioUnitScope_Input, 0, &inputCount, sizeof(inputCount));
     TFCheckStatusUnReturn(status, @"set mixer unit format");
     
-    for (int i = 0; i<inputCount; ++i) {  //0 使用record node输入
+    for (int i = 0; i<inputCount; ++i) {
         
         AURenderCallbackStruct mixerInputCallback;
         mixerInputCallback.inputProc = &mixerDataInput;
@@ -212,7 +206,6 @@
         TFCheckStatusUnReturn(status, @"set mixer input format");
     }
     
-    NSLog(@"123");
     status = AudioUnitSetProperty(mixerUnit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Output, 0, &mixStreamFmt, sizeof(AudioStreamBasicDescription));
     TFCheckStatusUnReturn(status, @"set mixer output format");
     
@@ -225,11 +218,17 @@
     return status;
 }
 
--(void)setupFileReader{
+-(void)setupFileReaders{
+    
     _fileReader = [[TFAudioFileReader alloc] init];
     _fileReader.filePath = self.musicFilePath;
-    [_fileReader setDesireOutputFormat:sourceStreamFmt];
+    [_fileReader setDesireOutputFormat:sourceStreamFmts[FirstAudioFileIndex]];
     _fileReader.isRepeat = YES;
+    
+    _fileReader2 = [[TFAudioFileReader alloc] init];
+    _fileReader2.filePath = self.musicFilePath2;
+    [_fileReader2 setDesireOutputFormat:sourceStreamFmts[SecondAudioFileIndex]];
+    _fileReader2.isRepeat = YES;
 }
 
 -(void)setMusicFilePath:(NSString *)musicFilePath{
@@ -237,103 +236,52 @@
     _fileReader.filePath = musicFilePath;
 }
 
--(void)setMixType:(AUGraphMixerMixType)mixType{
-    _mixType = mixType;
-    if (_mixType == AUGraphMixerMixTypeMusicStereo) {
-        sourceStreamFmt = *([[AVAudioFormat alloc] initWithCommonFormat:AVAudioPCMFormatFloat32
+-(void)setMusicFilePath2:(NSString *)musicFilePath2{
+    _musicFilePath2 = musicFilePath2;
+    _fileReader2.filePath = musicFilePath2;
+}
+
+//存储各个输入源的声道类型
+-(NSMutableDictionary *)audioChannelTypes{
+    if (!_audioChannelTypes) {
+        _audioChannelTypes = [[NSMutableDictionary alloc] initWithCapacity:3];
+    }
+    
+    return _audioChannelTypes;
+}
+
+-(void)setAudioSourceAtIndex:(NSInteger)index channelTypeTo:(AUGraphMixerChannelType)channelType{
+
+    [self.audioChannelTypes setObject:@(channelType) forKey:@(index)];
+    
+    if (channelType == AUGraphMixerChannelTypeStereo) {
+        sourceStreamFmts[index] = *([[AVAudioFormat alloc] initWithCommonFormat:AVAudioPCMFormatFloat32
                                                              sampleRate:44100
                                                                channels:2
                                                             interleaved:NO].streamDescription);
     }else{
-        sourceStreamFmt = *([[AVAudioFormat alloc] initWithCommonFormat:AVAudioPCMFormatFloat32
+        sourceStreamFmts[index] = *([[AVAudioFormat alloc] initWithCommonFormat:AVAudioPCMFormatFloat32
                                                              sampleRate:44100
                                                                channels:1
                                                             interleaved:YES].streamDescription);
     }
     
-    UInt32 size = sizeof(sourceStreamFmt);
-    OSStatus status = AudioUnitSetProperty(recordPlayUnit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Output, recordBus, &sourceStreamFmt, size);
-    TFCheckStatusUnReturn(status, @"set record unit format");
-    
-    [_fileReader setDesireOutputFormat:sourceStreamFmt];
-}
-
-
-
-#pragma mark - record buffer
-
--(void)setupRecordBuffers{
-    recordTotalLength = sourceStreamFmt.mBytesPerFrame * 2048;
-    recordBuffer = malloc(recordTotalLength);
-    startIndex = 0;
-    endIndex = 0;
-}
-
--(void)readLength:(UInt32 *)lengthP toBuffer:(void *)buffer{
-    UInt32 length = *lengthP;
-    
-    if (startIndex == endIndex) {
-        *lengthP = 0;
-        return;
-    }
-    
-    if (endIndex > startIndex) {
-        if (startIndex + length <= endIndex) {
-            memcpy(buffer, recordBuffer+startIndex, length);
-            startIndex += length;
-        }else{
-            memcpy(buffer, recordBuffer+startIndex, endIndex - startIndex);
-            startIndex = endIndex;
-            *lengthP = endIndex - startIndex;
-        }
-    }else{
-        UInt32 rightPartLen = recordTotalLength - startIndex;
-        UInt32 leftPartLen = endIndex;
+    //测试方便，固定输入源1为第一个音频文件，输入源2位录音，输入源3为第二个音频文件；更好的处理是把输入源封装成单独的类，然后可以接受任意数量的输入源，任意顺序
+    if (index == FirstAudioFileIndex) {
         
-        if (rightPartLen >= length) {
-            memcpy(buffer, recordBuffer+startIndex, length);
-            startIndex += length;
-            if (startIndex == recordTotalLength) {
-                startIndex = 0;
-            }
-            
-        }else if (leftPartLen + rightPartLen >= length) {
-            memcpy(buffer, recordBuffer+startIndex, rightPartLen);
-            memcpy(buffer+rightPartLen, recordBuffer, length - rightPartLen);
-            startIndex = length - rightPartLen;
-        }else{
-            memcpy(buffer, recordBuffer+startIndex, rightPartLen);
-            memcpy(buffer+rightPartLen, recordBuffer, leftPartLen);
-            
-            startIndex = endIndex;
-            *lengthP = length - (leftPartLen + rightPartLen);
-        }
+        [_fileReader setDesireOutputFormat:sourceStreamFmts[index]];
+        
+    }else if (index == RecordUnitSourceIndex){
+        UInt32 size = sizeof(sourceStreamFmts[index]);
+        OSStatus status = AudioUnitSetProperty(recordPlayUnit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Output, recordBus, &sourceStreamFmts[index], size);
+        TFCheckStatusUnReturn(status, @"set record unit format");
+    }else if (index == SecondAudioFileIndex){
+        [_fileReader2 setDesireOutputFormat:sourceStreamFmts[index]];
     }
 }
 
--(void)insertBuffer:(void *)buffer length:(UInt32)length{
-    
-    if (endIndex >= startIndex) {
-        if (endIndex + length < recordTotalLength) {
-            memcpy(recordBuffer+endIndex, buffer, length);
-            endIndex += length;
-        }else{
-            UInt32 trailLen = recordTotalLength - endIndex;
-            memcpy(recordBuffer+endIndex, buffer, trailLen);
-            memcpy(recordBuffer, buffer+trailLen, length - trailLen);
-            
-            endIndex = length - trailLen;
-            if (endIndex > startIndex) {
-                NSLog(@"数据覆盖，需要增大缓冲区");
-            }
-        }
-    }else{
-        memcpy(recordBuffer+endIndex, buffer, length);
-        endIndex += length;
-        if (endIndex > startIndex) {
-            NSLog(@"数据覆盖，需要增大缓冲区");
-        }
-    }
+-(AUGraphMixerChannelType)channelTypeForSourceAt:(NSInteger)index{
+    return [[_audioChannelTypes objectForKey:@(index)] integerValue];
 }
 
 #pragma mark - mixer input callback
@@ -342,45 +290,58 @@ static OSStatus mixerDataInput(void *inRefCon, AudioUnitRenderActionFlags *ioAct
     
     AUGraphMixer *mixer = (__bridge AUGraphMixer *)(inRefCon);
     
-    if (inBusNumber == 0) {
+    //inBusNumber为输入源的索引，根据这个值来从不用源获取音频数据
+    if (inBusNumber == FirstAudioFileIndex) {
         
-        [mixer readAudioFile:inNumberFrames toBuffer:ioData];
+        [mixer readAudioFile:0 numberFrames:inNumberFrames toBuffer:ioData];
         
-    }else if (inBusNumber == 1){
+    }else if (inBusNumber == RecordUnitSourceIndex){
         
         [mixer readRecordedAudio:ioActionFlags timeStamp:inTimeStamp numberFrames:inNumberFrames toBuffer:ioData];
+    }else if (inBusNumber == SecondAudioFileIndex){
+        [mixer readAudioFile:1 numberFrames:inNumberFrames toBuffer:ioData];
     }
-    
-
     
     return 0;
 }
 
--(OSStatus)readAudioFile:(UInt32)inNumberFrames toBuffer:(AudioBufferList *)ioData{
+-(OSStatus)readAudioFile:(NSInteger)fileIndex numberFrames:(UInt32)inNumberFrames toBuffer:(AudioBufferList *)ioData{
     UInt32 numberFrames = inNumberFrames;
     
-    if (self.mixType == AUGraphMixerMixTypeMusicStereo) {
+    TFAudioFileReader *fileReader = nil;
+    NSInteger sourceIndex = 0;
+    if (fileIndex == 0) {
+        fileReader = self.fileReader;
+        sourceIndex = FirstAudioFileIndex;
+    }else if (fileIndex == 1){
+        fileReader = self.fileReader2;
+        sourceIndex = SecondAudioFileIndex;
+    }
+    
+    AUGraphMixerChannelType channelType = [[_audioChannelTypes objectForKey:@(sourceIndex)] integerValue];
+    
+    if (channelType == AUGraphMixerChannelTypeStereo) {
         
         //这时格式需要设为双声道
         TFAudioBufferData *bufferData = TFCreateAudioBufferData(ioData, inNumberFrames);
-        return [self.fileReader readFrames:&numberFrames toBufferData:bufferData];
+        return [fileReader readFrames:&numberFrames toBufferData:bufferData];
         
     }else{
         AudioBufferList bufList;
         bufList.mNumberBuffers = 1;
         
-        if (self.mixType == AUGraphMixerMixTypeMusicLeft) {
+        if (channelType == AUGraphMixerChannelTypeLeft) {
             
             bufList.mBuffers[0] = ioData->mBuffers[leftChannelIndex]; //只取左边声道
             memset(ioData->mBuffers[rightChannelIndex].mData, 0, ioData->mBuffers[rightChannelIndex].mDataByteSize);
-        }else if (self.mixType == AUGraphMixerMixTypeMusicRight){
+        }else if (channelType == AUGraphMixerChannelTypeRight){
             
             bufList.mBuffers[0] = ioData->mBuffers[rightChannelIndex]; //只取右边声道，把文件音频读入到右侧
             memset(ioData->mBuffers[leftChannelIndex].mData, 0, ioData->mBuffers[leftChannelIndex].mDataByteSize);
         }
         
         TFAudioBufferData *bufferData = TFCreateAudioBufferData(&bufList, inNumberFrames);
-        return [self.fileReader readFrames:&numberFrames toBufferData:bufferData];
+        return [fileReader readFrames:&numberFrames toBufferData:bufferData];
     }
 }
 
@@ -393,7 +354,9 @@ static OSStatus mixerDataInput(void *inRefCon, AudioUnitRenderActionFlags *ioAct
     return 0;
 #else
     
-    if (self.mixType == AUGraphMixerMixTypeMusicStereo) {
+    AUGraphMixerChannelType channelType = [[_audioChannelTypes objectForKey:@(RecordUnitSourceIndex)] integerValue];
+    
+    if (channelType == AUGraphMixerChannelTypeStereo) {
         
         //NonInterleaved时，读取出来是单声道的，ioData->mBuffers[1]的数据是空的，测试为iPhone6.使用电脑模拟器是有数据，只是两声道数据一样。可能是iPhone6硬件支持问题，待研究。
         OSStatus status = AudioUnitRender(recordPlayUnit, ioActionFlags, inTimeStamp, recordBus, inNumberFrames, ioData);
@@ -406,12 +369,12 @@ static OSStatus mixerDataInput(void *inRefCon, AudioUnitRenderActionFlags *ioAct
         AudioBufferList bufList;
         bufList.mNumberBuffers = 1;
         
-        if (self.mixType == AUGraphMixerMixTypeMusicLeft) {
-            bufList.mBuffers[0] = ioData->mBuffers[rightChannelIndex]; //音乐左边，录音右边，只填充右声道数据
-            memset(ioData->mBuffers[leftChannelIndex].mData, 0, ioData->mBuffers[leftChannelIndex].mDataByteSize);
-        }else if (self.mixType == AUGraphMixerMixTypeMusicRight){
-            bufList.mBuffers[0] = ioData->mBuffers[leftChannelIndex];
+        if (channelType == AUGraphMixerChannelTypeLeft) {
+            bufList.mBuffers[0] = ioData->mBuffers[leftChannelIndex]; //只填充左声道数据
             memset(ioData->mBuffers[rightChannelIndex].mData, 0, ioData->mBuffers[rightChannelIndex].mDataByteSize);
+        }else if (channelType == AUGraphMixerChannelTypeRight){
+            bufList.mBuffers[0] = ioData->mBuffers[rightChannelIndex];
+            memset(ioData->mBuffers[leftChannelIndex].mData, 0, ioData->mBuffers[leftChannelIndex].mDataByteSize);
         }
         
         OSStatus status = AudioUnitRender(recordPlayUnit, ioActionFlags, inTimeStamp, recordBus, inNumberFrames, &bufList);

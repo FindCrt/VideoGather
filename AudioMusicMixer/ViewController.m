@@ -38,6 +38,7 @@
 #endif
     
 #if TestAUGraphMixer
+    TFMediaData *_selectedMusic2;
     AUGraphMixer * _AUGraphMixer;
 #endif
 
@@ -52,9 +53,10 @@
 @property (weak, nonatomic) IBOutlet UIButton *recordButton;
 
 @property (nonatomic, copy) NSString *recordHome;
-@property (weak, nonatomic) IBOutlet UISlider *leftVolumeSlider;
-@property (weak, nonatomic) IBOutlet UISlider *rightVolumeSlider;
-@property (weak, nonatomic) IBOutlet UIButton *mixTypeButton;
+
+@property (strong, nonatomic) IBOutletCollection(UISlider) NSArray<UISlider *> *volumeSliders;
+
+
 
 @end
 
@@ -71,12 +73,12 @@
         TFMusicListViewController *destVC = segue.destinationViewController;
         destVC.selectMusicConpletionHandler = ^(TFMediaData *music){
             
-#if TestOneFileAndRecordVoice || TestAUGraphMixer
+#if TestOneFileAndRecordVoice
             _selectedMusic = music;
             _musicLabel.text = music.filename;
 #endif
             
-#if TestTwoFileMix
+#if TestTwoFileMix || TestAUGraphMixer
             if (!_selectedMusic) {
                 _selectedMusic = music;
                 _musicLabel.text = music.filename;
@@ -195,16 +197,17 @@
             [self setupGraphMixer];
         }
         _AUGraphMixer.musicFilePath = _selectedMusic.filePath;
+        _AUGraphMixer.musicFilePath2 = _selectedMusic2.filePath;
         [_AUGraphMixer start];
     }
 }
 
 -(void)setupGraphMixer{
     _AUGraphMixer = [[AUGraphMixer alloc] init];
-    _AUGraphMixer.leftVolume = _leftVolumeSlider.value;
-    _AUGraphMixer.rightVolume = _rightVolumeSlider.value;
+    for (int i = 0; i<_volumeSliders.count; i++) {
+        [_AUGraphMixer setVolumeAtIndex:i to:_volumeSliders[i].value];
+    }
     [_AUGraphMixer setupAUGraph];
-    
 }
 
 - (IBAction)mixTypeChange:(UIButton *)sender {
@@ -213,20 +216,23 @@
         [self setupGraphMixer];
     }
     
-    if (_AUGraphMixer.mixType == AUGraphMixerMixTypeMusicLeft) {
+    NSInteger index = sender.tag - 100;
+    AUGraphMixerChannelType type = [_AUGraphMixer channelTypeForSourceAt:index];
+    
+    if (type == AUGraphMixerChannelTypeLeft) {
         
-        _AUGraphMixer.mixType = AUGraphMixerMixTypeMusicRight;
-        [sender setTitle:@"音乐在右" forState:(UIControlStateNormal)];
+        [_AUGraphMixer setAudioSourceAtIndex:index channelTypeTo:(AUGraphMixerChannelTypeRight)];
+        [sender setTitle:@"右声道" forState:(UIControlStateNormal)];
         
-    }else if (_AUGraphMixer.mixType == AUGraphMixerMixTypeMusicRight){
+    }else if (type == AUGraphMixerChannelTypeRight){
         
-        _AUGraphMixer.mixType = AUGraphMixerMixTypeMusicStereo;
+        [_AUGraphMixer setAudioSourceAtIndex:index channelTypeTo:(AUGraphMixerChannelTypeStereo)];
         [sender setTitle:@"双声道" forState:(UIControlStateNormal)];
         
-    }else if (_AUGraphMixer.mixType == AUGraphMixerMixTypeMusicStereo){
+    }else if (type == AUGraphMixerChannelTypeStereo){
         
-        _AUGraphMixer.mixType = AUGraphMixerMixTypeMusicLeft;
-        [sender setTitle:@"音乐在左" forState:(UIControlStateNormal)];
+        [_AUGraphMixer setAudioSourceAtIndex:index channelTypeTo:(AUGraphMixerChannelTypeLeft)];
+        [sender setTitle:@"左声道" forState:(UIControlStateNormal)];
     }
 }
 #endif
@@ -276,11 +282,8 @@
 
 
 - (IBAction)volumeChanged:(UISlider *)slider {
-    if (slider == _leftVolumeSlider) {
-        _AUGraphMixer.leftVolume = slider.value;
-    }else{
-        _AUGraphMixer.rightVolume = slider.value;
-    }
+    NSInteger index = [_volumeSliders indexOfObject:slider];
+    [_AUGraphMixer setVolumeAtIndex:index to:slider.value];
 }
 
 
