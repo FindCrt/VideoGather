@@ -15,8 +15,8 @@
 #define kInputBus 1
 #define  kSampleRate 44100.0
 #define kFramesPerPacket 1
-#define kChannelsPerFrame 1
-#define kBitsPerChannel 16  //s16
+#define kChannelsPerFrame 2
+#define kBitsPerChannel 32  //s16
 //#define BUFFER_SIZE 1024
 
 typedef NS_ENUM(NSInteger, TFAudioEncodeType){
@@ -150,7 +150,7 @@ typedef NS_ENUM(NSInteger, TFAudioEncodeType){
 //        audioFmt.mBytesPerFrame = kBitsPerChannel * kChannelsPerFrame / 8;
 //        audioFmt.mReserved = 0;
         
-        FillOutASBDForLPCM (audioFmt,44100.0,kChannelsPerFrame,16,16,false,false,false);
+        FillOutASBDForLPCM (audioFmt,kSampleRate,kChannelsPerFrame,kBitsPerChannel,kBitsPerChannel,true,false,false);
         
         //FillOutASBDForLPCM
         
@@ -170,7 +170,10 @@ typedef NS_ENUM(NSInteger, TFAudioEncodeType){
     return audioFmt;
 }
 
-
+-(void)setupAudioBufferListWithNumberFrames:(UInt32)inNumberFrames{
+    
+    self.bufferData = TFAllocAudioBufferData(self.audioDesc, inNumberFrames);
+}
 
 #pragma mark - audio unit callback
 
@@ -182,30 +185,19 @@ static OSStatus recordingCallback(void *inRefCon,
                                   UInt32 inNumberFrames,
                                   AudioBufferList *ioData) {
     
-    AudioBuffer buffer;
     OSStatus status;
     TFAudioRecorder *audioRecorder = (__bridge TFAudioRecorder* )inRefCon;
 
     //sampleRate是一秒钟的采样次数，不是样本数，每次采样形成一个frame，即一帧；每次采样，每个声道采样一次，也就是一个frame，n个channel,n个sample。只有在单声道时，sampleRate才等于一秒钟的样本数。
-    int numberSamples = inNumberFrames * kChannelsPerFrame;
-    buffer.mDataByteSize = numberSamples * kBitsPerChannel/8;
-    buffer.mNumberChannels = kChannelsPerFrame;
-    buffer.mData = malloc( buffer.mDataByteSize ); // buffer size
     
-    AudioBufferList bufferList;
-    bufferList.mNumberBuffers = 1;
-    bufferList.mBuffers[0] = buffer;
-    
-    status = AudioUnitRender(audioRecorder->audioUnit, ioActionFlags, inTimeStamp, inBusNumber, inNumberFrames, &bufferList);
-    if (status) {
-        NSLog(@"AudioUnitRender");
+    if (!audioRecorder.bufferData) {
+        [audioRecorder setupAudioBufferListWithNumberFrames:inNumberFrames];
     }
     
-    audioRecorder.bufferData = TFCreateAudioBufferData(&bufferList, inNumberFrames);
+    status = AudioUnitRender(audioRecorder->audioUnit, ioActionFlags, inTimeStamp, inBusNumber, inNumberFrames, audioRecorder.bufferData->bufferList);
+    TFCheckStatusReturnStatus(status, @"AudioUnitRender");
     
     [audioRecorder transportAudioBuffersToNext];
-    
-    TFUnrefAudioBufferData(audioRecorder.bufferData);
 
     return noErr;
 }

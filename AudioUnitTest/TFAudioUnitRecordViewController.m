@@ -18,7 +18,7 @@
 #define TFUseSystemConverter    1       //pcm+ExtAudioFile,ExtAudioFile involve converter of pcm to aac.
 #define WriterCount             1
 
-#define AudioTestType   3  // 1: pcm+caf 2: aac+extAudioFile(m4a) 3: pcm+convertor+audioFile(adts) 4. multi recorders
+#define AudioTestType   1  // 1: pcm+caf 2: aac+extAudioFile(m4a) 3: pcm+convertor+audioFile(adts) 4. multi recorders
 
 @interface TFAudioUnitRecordViewController (){
     NSString *_curRecordPath;

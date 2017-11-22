@@ -32,29 +32,32 @@ extern void writeNoiseToAudioFile(const char *fName,int mChannels,bool compress_
 -(void)setFilePath:(NSString *)filePath{
     _filePath = [filePath stringByDeletingPathExtension];
     
-    [self configureAudioFile];
+    if ([self configureAudioFile] != 0) {
+        [self close];
+    }
 }
 
 -(void)setFileType:(AudioFileTypeID)fileType{
     _fileType = fileType;
     
-    [self configureAudioFile];
+    if ([self configureAudioFile] != 0) {
+        [self close];
+    }
 }
 
 -(void)setAudioDesc:(AudioStreamBasicDescription)audioDesc{
     _audioDesc = audioDesc;
     
-    [self configureAudioFile];
+    if ([self configureAudioFile] != 0) {
+        [self close];
+    }
 }
 
 -(AudioStreamBasicDescription)audioDesc{
     return _audioDesc;
 }
 
--(void)configureAudioFile{
-    
-//    writeNoiseToAudioFile([_filePath cStringUsingEncoding:NSUTF8StringEncoding], 1, true);
-
+-(OSStatus)configureAudioFile{
     
     if (_audioDesc.mSampleRate != 0 && _fileType != 0 && _filePath != nil) {
         
@@ -79,14 +82,14 @@ extern void writeNoiseToAudioFile(const char *fName,int mChannels,bool compress_
                 [[NSFileManager defaultManager] createDirectoryAtPath:fileDir withIntermediateDirectories:YES attributes:nil error:nil];
             }
             OSStatus status = ExtAudioFileCreateWithURL((__bridge CFURLRef _Nonnull)(recordFilePath),_fileType, &outputDesc, NULL, kAudioFileFlags_EraseFile, &mAudioFileRef);
-            TFCheckStatus(status, @"create ext audio file error")
+            TFCheckStatusReturnStatus(status, @"create ext audio file error")
             
             //输入数据格式使用这个属性设置
             UInt32 codecManf = kAppleHardwareAudioCodecManufacturer;
             status = ExtAudioFileSetProperty(mAudioFileRef, kExtAudioFileProperty_CodecManufacturer, sizeof(UInt32), &codecManf);
             status = ExtAudioFileSetProperty(mAudioFileRef, kExtAudioFileProperty_ClientDataFormat, sizeof(_audioDesc), &_audioDesc);
             
-            TFCheckStatusUnReturn(status, @"ext audio file set client format");
+            TFCheckStatusReturnStatus(status, @"ext audio file set client format");
             
             //check
             {
@@ -110,7 +113,7 @@ extern void writeNoiseToAudioFile(const char *fName,int mChannels,bool compress_
                 UInt32 count = outSize / sizeof(AudioFormatListItem);
                 for (int i = 0; i<count; i++) {
                     AudioFormatListItem format = formatList[i];
-                    
+                    NSLog(@"format: %d",format.mASBD.mFormatID);
                 }
             }
             
@@ -122,17 +125,14 @@ extern void writeNoiseToAudioFile(const char *fName,int mChannels,bool compress_
             }
 
             OSStatus status = ExtAudioFileCreateWithURL((__bridge CFURLRef _Nonnull)(recordFilePath),_fileType, &_audioDesc, NULL, kAudioFileFlags_EraseFile, &mAudioFileRef);
-            TFCheckStatus(status, @"create ext audio file error")
+            TFCheckStatusReturnStatus(status, @"create ext audio file error")
             
-            UInt32 codecManf = kAppleHardwareAudioCodecManufacturer;
-            ExtAudioFileSetProperty(mAudioFileRef, kExtAudioFileProperty_CodecManufacturer, sizeof(UInt32), &codecManf);
+//            UInt32 codecManf = kAppleHardwareAudioCodecManufacturer;
+//            ExtAudioFileSetProperty(mAudioFileRef, kExtAudioFileProperty_CodecManufacturer, sizeof(UInt32), &codecManf);
         }
-        
-        
-//        ExtAudioFileSetProperty(mAudioFileRef, kExtAudioFileProperty_FileMaxPacketSize, sizeof(UInt32), &codecManf);
-        
-        
     }
+    
+    return 0;
 }
 
 -(NSString *)pathExtensionForFileType:(AudioFileTypeID)fileType{
@@ -155,15 +155,18 @@ extern void writeNoiseToAudioFile(const char *fName,int mChannels,bool compress_
 }
 
 -(void)receiveNewAudioBuffers:(TFAudioBufferData *)bufferData{
-    //NSLog(@"file writer in buffer");
+    if (!mAudioFileRef) {
+        return;
+    }
     _bufferData = bufferData;
     
-    OSStatus status = ExtAudioFileWrite(mAudioFileRef, _bufferData->inNumberFrames, &_bufferData->bufferList);
+    OSStatus status = ExtAudioFileWrite(mAudioFileRef, _bufferData->inNumberFrames, _bufferData->bufferList);
     TFCheckStatus(status, @"audio write to file")
 }
 
 -(void)close{
     ExtAudioFileDispose(mAudioFileRef);
+    mAudioFileRef = nil;
 }
 
 @end

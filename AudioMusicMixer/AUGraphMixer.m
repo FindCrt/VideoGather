@@ -20,6 +20,8 @@
 #define leftChannelIndex  0
 #define rightChannelIndex 1
 
+#define UsingTempAudioBuffer    0
+
 #import "AUGraphMixer.h"
 #import <AudioToolbox/AudioToolbox.h>
 #import "TFStatusChecker.h"
@@ -44,7 +46,7 @@
     UInt32 startIndex;
     UInt32 endIndex;
     
-    
+    AudioBufferList tempRecordBuf;
 }
 
 @property (nonatomic, strong) TFAudioFileReader *fileReader;
@@ -184,6 +186,14 @@
     status = AudioUnitSetProperty(recordPlayUnit, kAudioOutputUnitProperty_EnableIO, kAudioUnitScope_Input, recordBus, &flag, sizeof(flag));
     TFCheckStatusUnReturn(status, @"emable record unit IO");
     
+#if UsingTempAudioBuffer
+    AURenderCallbackStruct callback;
+    callback.inputProc = recordingCallback;
+    callback.inputProcRefCon = (__bridge void * _Nullable)(self);
+    AudioUnitSetProperty(recordPlayUnit, kAudioOutputUnitProperty_SetInputCallback, kAudioUnitScope_Global, recordBus, &callback, sizeof(callback));
+    TFCheckStatusUnReturn(status, @"record unit set input callback");
+#endif
+    
     //mixer
     UInt32 inputCount = 2;
     status = AudioUnitSetProperty(mixerUnit, kAudioUnitProperty_ElementCount, kAudioUnitScope_Input, 0, &inputCount, sizeof(inputCount));
@@ -247,6 +257,8 @@
     
     [_fileReader setDesireOutputFormat:sourceStreamFmt];
 }
+
+
 
 #pragma mark - record buffer
 
@@ -339,6 +351,8 @@ static OSStatus mixerDataInput(void *inRefCon, AudioUnitRenderActionFlags *ioAct
         [mixer readRecordedAudio:ioActionFlags timeStamp:inTimeStamp numberFrames:inNumberFrames toBuffer:ioData];
     }
     
+
+    
     return 0;
 }
 
@@ -372,10 +386,19 @@ static OSStatus mixerDataInput(void *inRefCon, AudioUnitRenderActionFlags *ioAct
 
 -(OSStatus)readRecordedAudio:(AudioUnitRenderActionFlags *)ioActionFlags timeStamp:(const AudioTimeStamp *)inTimeStamp numberFrames:(UInt32)inNumberFrames toBuffer:(AudioBufferList *)ioData{
     
+#if UsingTempAudioBuffer
+    //从临时数据里拉取录音数据
+    memcpy(ioData->mBuffers[0].mData, tempRecordBuf.mBuffers[0].mData, ioData->mBuffers[0].mDataByteSize);
+    memcpy(ioData->mBuffers[0].mData, tempRecordBuf.mBuffers[0].mData, ioData->mBuffers[0].mDataByteSize);
+    return 0;
+#else
+    
     if (self.mixType == AUGraphMixerMixTypeMusicStereo) {
         
-        //这时格式需要设为双声道
+        //NonInterleaved时，读取出来是单声道的，ioData->mBuffers[1]的数据是空的，测试为iPhone6.使用电脑模拟器是有数据，只是两声道数据一样。可能是iPhone6硬件支持问题，待研究。
         OSStatus status = AudioUnitRender(recordPlayUnit, ioActionFlags, inTimeStamp, recordBus, inNumberFrames, ioData);
+        memcpy(ioData->mBuffers[1].mData, ioData->mBuffers[0].mData, ioData->mBuffers[1].mDataByteSize);
+        
         return status;
         
     }else{
@@ -394,7 +417,59 @@ static OSStatus mixerDataInput(void *inRefCon, AudioUnitRenderActionFlags *ioAct
         OSStatus status = AudioUnitRender(recordPlayUnit, ioActionFlags, inTimeStamp, recordBus, inNumberFrames, &bufList);
         return status;
     }
-    
+#endif
 }
+
+#pragma mark - 把录音数据存到临时位置tempRecordBuf
+
+#if UsingTempAudioBuffer
+-(void)setupTempAudioBufWithNumberFrames:(UInt32)inNumberFrames{
+    if (self.mixType == AUGraphMixerMixTypeMusicStereo) {
+        tempRecordBuf.mNumberBuffers = 2;
+        
+        tempRecordBuf.mBuffers[0].mDataByteSize = inNumberFrames * sourceStreamFmt.mBytesPerFrame;
+        tempRecordBuf.mBuffers[0].mNumberChannels = 1;
+        tempRecordBuf.mBuffers[0].mData = malloc( tempRecordBuf.mBuffers[0].mDataByteSize ); // buffer size
+        
+        tempRecordBuf.mBuffers[1].mDataByteSize = tempRecordBuf.mBuffers[0].mDataByteSize;
+        tempRecordBuf.mBuffers[1].mNumberChannels = tempRecordBuf.mBuffers[0].mNumberChannels;
+        tempRecordBuf.mBuffers[1].mData = malloc( tempRecordBuf.mBuffers[0].mDataByteSize );
+    }else{
+        tempRecordBuf.mNumberBuffers = 1;
+        
+        tempRecordBuf.mBuffers[0].mDataByteSize = inNumberFrames * sourceStreamFmt.mBytesPerFrame;
+        tempRecordBuf.mBuffers[0].mNumberChannels = 1;
+        tempRecordBuf.mBuffers[0].mData = malloc( tempRecordBuf.mBuffers[0].mDataByteSize );
+    }
+}
+
+-(OSStatus)renderMacroInputAudio:(AudioUnitRenderActionFlags *)ioActionFlags timeStamp:(const AudioTimeStamp *)inTimeStamp numberFrames:(UInt32)inNumberFrames{
+    
+    if (tempRecordBuf.mNumberBuffers == 0) {
+        [self setupTempAudioBufWithNumberFrames:inNumberFrames];
+    }
+    memset(tempRecordBuf.mBuffers[0].mData, 0, tempRecordBuf.mBuffers[0].mDataByteSize);
+    memset(tempRecordBuf.mBuffers[1].mData, 0, tempRecordBuf.mBuffers[0].mDataByteSize);
+    
+    OSStatus status = AudioUnitRender(recordPlayUnit, ioActionFlags, inTimeStamp, recordBus, inNumberFrames, &tempRecordBuf);
+    
+    TFCheckStatusReturnStatus(status, @"AudioUnitRender");
+    
+    return status;
+}
+
+static OSStatus recordingCallback(void *inRefCon,
+                                  
+                                  AudioUnitRenderActionFlags *ioActionFlags,
+                                  const AudioTimeStamp *inTimeStamp,
+                                  UInt32 inBusNumber,
+                                  UInt32 inNumberFrames,
+                                  AudioBufferList *ioData){
+    
+    AUGraphMixer *mixer = (__bridge AUGraphMixer *)(inRefCon);
+    
+    return [mixer renderMacroInputAudio:ioActionFlags timeStamp:inTimeStamp numberFrames:inNumberFrames];
+}
+#endif
 
 @end

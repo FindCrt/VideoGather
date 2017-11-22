@@ -21,16 +21,35 @@ TFAudioBufferData *TFCreateAudioBufferData(AudioBufferList *bufferList, UInt32 i
 }
 
 TFAudioBufferData *TFAllocAudioBufferData(AudioStreamBasicDescription audioDesc, UInt32 inNumberFrames){
-    AudioBuffer buffer;
-    int numberSamples = inNumberFrames * audioDesc.mChannelsPerFrame;
-    buffer.mDataByteSize = numberSamples * audioDesc.mBitsPerChannel/8;
-    buffer.mNumberChannels = audioDesc.mChannelsPerFrame;
-    buffer.mData = malloc( buffer.mDataByteSize ); // buffer size
     
-    AudioBufferList bufferList;
-    bufferList.mNumberBuffers = 1;
-    bufferList.mBuffers[0] = buffer;
-    return TFCreateAudioBufferData(&bufferList, inNumberFrames);
+    AudioBufferList *bufferList = malloc(sizeof(AudioBufferList));
+    bool isNonInterleaved = audioDesc.mFormatFlags & kAudioFormatFlagIsNonInterleaved;
+    if (isNonInterleaved) {
+        bufferList->mNumberBuffers = 2;
+        
+        bufferList->mBuffers[0].mDataByteSize = inNumberFrames *
+        audioDesc.mBytesPerFrame;
+        bufferList->mBuffers[0].mNumberChannels = 1;
+        bufferList->mBuffers[0].mData = malloc( bufferList->mBuffers[0].mDataByteSize ); // buffer size
+        
+        bufferList->mBuffers[1].mDataByteSize = bufferList->mBuffers[0].mDataByteSize;
+        bufferList->mBuffers[1].mNumberChannels = bufferList->mBuffers[0].mNumberChannels;
+        bufferList->mBuffers[1].mData = malloc( bufferList->mBuffers[0].mDataByteSize );
+        
+        memset(bufferList->mBuffers[0].mData, 0, bufferList->mBuffers[0].mDataByteSize);
+        memset(bufferList->mBuffers[1].mData, 0, bufferList->mBuffers[0].mDataByteSize);
+        
+    }else{
+        
+        bufferList->mNumberBuffers = 1;
+        
+        bufferList->mBuffers[0].mDataByteSize = inNumberFrames *
+        audioDesc.mBytesPerFrame;
+        bufferList->mBuffers[0].mNumberChannels = audioDesc.mChannelsPerFrame;
+        bufferList->mBuffers[0].mData = malloc( bufferList->mBuffers[0].mDataByteSize ); // buffer size
+    }
+    
+    return TFCreateAudioBufferData(bufferList, inNumberFrames);
 }
 
 void TFRefAudioBufferData(TFAudioBufferData *bufferData){
