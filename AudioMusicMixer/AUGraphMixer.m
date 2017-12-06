@@ -20,8 +20,6 @@
 #define leftChannelIndex  0
 #define rightChannelIndex 1
 
-#define UsingTempAudioBuffer    0 //把录音数据存到临时位置
-
 #define MixerInputSourceCount   3
 #define FirstAudioFileIndex     0
 #define RecordUnitSourceIndex    1
@@ -348,13 +346,6 @@ static OSStatus mixerDataInput(void *inRefCon, AudioUnitRenderActionFlags *ioAct
 
 -(OSStatus)readRecordedAudio:(AudioUnitRenderActionFlags *)ioActionFlags timeStamp:(const AudioTimeStamp *)inTimeStamp numberFrames:(UInt32)inNumberFrames toBuffer:(AudioBufferList *)ioData{
     
-#if UsingTempAudioBuffer
-    //从临时数据里拉取录音数据
-    memcpy(ioData->mBuffers[0].mData, tempRecordBuf.mBuffers[0].mData, ioData->mBuffers[0].mDataByteSize);
-    memcpy(ioData->mBuffers[0].mData, tempRecordBuf.mBuffers[0].mData, ioData->mBuffers[0].mDataByteSize);
-    return 0;
-#else
-    
     AUGraphMixerChannelType channelType = [[_audioChannelTypes objectForKey:@(RecordUnitSourceIndex)] integerValue];
     
     if (channelType == AUGraphMixerChannelTypeStereo) {
@@ -381,59 +372,6 @@ static OSStatus mixerDataInput(void *inRefCon, AudioUnitRenderActionFlags *ioAct
         OSStatus status = AudioUnitRender(recordPlayUnit, ioActionFlags, inTimeStamp, recordBus, inNumberFrames, &bufList);
         return status;
     }
-#endif
 }
-
-#pragma mark - 把录音数据存到临时位置tempRecordBuf
-
-#if UsingTempAudioBuffer
--(void)setupTempAudioBufWithNumberFrames:(UInt32)inNumberFrames{
-    if (self.mixType == AUGraphMixerMixTypeMusicStereo) {
-        tempRecordBuf.mNumberBuffers = 2;
-        
-        tempRecordBuf.mBuffers[0].mDataByteSize = inNumberFrames * sourceStreamFmt.mBytesPerFrame;
-        tempRecordBuf.mBuffers[0].mNumberChannels = 1;
-        tempRecordBuf.mBuffers[0].mData = malloc( tempRecordBuf.mBuffers[0].mDataByteSize ); // buffer size
-        
-        tempRecordBuf.mBuffers[1].mDataByteSize = tempRecordBuf.mBuffers[0].mDataByteSize;
-        tempRecordBuf.mBuffers[1].mNumberChannels = tempRecordBuf.mBuffers[0].mNumberChannels;
-        tempRecordBuf.mBuffers[1].mData = malloc( tempRecordBuf.mBuffers[0].mDataByteSize );
-    }else{
-        tempRecordBuf.mNumberBuffers = 1;
-        
-        tempRecordBuf.mBuffers[0].mDataByteSize = inNumberFrames * sourceStreamFmt.mBytesPerFrame;
-        tempRecordBuf.mBuffers[0].mNumberChannels = 1;
-        tempRecordBuf.mBuffers[0].mData = malloc( tempRecordBuf.mBuffers[0].mDataByteSize );
-    }
-}
-
--(OSStatus)renderMacroInputAudio:(AudioUnitRenderActionFlags *)ioActionFlags timeStamp:(const AudioTimeStamp *)inTimeStamp numberFrames:(UInt32)inNumberFrames{
-    
-    if (tempRecordBuf.mNumberBuffers == 0) {
-        [self setupTempAudioBufWithNumberFrames:inNumberFrames];
-    }
-    memset(tempRecordBuf.mBuffers[0].mData, 0, tempRecordBuf.mBuffers[0].mDataByteSize);
-    memset(tempRecordBuf.mBuffers[1].mData, 0, tempRecordBuf.mBuffers[0].mDataByteSize);
-    
-    OSStatus status = AudioUnitRender(recordPlayUnit, ioActionFlags, inTimeStamp, recordBus, inNumberFrames, &tempRecordBuf);
-    
-    TFCheckStatusReturnStatus(status, @"AudioUnitRender");
-    
-    return status;
-}
-
-static OSStatus recordingCallback(void *inRefCon,
-                                  
-                                  AudioUnitRenderActionFlags *ioActionFlags,
-                                  const AudioTimeStamp *inTimeStamp,
-                                  UInt32 inBusNumber,
-                                  UInt32 inNumberFrames,
-                                  AudioBufferList *ioData){
-    
-    AUGraphMixer *mixer = (__bridge AUGraphMixer *)(inRefCon);
-    
-    return [mixer renderMacroInputAudio:ioActionFlags timeStamp:inTimeStamp numberFrames:inNumberFrames];
-}
-#endif
 
 @end
