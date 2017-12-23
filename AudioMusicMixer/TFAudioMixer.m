@@ -104,8 +104,8 @@ double totalRate = 0;
 UInt64 count = 0;
 void mixBuffer1(SInt16 *buffer1, UInt32 frameCount1, SInt16 *buffer2 ,UInt32 frameCount2, SInt16 *outBuffer){
     
-//    memcpy(outBuffer, buffer1, frameCount1*2);
-//    return;
+    
+    
     
     UInt8 bitOffset = 8 * sizeof(SInt16);
     UInt64 bitMax = (UInt64) (pow(2, bitOffset));
@@ -123,6 +123,8 @@ void mixBuffer1(SInt16 *buffer1, UInt32 frameCount1, SInt16 *buffer2 ,UInt32 fra
             
             SInt16 value1 = *(buffer1+j);   //-32768 ~ 32767
             SInt16 value2 = *(buffer2+j);   //-32768 ~ 32767
+            
+            value1 >>= 2;
 
             SInt8 sign1 = (value1 == 0)? 0 : abs(value1)/value1;
             SInt8 sign2 = (value2== 0)? 0 : abs(value2)/value2;

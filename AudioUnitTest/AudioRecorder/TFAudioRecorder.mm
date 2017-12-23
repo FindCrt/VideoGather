@@ -112,8 +112,8 @@ typedef NS_ENUM(NSInteger, TFAudioEncodeType){
     AVAudioSession *session = [AVAudioSession sharedInstance];
     [session setPreferredSampleRate:44100 error:&error];
     TFCheckError(error, @"setPreferredSampleRate")
-    [session setCategory:AVAudioSessionCategoryRecord
-             withOptions:AVAudioSessionCategoryOptionDuckOthers
+    [session setCategory:AVAudioSessionCategoryPlayAndRecord
+             withOptions:AVAudioSessionCategoryOptionMixWithOthers
                    error:&error];
     TFCheckError(error, @"setCategory")
     [session setActive:YES error:&error];

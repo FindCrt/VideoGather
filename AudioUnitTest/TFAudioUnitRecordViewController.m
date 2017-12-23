@@ -53,7 +53,7 @@
 }
 
 -(void)setupRecorder{
-    _recorder = [[TFAudioRecorder alloc] init];
+//    _recorder = [[TFAudioRecorder alloc] init];
     
 #if AudioTestType == 1
     //pcm+caf

@@ -47,6 +47,7 @@
     TFCheckStatusGoToFail(status, @"ExtAudioFile get file format")
     
     //read with pcm format
+    _outputDesc.mSampleRate = 44100;
     _outputDesc.mFormatID = kAudioFormatLinearPCM;
     _outputDesc.mFormatFlags = kAudioFormatFlagIsSignedInteger | kAudioFormatFlagIsPacked;
     _outputDesc.mReserved = 0;
@@ -114,7 +115,7 @@ fail:
     if (_desireFmt.mBitsPerChannel > 0) {
         _outputDesc.mBitsPerChannel = _desireFmt.mBitsPerChannel;
     }
-    if (_desireFmt.mFormatFlags != _outputDesc.mFormatFlags) {
+    if (_desireFmt.mFormatFlags > 0 && _desireFmt.mFormatFlags != _outputDesc.mFormatFlags) {
         _outputDesc.mFormatFlags = _desireFmt.mFormatFlags;
     }
     
