@@ -14,6 +14,8 @@
 
 //https://developer.apple.com/library/content/documentation/MusicAudio/Conceptual/AudioUnitHostingGuide_iOS/Art/audioUnitScopes_2x.png
 
+//抓取audioUnit的渲染数据，用于传输或写入文件：https://stackoverflow.com/questions/13309103/augraph-record-and-play-with-remoteio-and-multichannelmixer
+
 #define recordBus    1
 #define renderBus   0
 
@@ -117,6 +119,7 @@
     //play data callback
     AudioUnitAddRenderNotify(mixerUnit, playUnitInputCallback, (__bridge void *)self);
     
+    //添加一个渲染通知，在这个组件渲染数据前后都会回调，在渲染后可以在回调的ioData里得到当前组件的数据。
     status = AUGraphConnectNodeInput(processingGraph, mixerNode, 0, recordPlayNode, 0);
     TFCheckStatusUnReturn(status, @"connect mixer to play");
     
@@ -399,7 +402,7 @@ static OSStatus playUnitInputCallback(void *inRefCon,
                                   AudioBufferList *ioData) {
     
     
-    //获取数据
+    //使用flag判断数据渲染前后，是渲染后状态则有数据可取
     if ((*ioActionFlags) & kAudioUnitRenderAction_PostRender){
         AUGraphMixer *mixer = (__bridge AUGraphMixer *)inRefCon;
         TFAudioBufferData *tf_audioBuf = TFCreateAudioBufferData(ioData, inNumberFrames);
