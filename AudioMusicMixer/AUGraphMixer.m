@@ -106,13 +106,13 @@
     status = AUGraphOpen(processingGraph);
     TFCheckStatusUnReturn(status, @"graph open");
     
-    status = AUGraphNodeInfo(processingGraph, recordPlayNode, NULL, &recordPlayUnit);
+    status = AUGraphNodeInfo(processingGraph, recordPlayNode, &playDesc, &recordPlayUnit);
     TFCheckStatusUnReturn(status, @"get play unit");
     status = AUGraphNodeInfo(processingGraph, mixerNode, NULL, &mixerUnit);
     TFCheckStatusUnReturn(status, @"get record unit");
     
-    status = AUGraphConnectNodeInput(processingGraph, mixerNode, 0, recordPlayNode, 0);
-    TFCheckStatusUnReturn(status, @"connect mixer to play");
+//    status = AUGraphConnectNodeInput(processingGraph, mixerNode, 0, recordPlayNode, 0);
+//    TFCheckStatusUnReturn(status, @"connect mixer to play");
     
     //开启录音到mixer的连接，mixer的element0的回调就不调用了，即通过录音的audioUnit获取数据;
 //    status = AUGraphConnectNodeInput(processingGraph, recordPlayNode, recordBus, mixerNode, 0);
@@ -213,6 +213,13 @@
     size = sizeof(mixStreamFmt);
     status = AudioUnitSetProperty(recordPlayUnit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Input, renderBus, &mixStreamFmt, size);
     TFCheckStatusUnReturn(status, @"set play unit format");
+    
+    //play data callback
+    AURenderCallbackStruct callbackStruct = {0};
+    callbackStruct.inputProc = playUnitInputCallback;
+    callbackStruct.inputProcRefCon = mixerUnit;
+    
+    status = AUGraphSetNodeInputCallback(processingGraph, recordPlayNode, 0, &callbackStruct);
 
     return status;
 }
@@ -372,6 +379,20 @@ static OSStatus mixerDataInput(void *inRefCon, AudioUnitRenderActionFlags *ioAct
         OSStatus status = AudioUnitRender(recordPlayUnit, ioActionFlags, inTimeStamp, recordBus, inNumberFrames, &bufList);
         return status;
     }
+}
+
+static OSStatus playUnitInputCallback(void *inRefCon,
+                                  
+                                  AudioUnitRenderActionFlags *ioActionFlags,
+                                  const AudioTimeStamp *inTimeStamp,
+                                  UInt32 inBusNumber,
+                                  UInt32 inNumberFrames,
+                                  AudioBufferList *ioData) {
+    
+    //获取数据
+    
+    
+    return noErr;
 }
 
 @end

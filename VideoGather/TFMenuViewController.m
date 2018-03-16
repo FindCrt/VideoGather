@@ -8,7 +8,7 @@
 
 #import "TFMenuViewController.h"
 #import "TFCameraViewController.h"
-#import "TFVideoPlayerViewController2.h"
+#import "TFVideoPlayerViewController.h"
 #import "TFVideoGatherViewController.h"
 
 @interface TFMenuViewController (){
@@ -50,10 +50,13 @@
         
     }else if (indexPath.row == 1){
         
-        TFVideoPlayerViewController2 *videoPlayVC = [[TFVideoPlayerViewController2 alloc] init];
+        TFVideoPlayerViewController *videoPlayVC = [[TFVideoPlayerViewController alloc] init];
         
-        NSString *path = [[NSBundle mainBundle] pathForResource:@"cocosvideo" ofType:@"mp4"];
-        videoPlayVC.videoURL = [NSURL fileURLWithPath:path];
+        NSURL *netURL = [NSURL URLWithString:@"http://video.devimg.com/infoflow/M00/00/61/wKgJF1qPhLiAZXUWAAOXwPxUiIU822.mp4"];
+        
+        NSString *path = [[NSBundle mainBundle] pathForResource:@"际信测试视频" ofType:@"mp4"];
+//        videoPlayVC.videoURL = [NSURL fileURLWithPath:path];
+        videoPlayVC.videoURL = netURL;
         [self.navigationController pushViewController:videoPlayVC animated:YES];
         
     }else if (indexPath.row == 2){

@@ -7,6 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		180590A8203FB82700008E69 /* 际信测试视频.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 180590A7203FB81D00008E69 /* 际信测试视频.mp4 */; };
+		180FA4131FF4B26F00AFB5F9 /* libavcodec.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 185828631F5E83550088C5C3 /* libavcodec.a */; };
+		180FA4141FF4B26F00AFB5F9 /* libavdevice.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 185828641F5E83550088C5C3 /* libavdevice.a */; };
+		180FA4151FF4B26F00AFB5F9 /* libavfilter.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 185828651F5E83550088C5C3 /* libavfilter.a */; };
+		180FA4161FF4B26F00AFB5F9 /* libavformat.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 185828661F5E83550088C5C3 /* libavformat.a */; };
+		180FA4171FF4B26F00AFB5F9 /* libavutil.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 185828671F5E83550088C5C3 /* libavutil.a */; };
+		180FA4181FF4B26F00AFB5F9 /* libswresample.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 185828681F5E83550088C5C3 /* libswresample.a */; };
+		180FA4191FF4B26F00AFB5F9 /* libswscale.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 185828691F5E83550088C5C3 /* libswscale.a */; };
 		1815292C1F665F4D00FA3619 /* TFVideoGatherViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1815292B1F665F4D00FA3619 /* TFVideoGatherViewController.m */; };
 		1815292F1F665F7D00FA3619 /* TFVideoTransfer.m in Sources */ = {isa = PBXBuildFile; fileRef = 1815292E1F665F7D00FA3619 /* TFVideoTransfer.m */; };
 		183972E61FBAD37F0016EE45 /* AUGraphMixer.m in Sources */ = {isa = PBXBuildFile; fileRef = 183972E51FBAD37F0016EE45 /* AUGraphMixer.m */; };
@@ -144,6 +152,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		180590A7203FB81D00008E69 /* 际信测试视频.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "际信测试视频.mp4"; sourceTree = "<group>"; };
 		1815292A1F665F4D00FA3619 /* TFVideoGatherViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFVideoGatherViewController.h; sourceTree = "<group>"; };
 		1815292B1F665F4D00FA3619 /* TFVideoGatherViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFVideoGatherViewController.m; sourceTree = "<group>"; };
 		1815292D1F665F7D00FA3619 /* TFVideoTransfer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFVideoTransfer.h; sourceTree = "<group>"; };
@@ -460,6 +469,13 @@
 			files = (
 				1880B5721FB59D1400C652E8 /* AudioToolbox.framework in Frameworks */,
 				1880B5711FB59D0E00C652E8 /* CoreAudio.framework in Frameworks */,
+				180FA4131FF4B26F00AFB5F9 /* libavcodec.a in Frameworks */,
+				180FA4141FF4B26F00AFB5F9 /* libavdevice.a in Frameworks */,
+				180FA4151FF4B26F00AFB5F9 /* libavfilter.a in Frameworks */,
+				180FA4161FF4B26F00AFB5F9 /* libavformat.a in Frameworks */,
+				180FA4171FF4B26F00AFB5F9 /* libavutil.a in Frameworks */,
+				180FA4181FF4B26F00AFB5F9 /* libswresample.a in Frameworks */,
+				180FA4191FF4B26F00AFB5F9 /* libswscale.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -533,6 +549,7 @@
 		183EF0C51F57C35F00E21DB4 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				180590A7203FB81D00008E69 /* 际信测试视频.mp4 */,
 				1858A4301F8B097D00784FC6 /* audio@2x.png */,
 				18591BD81F7F5DE900E92646 /* github.jpeg */,
 				18591BE51F7F84DF00E92646 /* github_reversed.jpeg */,
@@ -1173,6 +1190,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				180590A8203FB82700008E69 /* 际信测试视频.mp4 in Resources */,
 				18591BE61F7F84DF00E92646 /* github_reversed.jpeg in Resources */,
 				18591BBA1F7F3A9200E92646 /* shiliu.png in Resources */,
 				185AC66F1F59593E00A154C0 /* cocosvideo.mp4 in Resources */,
@@ -1637,10 +1655,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = UML9BQURX9;
+				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/VideoGather/FFmpeg/include";
 				INFOPLIST_FILE = SingASong/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/VideoGather/FFmpeg/lib";
 				PRODUCT_BUNDLE_IDENTIFIER = shiwei.SingASong;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				USER_HEADER_SEARCH_PATHS = "";
 			};
 			name = Debug;
 		};
@@ -1649,10 +1670,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = UML9BQURX9;
+				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/VideoGather/FFmpeg/include";
 				INFOPLIST_FILE = SingASong/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/VideoGather/FFmpeg/lib";
 				PRODUCT_BUNDLE_IDENTIFIER = shiwei.SingASong;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				USER_HEADER_SEARCH_PATHS = "";
 			};
 			name = Release;
 		};

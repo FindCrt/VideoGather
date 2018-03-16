@@ -50,6 +50,8 @@
     [self setupAudioComponents];
     
     [self setupUI];
+    
+    av_register_all();
 }
 
 -(void)setupUI{

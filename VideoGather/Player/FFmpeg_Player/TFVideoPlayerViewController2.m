@@ -7,6 +7,7 @@
 //
 
 #import "TFVideoPlayerViewController2.h"
+#import <libavformat/avformat.h>
 
 @interface TFVideoPlayerViewController2 ()
 
@@ -17,6 +18,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    av_register_all();
 }
 
 @end

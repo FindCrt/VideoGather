@@ -14,7 +14,7 @@
 #import "TFCoreImageDisplayView.h"
 #import "CIImage+Filter.h"
 
-#define AVPlayerUseCoreImageFiler   1
+#define AVPlayerUseCoreImageFiler   0
 
 #define ScreenWidth ([UIScreen mainScreen].bounds.size.width)
 
@@ -103,7 +103,10 @@
 
 -(void)setupPlayer{
     AVPlayerItem *playItem = [[AVPlayerItem alloc] initWithURL:self.videoURL];
-    _player = [[AVPlayer alloc] initWithPlayerItem:playItem];
+    _player = [[AVPlayer alloc] initWithURL:[NSURL URLWithString:@""]];
+    [_player replaceCurrentItemWithPlayerItem:playItem];
+    
+    [_player addObserver:self forKeyPath:@"status" options:(NSKeyValueObservingOptionNew) context:nil];
     
 #if AVPlayerUseCoreImageFiler
     _videoOutput = [[AVPlayerItemVideoOutput alloc] initWithPixelBufferAttributes:@{(__bridge NSString*)kCVPixelBufferPixelFormatTypeKey: @(kCVPixelFormatType_420YpCbCr8BiPlanarFullRange)}];
@@ -112,7 +115,20 @@
     
 }
 
+-(void)dealloc{
+    [_player removeObserver:self forKeyPath:@"status"];
+}
+
+-(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context{
+    if ([keyPath isEqualToString:@"status"]) {
+        if (_player.status == AVPlayerStatusFailed) {
+            NSLog(@"error: %@",_player.error);
+        }
+    }
+}
+
 -(void)videoDisplay:(CADisplayLink *)link{
+#if AVPlayerUseCoreImageFiler
     CMTime itemTime = [_videoOutput itemTimeForHostTime:CACurrentMediaTime()];
     
     if ([_videoOutput hasNewPixelBufferForItemTime:itemTime]) {
@@ -127,6 +143,7 @@
         _playView.image = [image blendWithMask:mask background:background];
     
     }
+#endif
 }
 
 

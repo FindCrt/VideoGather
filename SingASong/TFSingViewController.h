@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "avformat.h"
 
 @interface TFSingViewController : UIViewController
 

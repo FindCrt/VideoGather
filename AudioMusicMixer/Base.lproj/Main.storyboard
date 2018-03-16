@@ -76,9 +76,8 @@
                                     <action selector="volumeChanged:" destination="4z2-IN-1ud" eventType="valueChanged" id="Ubx-hk-wDB"/>
                                 </connections>
                             </slider>
-                            <slider opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="6eI-SJ-mk4">
+                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="6eI-SJ-mk4">
                                 <rect key="frame" x="14" y="437" width="347" height="31"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <connections>
                                     <action selector="volumeChanged:" destination="4z2-IN-1ud" eventType="valueChanged" id="qOU-ml-mJ8"/>
                                 </connections>
@@ -95,32 +94,28 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="音乐2" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yrI-wj-d3L">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="音乐2" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yrI-wj-d3L">
                                 <rect key="frame" x="16" y="419" width="35" height="16"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" tag="100" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oEa-Tc-V0N">
+                            <button opaque="NO" tag="100" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oEa-Tc-V0N">
                                 <rect key="frame" x="313" y="287" width="46" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="左声道"/>
                                 <connections>
                                     <action selector="mixTypeChange:" destination="4z2-IN-1ud" eventType="touchUpInside" id="bel-B6-cFG"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" tag="101" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GPS-rQ-hEv">
+                            <button opaque="NO" tag="101" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GPS-rQ-hEv">
                                 <rect key="frame" x="313" y="354" width="46" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="左声道"/>
                                 <connections>
                                     <action selector="mixTypeChange:" destination="4z2-IN-1ud" eventType="touchUpInside" id="P0W-QH-jR9"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" tag="102" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vy9-PW-tmu">
+                            <button opaque="NO" tag="102" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vy9-PW-tmu">
                                 <rect key="frame" x="313" y="412" width="46" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="左声道"/>
                                 <connections>
                                     <action selector="mixTypeChange:" destination="4z2-IN-1ud" eventType="touchUpInside" id="3tW-yB-NzK"/>
@@ -130,22 +125,33 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="PMI-LB-3Iz" firstAttribute="top" secondItem="doc-9d-sHe" secondAttribute="bottom" constant="33" id="0N0-q2-isl"/>
+                            <constraint firstItem="vy9-PW-tmu" firstAttribute="trailing" secondItem="GPS-rQ-hEv" secondAttribute="trailing" id="4p4-6C-uNA"/>
+                            <constraint firstItem="6eI-SJ-mk4" firstAttribute="top" secondItem="vy9-PW-tmu" secondAttribute="bottom" constant="-5" id="6ob-ja-esm"/>
                             <constraint firstItem="PMI-LB-3Iz" firstAttribute="top" secondItem="gNo-xT-85d" secondAttribute="bottom" constant="4" id="6xE-XZ-1Bc"/>
+                            <constraint firstItem="PMI-LB-3Iz" firstAttribute="top" secondItem="GPS-rQ-hEv" secondAttribute="bottom" constant="-3" id="EW4-wu-EqU"/>
+                            <constraint firstItem="6eI-SJ-mk4" firstAttribute="top" secondItem="PMI-LB-3Iz" secondAttribute="bottom" constant="26" id="F1l-be-frK"/>
                             <constraint firstItem="doc-9d-sHe" firstAttribute="top" secondItem="Eub-vG-qTQ" secondAttribute="bottom" constant="8" id="HnW-HJ-CLg"/>
                             <constraint firstItem="doc-9d-sHe" firstAttribute="centerY" secondItem="3ua-iw-gcJ" secondAttribute="centerY" id="Hom-Mh-CLa"/>
                             <constraint firstItem="PMI-LB-3Iz" firstAttribute="leading" secondItem="doc-9d-sHe" secondAttribute="leading" id="LSc-RV-UoN"/>
                             <constraint firstItem="PMI-LB-3Iz" firstAttribute="trailing" secondItem="doc-9d-sHe" secondAttribute="trailing" id="MJq-yW-WMQ"/>
                             <constraint firstItem="xah-S4-ley" firstAttribute="centerX" secondItem="3ua-iw-gcJ" secondAttribute="centerX" id="Mwi-0l-cuL"/>
+                            <constraint firstAttribute="leadingMargin" secondItem="yrI-wj-d3L" secondAttribute="leading" id="Prs-VD-SWg"/>
                             <constraint firstItem="aaI-Fy-hVO" firstAttribute="centerX" secondItem="3ua-iw-gcJ" secondAttribute="centerX" id="V4j-3N-2Bd"/>
                             <constraint firstItem="3vV-2n-XQh" firstAttribute="top" secondItem="aaI-Fy-hVO" secondAttribute="bottom" constant="41" id="WVC-0S-djV"/>
                             <constraint firstItem="xah-S4-ley" firstAttribute="top" secondItem="ttl-lx-gOc" secondAttribute="bottom" constant="8" id="ccs-gV-oYM"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="oEa-Tc-V0N" secondAttribute="trailing" id="dJC-zR-dDK"/>
                             <constraint firstItem="gNo-xT-85d" firstAttribute="leading" secondItem="PMI-LB-3Iz" secondAttribute="leading" id="gbL-YY-adi"/>
+                            <constraint firstItem="6eI-SJ-mk4" firstAttribute="trailing" secondItem="PMI-LB-3Iz" secondAttribute="trailing" id="icl-Sx-dA6"/>
                             <constraint firstAttribute="leadingMargin" secondItem="xah-S4-ley" secondAttribute="leading" id="ikx-Kb-dl9"/>
                             <constraint firstItem="3vV-2n-XQh" firstAttribute="centerX" secondItem="3ua-iw-gcJ" secondAttribute="centerX" id="iwQ-zW-ckp"/>
+                            <constraint firstItem="GPS-rQ-hEv" firstAttribute="trailing" secondItem="oEa-Tc-V0N" secondAttribute="trailing" id="jOT-wH-i7o"/>
                             <constraint firstAttribute="trailingMargin" secondItem="doc-9d-sHe" secondAttribute="trailing" id="kBi-UX-4o9"/>
                             <constraint firstAttribute="leadingMargin" secondItem="doc-9d-sHe" secondAttribute="leading" id="m6n-11-Bso"/>
+                            <constraint firstItem="doc-9d-sHe" firstAttribute="top" secondItem="oEa-Tc-V0N" secondAttribute="bottom" constant="1" id="nAb-Rk-cEC"/>
                             <constraint firstItem="Eub-vG-qTQ" firstAttribute="leading" secondItem="doc-9d-sHe" secondAttribute="leading" id="nr3-oI-FfO"/>
                             <constraint firstItem="aaI-Fy-hVO" firstAttribute="top" secondItem="ttl-lx-gOc" secondAttribute="bottom" constant="71" id="olk-BM-E8I"/>
+                            <constraint firstItem="6eI-SJ-mk4" firstAttribute="top" secondItem="yrI-wj-d3L" secondAttribute="bottom" constant="2" id="tLc-Wx-6UU"/>
+                            <constraint firstItem="6eI-SJ-mk4" firstAttribute="leading" secondItem="PMI-LB-3Iz" secondAttribute="leading" id="uEt-GR-v5a"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="clE-77-nuU">
@@ -180,7 +186,7 @@
                                 <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Uuq-0m-iut" id="6rn-0P-XDV">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
                             </tableViewCell>
