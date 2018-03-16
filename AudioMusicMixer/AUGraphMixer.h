@@ -20,6 +20,8 @@ typedef NS_ENUM(NSInteger, AUGraphMixerChannelType){
 
 @property (nonatomic, copy) NSString *musicFilePath2;
 
+@property (nonatomic, copy) NSString *outputPath;
+
 @property (nonatomic, assign, getter=isRuning) BOOL runing;
 
 -(void)setupAUGraph;

@@ -29,6 +29,7 @@
 #import <AudioToolbox/AudioToolbox.h>
 #import "TFStatusChecker.h"
 #import "TFAudioFileReader.h"
+#import "TFAudioFileWriter.h"
 #import <AVFoundation/AVFoundation.h>
 
 @interface AUGraphMixer (){
@@ -49,6 +50,8 @@
 
 @property (nonatomic, strong) TFAudioFileReader *fileReader;
 @property (nonatomic, strong) TFAudioFileReader *fileReader2;
+
+@property (nonatomic, strong) TFAudioFileWriter *fileWriter;
 
 @property (nonatomic, strong) NSMutableDictionary *audioChannelTypes;
 
@@ -111,8 +114,11 @@
     status = AUGraphNodeInfo(processingGraph, mixerNode, NULL, &mixerUnit);
     TFCheckStatusUnReturn(status, @"get record unit");
     
-//    status = AUGraphConnectNodeInput(processingGraph, mixerNode, 0, recordPlayNode, 0);
-//    TFCheckStatusUnReturn(status, @"connect mixer to play");
+    //play data callback
+    AudioUnitAddRenderNotify(mixerUnit, playUnitInputCallback, (__bridge void *)self);
+    
+    status = AUGraphConnectNodeInput(processingGraph, mixerNode, 0, recordPlayNode, 0);
+    TFCheckStatusUnReturn(status, @"connect mixer to play");
     
     //开启录音到mixer的连接，mixer的element0的回调就不调用了，即通过录音的audioUnit获取数据;
 //    status = AUGraphConnectNodeInput(processingGraph, recordPlayNode, recordBus, mixerNode, 0);
@@ -122,6 +128,7 @@
     [self setStramFormats];
     
     [self setupFileReaders];
+    [self setupFileWriters];
 
     status = AUGraphInitialize(processingGraph);
     TFCheckStatusUnReturn(status, @"init graph");
@@ -213,13 +220,6 @@
     size = sizeof(mixStreamFmt);
     status = AudioUnitSetProperty(recordPlayUnit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Input, renderBus, &mixStreamFmt, size);
     TFCheckStatusUnReturn(status, @"set play unit format");
-    
-    //play data callback
-    AURenderCallbackStruct callbackStruct = {0};
-    callbackStruct.inputProc = playUnitInputCallback;
-    callbackStruct.inputProcRefCon = mixerUnit;
-    
-    status = AUGraphSetNodeInputCallback(processingGraph, recordPlayNode, 0, &callbackStruct);
 
     return status;
 }
@@ -235,6 +235,15 @@
     _fileReader2.filePath = self.musicFilePath2;
     [_fileReader2 setDesireOutputFormat:sourceStreamFmts[SecondAudioFileIndex]];
     _fileReader2.isRepeat = YES;
+}
+
+-(void)setupFileWriters{
+    _fileWriter = [[TFAudioFileWriter alloc] init];
+    _fileWriter.filePath = self.outputPath;
+
+    _fileWriter.fileType = kAudioFileCAFType;
+    
+    [_fileWriter setAudioDesc:mixStreamFmt];
 }
 
 -(void)setMusicFilePath:(NSString *)musicFilePath{
@@ -389,8 +398,14 @@ static OSStatus playUnitInputCallback(void *inRefCon,
                                   UInt32 inNumberFrames,
                                   AudioBufferList *ioData) {
     
-    //获取数据
     
+    //获取数据
+    if ((*ioActionFlags) & kAudioUnitRenderAction_PostRender){
+        AUGraphMixer *mixer = (__bridge AUGraphMixer *)inRefCon;
+        TFAudioBufferData *tf_audioBuf = TFCreateAudioBufferData(ioData, inNumberFrames);
+        [mixer.fileWriter receiveNewAudioBuffers:tf_audioBuf];
+    }
+
     
     return noErr;
 }

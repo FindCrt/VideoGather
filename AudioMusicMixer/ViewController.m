@@ -207,6 +207,7 @@
     for (int i = 0; i<_volumeSliders.count; i++) {
         [_AUGraphMixer setVolumeAtIndex:i to:_volumeSliders[i].value];
     }
+    _AUGraphMixer.outputPath = [self nextRecordPath];
     [_AUGraphMixer setupAUGraph];
 }
 
@@ -280,11 +281,11 @@
     [self.navigationController pushViewController:mediaListVC animated:YES];
 }
 
-
+#if TestAUGraphMixer
 - (IBAction)volumeChanged:(UISlider *)slider {
     NSInteger index = [_volumeSliders indexOfObject:slider];
     [_AUGraphMixer setVolumeAtIndex:index to:slider.value];
 }
-
+#endif
 
 @end

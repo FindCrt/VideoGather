@@ -123,9 +123,26 @@ extern void writeNoiseToAudioFile(const char *fName,int mChannels,bool compress_
             if (![[NSFileManager defaultManager] fileExistsAtPath:fileDir]) {
                 [[NSFileManager defaultManager] createDirectoryAtPath:fileDir withIntermediateDirectories:YES attributes:nil error:nil];
             }
+            
+            AudioStreamBasicDescription outputDesc;
+            outputDesc.mFormatID = kAudioFormatLinearPCM;
+            outputDesc.mFormatFlags = kAudioFormatFlagIsPacked | kAudioFormatFlagIsSignedInteger;
+            outputDesc.mChannelsPerFrame = 2;
+            outputDesc.mSampleRate = _audioDesc.mSampleRate;
+            outputDesc.mFramesPerPacket = 1;
+            outputDesc.mBytesPerFrame = 4;
+            outputDesc.mBytesPerPacket = 4;
+            outputDesc.mBitsPerChannel = 16;
+            outputDesc.mReserved = 0;
 
-            OSStatus status = ExtAudioFileCreateWithURL((__bridge CFURLRef _Nonnull)(recordFilePath),_fileType, &_audioDesc, NULL, kAudioFileFlags_EraseFile, &mAudioFileRef);
+            OSStatus status = ExtAudioFileCreateWithURL((__bridge CFURLRef _Nonnull)(recordFilePath),_fileType, &outputDesc, NULL, kAudioFileFlags_EraseFile, &mAudioFileRef);
             TFCheckStatusReturnStatus(status, @"create ext audio file error")
+            
+            UInt32 codecManf = kAppleHardwareAudioCodecManufacturer;
+            status = ExtAudioFileSetProperty(mAudioFileRef, kExtAudioFileProperty_CodecManufacturer, sizeof(UInt32), &codecManf);
+            status = ExtAudioFileSetProperty(mAudioFileRef, kExtAudioFileProperty_ClientDataFormat, sizeof(_audioDesc), &_audioDesc);
+            
+            TFCheckStatusReturnStatus(status, @"ext audio file set client format");
             
 //            UInt32 codecManf = kAppleHardwareAudioCodecManufacturer;
 //            ExtAudioFileSetProperty(mAudioFileRef, kExtAudioFileProperty_CodecManufacturer, sizeof(UInt32), &codecManf);
