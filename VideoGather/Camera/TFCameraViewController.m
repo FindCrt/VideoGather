@@ -48,11 +48,12 @@
     //TODO:1. 屏幕scale是否影响 2. size小于原数据时，是重新采样还是裁剪
     _outputSize = CGSizeMake(640, 480);
     
-    [self setupCaptureSession];
-    [self setupUI];
+    [self configureCameraSession];
+//    [self setupCaptureSession];
+//    [self setupUI];
 //    [self setupEncoder];
     
-    [self startSession];
+//    [self startSession];
 }
 
 -(void)setupCaptureSession{
@@ -95,7 +96,7 @@
 
 -(void)setupPreview{
     _previewLayer = [[AVCaptureVideoPreviewLayer alloc] initWithSession:_session];
-    _previewLayer.frame = CGRectMake(10, 20, self.view.frame.size.width - 20, 200);
+    _previewLayer.frame = CGRectMake(10, 100, self.view.frame.size.width - 20, 200);
     
     
 //    _previewLayer.connection.videoOrientation = AVCaptureVideoOrientationLandscapeLeft;
@@ -110,6 +111,8 @@
         if (_fileOutput == nil) {
             _fileOutput = [[AVCaptureMovieFileOutput alloc] init];
             [_session addOutput:_fileOutput];
+            
+            AVCaptureConnection *connection = [_fileOutput connectionWithMediaType:AVMediaTypeVideo];
         }
         
         [self genNewRecordPath];
@@ -252,5 +255,128 @@
     NSLog(@"finished record to file: %@ \nconnections: %@, \nerror:%@",outputFileURL, connections, error);
 }
 
+- (void)configureCameraSession{
+    _session = [AVCaptureSession new];
+    _session.sessionPreset = AVCaptureSessionPreset640x480;
+    
+    [_session beginConfiguration];
+    
+    AVCaptureDevice *device = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
+    
+    if(!device){
+        NSLog(@"device is null");
+        return;
+    }
+    
+    AVCaptureDeviceFormat *currentFormat;
+    int frameRate = 60;
+    for (AVCaptureDeviceFormat *format in device.formats)
+    {
+        NSArray *ranges = format.videoSupportedFrameRateRanges;
+        AVFrameRateRange *frameRates = ranges[0];
+
+        //CMVideoFormatDescriptionGet
+        int fps = 0;
+        int resolutionWidth = CMVideoFormatDescriptionGetDimensions(format.formatDescription).width;
+        if(frameRates.maxFrameRate > 59 && resolutionWidth >= 1920){
+            fps = 60;
+            if(frameRates.maxFrameRate > 119){
+                fps = 120;
+            }
+            if(frameRates.maxFrameRate > 239){
+                fps = 240;
+            }
+            
+            NSString *resolution;
+
+            if(resolutionWidth > 1920){
+                resolution = @"4K ";
+            }
+            else{
+                resolution = [[NSNumber numberWithInt:CMVideoFormatDescriptionGetDimensions(format.formatDescription).height] stringValue];
+                resolution = [resolution stringByAppendingString:@"p "];
+            }
+        }
+    }
+    
+//    if(!currentFormat){
+//        [self noValidCamera];
+//        return;
+//    }
+    
+//    _currentCameraFormat = _analysisViewController.currentCameraFormat;
+//    if(_currentCameraFormat.fps == 0){
+//        _currentCameraFormatIndex = 0;
+//        _currentCameraFormat = _formatList[_currentCameraFormatIndex];
+//        _analysisViewController.currentCameraFormat = _currentCameraFormat;
+//        currentFormat = _currentCameraFormat.format;
+//        frameRate = _currentCameraFormat.fps;
+//    }
+//    else{
+//        currentFormat = _currentCameraFormat.format;
+//        frameRate = _currentCameraFormat.fps;
+//    }
+    
+//    NSString *resolution;
+//    if(CMVideoFormatDescriptionGetDimensions(currentFormat.formatDescription).width > 1920){
+//        resolution = @"4K ";
+//    }
+//    else{
+//        resolution = [[NSNumber numberWithInt:CMVideoFormatDescriptionGetDimensions(currentFormat.formatDescription).height] stringValue];
+//        resolution = [resolution stringByAppendingString:@"p "];
+//    }
+//    NSString *fps = [[NSNumber numberWithInt:frameRate] stringValue];
+//    fps = [fps stringByAppendingString:@" FPS  ▼"];
+    
+//    [self.videoLabelButton setTitle:[resolution stringByAppendingString:fps] forState:UIControlStateNormal];
+    
+    currentFormat = [device activeFormat];
+    
+    
+    
+//    [device lockForConfiguration:nil];
+//    device.activeFormat = currentFormat;
+//    device.activeVideoMinFrameDuration = CMTimeMake(1, frameRate);
+//    device.activeVideoMaxFrameDuration = CMTimeMake(1, frameRate);
+//    [device unlockForConfiguration];
+    
+    //Input
+    AVCaptureDeviceInput *input = [AVCaptureDeviceInput deviceInputWithDevice:device error:nil];
+    [_session addInput:input];
+    
+    
+    
+    //Output
+    AVCaptureMovieFileOutput *movieFileOutput = [[AVCaptureMovieFileOutput alloc] init];
+    
+    if([_session canAddOutput:movieFileOutput]){
+        [_session addOutput:movieFileOutput];
+    }
+    
+//    [self setMovieOutputOrientation];
+    
+    //Preview Layer
+    _previewLayer = [[AVCaptureVideoPreviewLayer alloc] initWithSession:_session];
+    _previewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
+    _previewLayer.frame = CGRectMake(10, 100, self.view.frame.size.width - 20, 200);
+    [self.view.layer addSublayer:_previewLayer];
+    
+    AVCaptureConnection *connection = _previewLayer.connection;
+    NSLog(@"connection.videoMaxScaleAndCropFactor : %.2f",connection.videoMaxScaleAndCropFactor);
+    connection.videoScaleAndCropFactor = connection.videoMaxScaleAndCropFactor;
+    
+    [device videoZoomFactor];
+    
+//    _previewLayer.connection.videoOrientation = [self videoOrientationFromCurrentDeviceOrientation];
+    
+    AVCaptureVideoStabilizationMode stabilizationMode = AVCaptureVideoStabilizationModeCinematic;
+    if ([device.activeFormat isVideoStabilizationModeSupported:stabilizationMode]) {
+        [_previewLayer.connection setPreferredVideoStabilizationMode:stabilizationMode];
+    }
+    
+    [_session commitConfiguration];
+    [_session startRunning];
+    
+}
 
 @end
