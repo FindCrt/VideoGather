@@ -184,6 +184,7 @@
     _pcmFileWriter = [[TFAudioFileWriter alloc] init];
     _pcmFileWriter.filePath = [self nextRecordPath];
     _pcmFileWriter.fileType = kAudioFileCAFType;
+    //输出的数据转到下一个组件，到这个文件pcm文件写入
     [_recorder addTarget:_pcmFileWriter];
 }
 

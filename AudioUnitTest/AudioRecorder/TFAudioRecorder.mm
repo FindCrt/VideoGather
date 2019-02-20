@@ -73,6 +73,7 @@ typedef NS_ENUM(NSInteger, TFAudioEncodeType){
     TFCheckStatus(status, @"enable input io")
 
 
+    //音频流的格式，采样率 声道  样本类型等
     AudioStreamBasicDescription audioFormat;
     audioFormat = [self audioDescForType:encodeType];
     status = AudioUnitSetProperty(audioUnit,
@@ -84,6 +85,7 @@ typedef NS_ENUM(NSInteger, TFAudioEncodeType){
     //-10868 kAudioUnitErr_FormatNotSupported
     TFCheckStatus(status, @"set record output format")
     
+    //输出回调，在这里接收输出数据
     AURenderCallbackStruct callbackStruct;
     callbackStruct.inputProc = recordingCallback;
     callbackStruct.inputProcRefCon = (__bridge void * _Nullable)(self);
@@ -194,6 +196,7 @@ static OSStatus recordingCallback(void *inRefCon,
         [audioRecorder setupAudioBufferListWithNumberFrames:inNumberFrames];
     }
     
+    //audio unit的数据导到AudioBufferList
     status = AudioUnitRender(audioRecorder->audioUnit, ioActionFlags, inTimeStamp, inBusNumber, inNumberFrames, audioRecorder.bufferData->bufferList);
     TFCheckStatusReturnStatus(status, @"AudioUnitRender");
     
